@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Device;
-use Spatie\Browsershot\Browsershot;
+use Spatie\LaravelPdf\Facades\Pdf;
 use App\Livewire\Public\DeviceDetail;
 use Illuminate\Support\Facades\Route;
 
@@ -32,14 +32,8 @@ Route::get('/qr-print', function () {
     $assets = Device::whereIn('id', $ids)->get();
     $filename = 'QR-RENA-' . now()->format('Y-m-d') . '.pdf';
 
-    $html = view('pdf.assets-list', compact('assets'));
-    $pdf = Browsershot::html($html)
-        ->format('A4')
-        ->showBackground()
-        ->pdf();
-
     // return $html;
-    return response($pdf, 200)
-        ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'inline; filename="' . $filename . '"');
+    return Pdf::view('pdf.assets-list', compact('assets'))
+        ->format('A4')
+        ->name($filename);
 })->name('devices.qr-print');
