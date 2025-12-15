@@ -130,7 +130,7 @@ class DeviceForm
                     ->acceptedFileTypes(['application/pdf'])
                     ->storeFileNamesIn('original_filename')
                     ->getUploadedFileNameForStorageUsing(
-                        fn(TemporaryUploadedFile $file, $record): string => 'CERT-' . $record->device_number .  $file->getClientOriginalExtension()
+                        fn(TemporaryUploadedFile $file, $record): string => 'CERT-' . $record->device_number . '.' . $file->getClientOriginalExtension()
                     )
                     ->columnSpanFull(),
             ]);
