@@ -12,6 +12,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Storage;
+use Torgodly\Html2Media\Actions\Html2MediaAction;
 
 class DevicesTable
 {

@@ -3,7 +3,7 @@
 return [
     'label' => 'Perangkat',
     'plural_label' => 'Perangkat',
-    'navigation_label' => 'Perangkat',
+    'navigation_label' => 'QR Perangkat',
 
     'columns' => [
         'deviceId' => 'ID Perangkat',

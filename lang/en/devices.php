@@ -3,7 +3,7 @@
 return [
     'label' => 'Device',
     'plural_label' => 'Devices',
-    'navigation_label' => 'Devices',
+    'navigation_label' => 'QR Devices',
 
     'columns' => [
         'deviceId' => 'Device ID',

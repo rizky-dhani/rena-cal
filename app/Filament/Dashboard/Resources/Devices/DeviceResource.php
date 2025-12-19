@@ -17,7 +17,7 @@ class DeviceResource extends Resource
 {
     protected static ?string $model = Device::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTv;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::QrCode;
 
     public static function getModelLabel(): string
     {
