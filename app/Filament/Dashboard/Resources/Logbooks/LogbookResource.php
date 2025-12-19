@@ -18,7 +18,7 @@ class LogbookResource extends Resource
     protected static ?string $model = Logbook::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::BookOpen;
-
+    protected static bool $shouldRegisterNavigation = false; 
     public static function getModelLabel(): string
     {
         return __('logbooks.label');
