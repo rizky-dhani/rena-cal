@@ -36,5 +36,8 @@ return [
         'address' => [
             'label' => 'Alamat',
         ],
+        'province' => [
+            'label' => 'Provinsi',
+        ],
     ],
 ];

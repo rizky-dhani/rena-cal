@@ -36,5 +36,11 @@ return [
         'address' => [
             'label' => 'Address',
         ],
+        'province' => [
+            'label' => 'Province',
+        ],
+        'type' => [
+            'label'=> 'Type',
+        ]
     ],
 ];

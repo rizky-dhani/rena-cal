@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('phone_number')->nullable();
             $table->text('address')->nullable();
+            $table->enum('type', ['public', 'private']);
+            $table->foreignId('province_id')->constrained('provinces', 'code');
             $table->timestamps();
         });
     }
