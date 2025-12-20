@@ -39,5 +39,11 @@ return [
         'province' => [
             'label' => 'Provinsi',
         ],
+        'categories' => [
+            'label' => 'Kategori',
+        ],
+        'type' => [
+            'label'=> 'Tipe',
+        ]
     ],
 ];

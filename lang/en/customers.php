@@ -39,6 +39,9 @@ return [
         'province' => [
             'label' => 'Province',
         ],
+        'categories' => [
+            'label' => 'Category',
+        ],
         'type' => [
             'label'=> 'Type',
         ]

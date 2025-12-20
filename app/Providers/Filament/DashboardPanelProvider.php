@@ -2,30 +2,29 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Dashboard\Pages\EditProfile;
-use App\Filament\Dashboard\Resources\Devices\Widgets\DevicesWidget;
-use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
-use CraftForge\FilamentLanguageSwitcher\Http\Middleware\SetLocale;
-use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\AuthenticateSession;
-use Filament\Http\Middleware\DisableBladeIconComponents;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\MenuItem;
-use Filament\Navigation\NavigationGroup;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
+use App\Filament\Pages\Dashboard;
+use Filament\Navigation\MenuItem;
 use Filament\Support\Enums\Width;
+use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Routing\Middleware\SubstituteBindings;
+use Filament\Navigation\NavigationGroup;
+use Filament\Http\Middleware\Authenticate;
+use App\Filament\Dashboard\Pages\EditProfile;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Filament\Http\Middleware\AuthenticateSession;
+use App\Filament\Dashboard\Widgets\RecordCountWidget;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use App\Filament\Dashboard\Widgets\CustomerByTypeChartWidget;
+use App\Filament\Dashboard\Widgets\TopProvincesByCustomerWidget;
+use App\Filament\Dashboard\Resources\Devices\Widgets\DevicesWidget;
 
 class DashboardPanelProvider extends PanelProvider
 {
@@ -64,7 +63,7 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Dashboard/Widgets'), for: 'App\Filament\Dashboard\Widgets')
             ->widgets([
-                DevicesWidget::class
+                DevicesWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

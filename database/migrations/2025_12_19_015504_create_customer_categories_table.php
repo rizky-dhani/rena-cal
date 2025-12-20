@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
         });
         Schema::table('customers', function (Blueprint $table) {
-            $table->foreignId('categories_id')->constrained('customer_categories')->cascadeOnDelete();
+            $table->foreignId('categories_id')->after('province_id')->constrained('customer_categories')->cascadeOnDelete();
         });
     }
 

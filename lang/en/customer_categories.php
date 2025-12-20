@@ -27,5 +27,14 @@ return [
         'edit_success' => ':label successfully updated',
         'delete_success' => ':label successfully deleted',
         'delete_multiple_success' => 'Selected :label successfully deleted',
+    ],
+
+    'widgets' => [
+        'by_categories' => [
+            'heading' => 'Healthcare by Categories'
+        ],
+        'by_types' => [
+            'heading' => 'By Segment'
+        ]
     ]
 ];

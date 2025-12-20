@@ -27,5 +27,14 @@ return [
         'edit_success' => ':label berhasil diperbarui',
         'delete_success' => ':label berhasil dihapus',
         'delete_multiple_success' => ':label terpilih berhasil dihapus'
+    ],
+
+    'widgets' => [
+        'by_categories' => [
+            'heading' => 'Kategori Faskes'
+        ],
+        'by_types' => [
+            'heading' => 'Segmen'
+        ]
     ]
 ];

@@ -5,7 +5,7 @@ namespace App\Filament\Dashboard\Resources\CustomerCategories\Schemas;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
-class CustomerCategoriesForm
+class CustomerCategoryForm
 {
     public static function configure(Schema $schema): Schema
     {
