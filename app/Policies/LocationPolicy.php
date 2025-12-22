@@ -13,7 +13,8 @@ class LocationPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view-any-location');
+        return $user->can('view-any-location') ||
+               $user->hasRole(['Super Admin', 'Admin']);
     }
 
     /**
@@ -21,6 +22,10 @@ class LocationPolicy
      */
     public function view(User $user, Location $location): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin'])) {
+            return true;
+        }
+
         return $user->can('view-location');
     }
 
@@ -29,7 +34,8 @@ class LocationPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create-location');
+        return $user->can('create-location') ||
+               $user->hasRole(['Super Admin', 'Admin']);
     }
 
     /**
@@ -37,6 +43,10 @@ class LocationPolicy
      */
     public function update(User $user, Location $location): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin'])) {
+            return true;
+        }
+
         return $user->can('update-location');
     }
 
@@ -45,6 +55,10 @@ class LocationPolicy
      */
     public function delete(User $user, Location $location): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin'])) {
+            return true;
+        }
+
         return $user->can('delete-location');
     }
 }

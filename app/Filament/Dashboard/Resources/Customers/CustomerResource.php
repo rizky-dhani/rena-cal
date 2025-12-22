@@ -31,7 +31,7 @@ class CustomerResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('navigation.User Management');
+        return __('navigation.Admin Management');
     }
 
     public static function form(Schema $schema): Schema

@@ -19,7 +19,16 @@ class DevicesTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn($query) => $query->orderByDesc('device_number'))
+            ->modifyQueryUsing(function ($query) {
+                $user = auth()->user();
+
+                // If the user is a Hospital Admin (Customer Admin), restrict to their customer's devices
+                if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
+                    return $query->where('customer_id', $user->customer_id)->orderByDesc('device_number');
+                }
+
+                return $query->orderByDesc('device_number');
+            })
             ->columns([
                 TextColumn::make('device_name_id')
                     ->label(__('devices.columns.device_name_id'))

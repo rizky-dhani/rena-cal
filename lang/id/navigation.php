@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Inventories' => 'Inventaris',
     'Devices' => 'Perangkat',
-    'User Management' => 'Manajemen Pengguna'
+    'User Management' => 'Manajemen Pengguna',
+    'Admin Management' => 'Manajemen Admin'
 ];

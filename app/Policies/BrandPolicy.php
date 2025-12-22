@@ -12,7 +12,8 @@ class BrandPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view-any-brand');
+        return $user->can('view-any-brand') ||
+               $user->hasRole(['Super Admin', 'Admin']);
     }
 
     /**
@@ -20,6 +21,10 @@ class BrandPolicy
      */
     public function view(User $user, Brand $brand): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin'])) {
+            return true;
+        }
+
         return $user->can('view-brand');
     }
 
@@ -28,7 +33,8 @@ class BrandPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create-brand');
+        return $user->can('create-brand') ||
+               $user->hasRole(['Super Admin', 'Admin']);
     }
 
     /**
@@ -36,6 +42,10 @@ class BrandPolicy
      */
     public function update(User $user, Brand $brand): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin'])) {
+            return true;
+        }
+
         return $user->can('update-brand');
     }
 
@@ -44,6 +54,10 @@ class BrandPolicy
      */
     public function delete(User $user, Brand $brand): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin'])) {
+            return true;
+        }
+
         return $user->can('delete-brand');
     }
 }

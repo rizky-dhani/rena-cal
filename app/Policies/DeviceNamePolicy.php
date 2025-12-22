@@ -12,7 +12,8 @@ class DeviceNamePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view-any-devicename');
+        return $user->can('view-any-devicename') ||
+               $user->hasRole(['Super Admin', 'Admin']);
     }
 
     /**
@@ -20,6 +21,10 @@ class DeviceNamePolicy
      */
     public function view(User $user, DeviceName $deviceName): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin'])) {
+            return true;
+        }
+
         return $user->can('view-devicename');
     }
 
@@ -28,7 +33,8 @@ class DeviceNamePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create-devicename');
+        return $user->can('create-devicename') ||
+               $user->hasRole(['Super Admin', 'Admin']);
     }
 
     /**
@@ -36,6 +42,10 @@ class DeviceNamePolicy
      */
     public function update(User $user, DeviceName $deviceName): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin'])) {
+            return true;
+        }
+
         return $user->can('update-devicename');
     }
 
@@ -44,6 +54,10 @@ class DeviceNamePolicy
      */
     public function delete(User $user, DeviceName $deviceName): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin'])) {
+            return true;
+        }
+
         return $user->can('delete-devicename');
     }
 }

@@ -12,7 +12,8 @@ class DevicePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view-any-device');
+        return $user->can('view-any-device') ||
+               $user->hasRole(['Super Admin', 'Admin', 'Technician', 'Hospital Admin']);
     }
 
     /**
@@ -20,6 +21,15 @@ class DevicePolicy
      */
     public function view(User $user, Device $device): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin', 'Technician'])) {
+            return true;
+        }
+
+        // Hospital Admin can only view devices belonging to their customer
+        if ($user->hasRole('Hospital Admin') && $user->customer_id === $device->customer_id) {
+            return true;
+        }
+
         return $user->can('view-device');
     }
 
@@ -28,7 +38,8 @@ class DevicePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create-device');
+        return $user->can('create-device') ||
+               $user->hasRole(['Super Admin', 'Admin', 'Technician', 'Hospital Admin']);
     }
 
     /**
@@ -36,6 +47,15 @@ class DevicePolicy
      */
     public function update(User $user, Device $device): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin', 'Technician'])) {
+            return true;
+        }
+
+        // Hospital Admin can only update devices belonging to their customer
+        if ($user->hasRole('Hospital Admin') && $user->customer_id === $device->customer_id) {
+            return true;
+        }
+
         return $user->can('update-device');
     }
 
@@ -44,6 +64,15 @@ class DevicePolicy
      */
     public function delete(User $user, Device $device): bool
     {
+        if ($user->hasRole(['Super Admin', 'Admin', 'Technician'])) {
+            return true;
+        }
+
+        // Hospital Admin can only delete devices belonging to their customer
+        if ($user->hasRole('Hospital Admin') && $user->customer_id === $device->customer_id) {
+            return true;
+        }
+
         return $user->can('delete-device');
     }
 }
