@@ -2,6 +2,7 @@
 
 use App\Models\Device;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Spatie\Browsershot\Browsershot;
 use App\Livewire\Public\DeviceDetail;
 use Illuminate\Support\Facades\Route;
 
@@ -32,10 +33,20 @@ Route::get('/qr-print', function () {
     $assets = Device::whereIn('id', $ids)->get();
     $filename = 'QR-RENA-' . now()->format('Y-m-d') . '.pdf';
 
-    $pdf = Pdf::loadView('pdf.assets-list', compact('assets'))
-        ->setPaper('A4')
-        ->setOption('isHtml5ParserEnabled', true)
-        ->setOption('isRemoteEnabled', true);
+    // $pdf = Pdf::loadView('pdf.assets-list', compact('assets'))
+    //     ->setPaper('A4')
+    //     ->setOption('isHtml5ParserEnabled', true)
+    //     ->setOption('isRemoteEnabled', true);
 
-    return $pdf->stream($filename);
+    $html = view('pdf.assets-list', compact('assets'));
+    $pdf = Browsershot::html($html)
+        ->noSandbox()
+        ->format('A4')
+        ->showBackground()
+        ->pdf();
+
+    // return $pdf->stream($filename);
+    return response($pdf, 200)
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'inline; filename="' . $filename . '"');
 })->name('devices.qr-print');
