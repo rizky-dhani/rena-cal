@@ -52,8 +52,8 @@ class DashboardPanelProvider extends PanelProvider
                                 ->icon(Heroicon::UserCircle)
             ])
             ->navigationGroups([
-                NavigationGroup::make(fn() => __('navigation.Inventories')),
                 NavigationGroup::make(fn() =>__('navigation.Devices')),
+                NavigationGroup::make(fn() => __('navigation.Admin Management')),
                 NavigationGroup::make(fn() =>__('navigation.User Management'))
             ])
             ->discoverResources(in: app_path('Filament/Dashboard/Resources'), for: 'App\Filament\Dashboard\Resources')

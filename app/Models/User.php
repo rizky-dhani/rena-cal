@@ -36,7 +36,7 @@ class User extends Authenticatable implements FilamentUser
     {
         static::creating(function ($user) {
             $user->userId = Str::orderedUuid();
-            $user->password = Hash::make('Calibration2025!');
+            $user->password = Hash::make('Rena2025!');
         });
     }
     /**
@@ -76,13 +76,5 @@ class User extends Authenticatable implements FilamentUser
     public function devicePic()
     {
         return $this->hasMany(Device::class, 'pic_id');
-    }
-
-    /**
-     * A user has many logbooks as PIC
-     */
-    public function logbookPic()
-    {
-        return $this->hasMany(Logbook::class, 'pic_id');
     }
 }
