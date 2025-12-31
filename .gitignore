@@ -25,3 +25,5 @@ Thumbs.db
 .github/*
 boost.json
 app/Providers/AppServiceProvider.php
+.gemini
+GEMINI.md
