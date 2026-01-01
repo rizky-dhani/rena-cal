@@ -21,6 +21,9 @@ return new class extends Migration
             $table->foreignId('province_id')->constrained('provinces', 'code');
             $table->timestamps();
         });
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('customer_id')->nullable()->constrained('customers')->nullOnDelete();
+        });
     }
 
     /**
