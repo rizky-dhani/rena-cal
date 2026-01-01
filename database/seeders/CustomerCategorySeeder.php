@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\CustomerCategory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CustomerCategorySeeder extends Seeder
 {
@@ -14,11 +14,21 @@ class CustomerCategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'RSUD'],
-            ['name' => 'RS Swasta'],
-            ['name' => 'Klinik'],
-            ['name' => 'Lab Klinik'],
-            ['name' => 'Puskesmas']
+            ['name' => 'RSUD',
+                'slug' => Str::slug('RSUD'),
+            ],
+            ['name' => 'RS Swasta',
+                'slug' => Str::slug('RS Swasta'),
+            ],
+            ['name' => 'Klinik',
+                'slug' => Str::slug('Klinik'),
+            ],
+            ['name' => 'Lab Klinik',
+                'slug' => Str::slug('Lab Klinik'),
+            ],
+            ['name' => 'Puskesmas',
+                'slug' => Str::slug('Puskesmas'),
+            ],
         ];
 
         foreach ($categories as $category) {
