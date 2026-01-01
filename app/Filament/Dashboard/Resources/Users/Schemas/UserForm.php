@@ -2,10 +2,10 @@
 
 namespace App\Filament\Dashboard\Resources\Users\Schemas;
 
-use Filament\Schemas\Schema;
+use App\Models\Customer;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DateTimePicker;
+use Filament\Schemas\Schema;
 
 class UserForm
 {
@@ -26,8 +26,15 @@ class UserForm
                 Select::make('roles')
                     ->label(__('users.form.roles.label'))
                     ->multiple()
-                    ->relationship('roles', 'name', fn($query) => $query->where('id', '!=', 1))
+                    ->relationship('roles', 'name', fn ($query) => $query->where('id', '!=', 1))
                     ->preload()
+                    ->reactive(), // Make the field reactive to changes
+                Select::make('customer_id')
+                    ->label(__('users.form.customer.label'))
+                    ->options(Customer::pluck('name', 'id'))
+                    ->searchable()
+                    ->visible(fn ($get) => in_array('Hospital Admin', $get('roles') ?? []))
+                    ->required(fn ($get) => in_array('Hospital Admin', $get('roles') ?? [])),
             ]);
     }
 }

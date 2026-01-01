@@ -4,24 +4,27 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
-use Hash;
 use Filament\Panel;
-use Illuminate\Support\Str;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, HasRoles, Notifiable;
+    use CanResetPassword, HasFactory, HasRoles, Notifiable;
+
+    public const DEFAULT_PASSWORD = 'Rena2025!';
 
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
     }
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -34,11 +37,17 @@ class User extends Authenticatable implements FilamentUser
      */
     protected static function booted(): void
     {
-        static::creating(function ($user) {
-            $user->userId = Str::orderedUuid();
-            $user->password = Hash::make('Rena2025!');
+        static::creating(function (User $user) {
+            if (empty($user->userId)) {
+                $user->userId = (string) Str::orderedUuid();
+            }
+
+            if (empty($user->password)) {
+                $user->password = self::DEFAULT_PASSWORD;
+            }
         });
     }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -67,7 +76,7 @@ class User extends Authenticatable implements FilamentUser
      */
     public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
     /**
@@ -76,5 +85,25 @@ class User extends Authenticatable implements FilamentUser
     public function devicePic()
     {
         return $this->hasMany(Device::class, 'pic_id');
+    }
+
+    /**
+     * Send the password reset notification.
+     */
+    /**
+     * Send the password reset notification.
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $signedUrl = URL::temporarySignedRoute(
+            'filament.dashboard.auth.password-reset.reset',
+            now()->addMinutes(config('auth.passwords.users.expire')), // Adjust expiration as needed
+            [
+                'token' => $token,
+                'email' => $this->getEmailForPasswordReset(),
+            ]
+        );
+
+        $this->notify(new \App\Notifications\CustomerAdminCreatedNotification($signedUrl));
     }
 }

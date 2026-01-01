@@ -2,29 +2,28 @@
 
 namespace App\Providers\Filament;
 
-use Filament\Panel;
-use Filament\PanelProvider;
-use App\Filament\Pages\Dashboard;
-use Filament\Navigation\MenuItem;
-use Filament\Support\Enums\Width;
-use Filament\Support\Colors\Color;
-use Filament\Support\Icons\Heroicon;
-use Filament\Navigation\NavigationGroup;
-use Filament\Http\Middleware\Authenticate;
+use App\Filament\Dashboard\Pages\Auth\CustomPasswordReset;
 use App\Filament\Dashboard\Pages\EditProfile;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Cookie\Middleware\EncryptCookies;
+use App\Filament\Dashboard\Resources\Devices\Widgets\DevicesWidget;
+use App\Filament\Pages\Dashboard;
+use Filament\Auth\Pages\PasswordReset\RequestPasswordReset;
+use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
-use App\Filament\Dashboard\Widgets\RecordCountWidget;
-use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Filament\Navigation\MenuItem;
+use Filament\Navigation\NavigationGroup;
+use Filament\Panel;
+use Filament\PanelProvider;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use App\Filament\Dashboard\Widgets\CustomerByTypeChartWidget;
-use App\Filament\Dashboard\Widgets\TopProvincesByCustomerWidget;
-use App\Filament\Dashboard\Resources\Devices\Widgets\DevicesWidget;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class DashboardPanelProvider extends PanelProvider
 {
@@ -35,11 +34,12 @@ class DashboardPanelProvider extends PanelProvider
             ->path('dashboard')
             ->login()
             ->spa()
+            ->passwordReset(RequestPasswordReset::class, CustomPasswordReset::class)
             ->viteTheme('resources/css/filament/dashboard/theme.css')
             ->brandName('Rena')
-            ->brandLogo(fn() => asset('assets/images/logos/Rena-Logo.webp'))
+            ->brandLogo(fn () => asset('assets/images/logos/Rena-Logo.webp'))
             ->brandLogoHeight('4em')
-            ->favicon(fn() => asset('assets/images/logos/Rena-Logo.webp'))
+            ->favicon(fn () => asset('assets/images/logos/Rena-Logo.webp'))
             ->profile(EditProfile::class)
             ->maxContentWidth(Width::Full)
             ->colors([
@@ -47,14 +47,14 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->userMenuItems([
                 'profile' => MenuItem::make()
-                                ->label(fn() => auth()->user()->name)
-                                ->url(fn()=> EditProfile::getUrl())
-                                ->icon(Heroicon::UserCircle)
+                    ->label(fn () => auth()->user()->name)
+                    ->url(fn () => EditProfile::getUrl())
+                    ->icon(Heroicon::UserCircle),
             ])
             ->navigationGroups([
-                NavigationGroup::make(fn() =>__('navigation.Devices')),
-                NavigationGroup::make(fn() => __('navigation.Admin Management')),
-                NavigationGroup::make(fn() =>__('navigation.User Management'))
+                NavigationGroup::make(fn () => __('navigation.Devices')),
+                NavigationGroup::make(fn () => __('navigation.Admin Management')),
+                NavigationGroup::make(fn () => __('navigation.User Management')),
             ])
             ->discoverResources(in: app_path('Filament/Dashboard/Resources'), for: 'App\Filament\Dashboard\Resources')
             ->discoverPages(in: app_path('Filament/Dashboard/Pages'), for: 'App\Filament\Dashboard\Pages')

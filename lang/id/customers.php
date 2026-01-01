@@ -4,7 +4,7 @@ return [
     'label' => 'Pelanggan',
     'plural_label' => 'Pelanggan',
     'navigation_label' => 'Pelanggan',
-    
+
     'columns' => [
         'name' => 'Nama',
         'slug' => 'Slug',
@@ -13,7 +13,7 @@ return [
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',
     ],
-    
+
     'actions' => [
         'edit' => 'Edit',
         'delete' => 'Hapus',
@@ -24,8 +24,10 @@ return [
         'edit_success' => ':label berhasil diperbarui',
         'delete_success' => ':label berhasil dihapus',
         'delete_multiple_success' => ':label terpilih berhasil dihapus',
+        'assign_admin' => 'Tetapkan Admin',
+        'assign_admin_success' => 'Admin berhasil ditetapkan ke :label',
     ],
-    
+
     'form' => [
         'name' => [
             'label' => 'Nama',
@@ -43,7 +45,25 @@ return [
             'label' => 'Kategori',
         ],
         'type' => [
-            'label'=> 'Tipe',
-        ]
+            'label' => 'Tipe',
+        ],
+        'create_new_user' => [
+            'label' => 'Buat pengguna baru sebagai gantinya?',
+        ],
+        'select_user' => [
+            'label' => 'Pilih Pengguna',
+        ],
+        'new_user_name' => [
+            'label' => 'Nama Pengguna Baru',
+        ],
+        'new_user_email' => [
+            'label' => 'Email Pengguna Baru',
+        ],
+        'new_user_phone' => [
+            'label' => 'Telepon Pengguna Baru',
+        ],
+        'assign' => [
+            'label' => 'Tetapkan',
+        ],
     ],
 ];

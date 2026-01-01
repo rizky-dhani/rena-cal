@@ -24,6 +24,8 @@ return [
         'edit_success' => ':label successfully updated',
         'delete_success' => ':label successfully deleted',
         'delete_multiple_success' => 'Selected :label successfully deleted',
+        'assign_admin' => 'Assign Admin',
+        'assign_admin_success' => 'Admin successfully assigned to :label',
     ],
 
     'form' => [
@@ -43,7 +45,25 @@ return [
             'label' => 'Category',
         ],
         'type' => [
-            'label'=> 'Type',
-        ]
+            'label' => 'Type',
+        ],
+        'create_new_user' => [
+            'label' => 'Create new user instead?',
+        ],
+        'select_user' => [
+            'label' => 'Select User',
+        ],
+        'new_user_name' => [
+            'label' => 'New User Name',
+        ],
+        'new_user_email' => [
+            'label' => 'New User Email',
+        ],
+        'new_user_phone' => [
+            'label' => 'New User Phone',
+        ],
+        'assign' => [
+            'label' => 'Assign',
+        ],
     ],
 ];

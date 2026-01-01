@@ -61,7 +61,10 @@ return [
             'label' => 'Roles',
         ],
         'import' => [
-            'label'=> 'Excel file',
-        ]
+            'label' => 'Excel file',
+        ],
+        'customer' => [
+            'label' => 'Customer',
+        ],
     ],
 ];

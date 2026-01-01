@@ -2,16 +2,14 @@
 
 namespace App\Filament\Dashboard\Resources\Users\Pages;
 
-use App\Imports\UserImport;
-use Filament\Notifications\Notification;
-use Filament\Support\Enums\Width;
-use Filament\Actions\{
-    Action,
-    CreateAction
-};
-use Filament\Resources\Pages\ListRecords;
 use App\Filament\Dashboard\Resources\Users\UserResource;
+use App\Imports\UserImport;
+use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
 use Filament\Forms\Components\FileUpload;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Enums\Width;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ListUsers extends ListRecords
@@ -39,12 +37,12 @@ class ListUsers extends ListRecords
                 ])
                 ->action(function (array $data): void {
                     try {
-                        $import = new UserImport();
+                        $import = new UserImport;
                         $filePath = $data['import_file'];
 
                         // Check if the file exists in storage
-                        if (!\Storage::exists($filePath)) {
-                            throw new \Exception(__('users.actions.import_file_not_found').': '. $filePath);
+                        if (! \Storage::exists($filePath)) {
+                            throw new \Exception(__('users.actions.import_file_not_found').': '.$filePath);
                         }
 
                         Excel::import($import, $filePath);

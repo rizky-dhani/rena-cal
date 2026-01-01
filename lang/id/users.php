@@ -62,6 +62,9 @@ return [
         ],
         'import' => [
             'label' => 'Berkas Excel',
-        ]
+        ],
+        'customer' => [
+            'label' => 'Pelanggan',
+        ],
     ],
 ];

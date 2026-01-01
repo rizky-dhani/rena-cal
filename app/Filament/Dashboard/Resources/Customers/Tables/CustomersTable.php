@@ -2,6 +2,7 @@
 
 namespace App\Filament\Dashboard\Resources\Customers\Tables;
 
+use App\Filament\Dashboard\Resources\Customers\Actions\AssignAdminAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -18,14 +19,11 @@ class CustomersTable
                 TextColumn::make('name')
                     ->label(__('customers.columns.name'))
                     ->searchable(),
-                TextColumn::make('slug')
-                    ->label(__('customers.columns.slug'))
-                    ->searchable(),
                 TextColumn::make('phone_number')
                     ->label(__('customers.columns.phone_number'))
                     ->searchable(),
                 TextColumn::make('address')
-                    ->label(__('customers.columns.address'))
+                    ->label(__('customers.columns.address')),
             ])
             ->filters([
                 //
@@ -37,13 +35,15 @@ class CustomersTable
                     ->successNotificationTitle(__('customers.actions.edit_success', ['label' => __('customers.label')])),
                 DeleteAction::make()
                     ->label(__('customers.actions.delete'))
-                    ->successNotificationTitle(__('customers.actions.delete_success', ['label' => __('customers.label')]))
+                    ->successNotificationTitle(__('customers.actions.delete_success', ['label' => __('customers.label')])),
+                AssignAdminAction::make()
+                    ->color('success'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                    ->label(__('customers.actions.delete'))
-                    ->successNotificationTitle(__('customers.actions.delete_multiple_success', ['label' => __('customers.plural_label')])),
+                        ->label(__('customers.actions.delete'))
+                        ->successNotificationTitle(__('customers.actions.delete_multiple_success', ['label' => __('customers.plural_label')])),
                 ]),
             ]);
     }
