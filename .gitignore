@@ -27,3 +27,4 @@ boost.json
 app/Providers/AppServiceProvider.php
 .gemini
 GEMINI.md
+.htaccess
