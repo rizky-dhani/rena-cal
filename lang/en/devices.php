@@ -146,7 +146,7 @@ return [
             'label' => 'Certificate Number',
         ],
         'notes' => [
-            'label' => 'Catatan',
+            'label' => 'Notes',
             'empty' => 'No notes available'
         ],
     ],
