@@ -10,6 +10,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Storage;
 use Torgodly\Html2Media\Actions\Html2MediaAction;
@@ -70,10 +71,10 @@ class DevicesTable
                     ->numeric()
                     ->sortable()
                     ->getStateUsing(fn ($record) => $record->customer?->name ?? 'N/A'),
-                TextColumn::make('calibrated_date')
-                    ->label(__('devices.columns.calibrated_date'))
+                TextColumn::make('calibration_date')
+                    ->label(__('devices.columns.calibration_date'))
                     ->sortable()
-                    ->getStateUsing(fn ($record) => $record->calibrated_date ? Carbon::parse($record->calibrated_date)->format('Y-m-d') : 'N/A'),
+                    ->getStateUsing(fn ($record) => $record->calibration_date ? Carbon::parse($record->calibration_date)->format('Y-m-d') : 'N/A'),
                 TextColumn::make('next_calibration_date')
                     ->label(__('devices.columns.next_calibration_date'))
                     ->sortable()
@@ -169,10 +170,13 @@ class DevicesTable
                     }),
             ])
             ->recordActions([
-                Action::make('View')
+                ViewAction::make()
                     ->label(__('devices.actions.view'))
+                    ->color('dark'),
+                Action::make('Public View')
+                    ->label(__('devices.actions.public_detail'))
                     ->icon('heroicon-o-eye')
-                    ->color('dark')
+                    ->color('gray')
                     ->openUrlInNewTab()
                     ->url(fn ($record) => route('devices.publicDetail', $record->deviceId)),
                 EditAction::make()

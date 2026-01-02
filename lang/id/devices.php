@@ -42,6 +42,7 @@ return [
         'delete_success' => ':label berhasil dihapus',
         'delete_multiple_success' => ':label terpilih berhasil dihapus',
         'generate_empty_qr' => 'Buat Kode QR Kosong',
+        'public_detail' => 'Detail Publik',
     ],
 
     'generate' => [
@@ -55,7 +56,9 @@ return [
     'detail' => [
         'qr_not_available' => 'QR Code tidak tersedia',
         'no_device_id' => 'Tidak ada ID Perangkat tersedia',
-        'cal_info' => 'Informasi Kalibrasi'
+        'cal_info' => 'Informasi Kalibrasi',
+        'download_certificate' => 'Unduh Sertifikat',
+        'cert_not_available' => 'Sertifikat tidak tersedia',
     ],
 
     'form' => [

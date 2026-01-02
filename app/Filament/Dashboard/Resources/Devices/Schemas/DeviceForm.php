@@ -103,8 +103,8 @@ class DeviceForm
                 TextInput::make('procurement_year')
                     ->label(__('devices.form.procurement_year.label'))
                     ->default(null),
-                DatePicker::make('calibrated_date')
-                    ->label(__('devices.form.calibrated_date.label'))
+                DatePicker::make('calibration_date')
+                    ->label(__('devices.form.calibration_date.label'))
                     ->native(false)
                     ->displayFormat('d/m/Y')
                     ->format('Y-m-d')

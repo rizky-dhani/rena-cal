@@ -17,14 +17,19 @@ Route::get('/devices/{deviceId}', function ($deviceId) {
 
 // Certificate download route
 Route::get('/certificate/download/{cert_number}', function ($cert_number) {
-    $filePath = storage_path('app/public/'.$cert_number);
-
-    if (file_exists($filePath)) {
-        return response()->download($filePath);
-    } else {
-        abort(404, 'Certificate not found');
+    // Block any attempts to traverse directories using ".."
+    if (str_contains($cert_number, '..')) {
+        abort(403, 'Invalid path');
     }
-})->name('certificate.download');
+
+    $disk = \Illuminate\Support\Facades\Storage::disk('public');
+
+    if ($disk->exists($cert_number)) {
+        return $disk->download($cert_number);
+    }
+
+    abort(404, 'Certificate not found');
+})->name('certificate.download')->where('cert_number', '.*');
 
 // QR Code Cards Print route
 Route::get('/qr-print', function () {

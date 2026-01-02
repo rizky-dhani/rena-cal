@@ -110,11 +110,11 @@
                         @if($device->cert_number)
                             <a href="{{ route('certificate.download', ['cert_number' => $device->cert_number]) }}"
                                class="mt-1 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition ease-in-out duration-150 w-fit">
-                               <i class="fas fa-download"></i>
-                                Download Certificate
+                               <i class="fas fa-download mr-2"></i>
+                                {{ __('devices.detail.download_certificate') }}
                             </a>
                         @else
-                            <p class="mt-1 text-gray-900">Certificate not available</p>
+                            <p class="mt-1 text-gray-900">{{ __('devices.detail.cert_not_available') }}</p>
                         @endif
                     </div>
                 </div>

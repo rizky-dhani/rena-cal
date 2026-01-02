@@ -3,7 +3,9 @@
 namespace App\Filament\Dashboard\Resources\Devices;
 
 use App\Filament\Dashboard\Resources\Devices\Pages\ListDevices;
+use App\Filament\Dashboard\Resources\Devices\Pages\ViewDevice;
 use App\Filament\Dashboard\Resources\Devices\Schemas\DeviceForm;
+use App\Filament\Dashboard\Resources\Devices\Schemas\DeviceInfolist;
 use App\Filament\Dashboard\Resources\Devices\Tables\DevicesTable;
 use App\Models\Device;
 use BackedEnum;
@@ -44,6 +46,11 @@ class DeviceResource extends Resource
         return DeviceForm::configure($schema);
     }
 
+    public static function infolist(Schema $schema): Schema
+    {
+        return DeviceInfolist::configure($schema);
+    }
+
     public static function table(Table $table): Table
     {
         return DevicesTable::configure($table);
@@ -60,6 +67,7 @@ class DeviceResource extends Resource
     {
         return [
             'index' => ListDevices::route('/'),
+            'view' => ViewDevice::route('/{record}'),
         ];
     }
 }

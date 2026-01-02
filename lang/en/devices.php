@@ -42,6 +42,7 @@ return [
         'delete_success' => ':label successfully deleted',
         'delete_multiple_success' => 'Selected :label successfully deleted',
         'generate_empty_qr' => 'Generate Empty QR Codes',
+        'public_detail' => 'Public Detail',
     ],
 
     'generate' => [
@@ -55,7 +56,9 @@ return [
     'detail' => [
         'qr_not_available' => 'QR Code not available',
         'no_device_id' => 'No Device ID available',
-        'cal_info' => 'Calibration Information'
+        'cal_info' => 'Calibration Information',
+        'download_certificate' => 'Download Certificate',
+        'cert_not_available' => 'Certificate not available',
     ],
 
     'form' => [
