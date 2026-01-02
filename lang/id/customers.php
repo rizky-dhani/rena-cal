@@ -26,6 +26,8 @@ return [
         'delete_multiple_success' => ':label terpilih berhasil dihapus',
         'assign_admin' => 'Tetapkan Admin',
         'assign_admin_success' => 'Admin berhasil ditetapkan ke :label',
+        'unassign_admin' => 'Hapus Penetapan Admin',
+        'unassign_admin_success' => 'Penetapan Admin berhasil dihapus',
     ],
 
     'form' => [
@@ -65,5 +67,14 @@ return [
         'assign' => [
             'label' => 'Tetapkan',
         ],
+        'delete_user' => [
+            'label' => 'Hapus akun pengguna',
+            'helper_text' => 'Centang ini jika Anda ingin menghapus pengguna ini secara permanen dari sistem.',
+        ],
+    ],
+
+    'sections' => [
+        'details' => 'Detail Pelanggan',
+        'admin' => 'Admin',
     ],
 ];

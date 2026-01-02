@@ -38,6 +38,7 @@ class CustomerAdminCreatedNotification extends Notification
             ->view('mail.password-reset', [
                 'signedUrl' => $this->signedUrl,
                 'name' => $notifiable->name,
+                'customerName' => $notifiable->customer?->name ?? 'your organization',
             ]);
     }
 

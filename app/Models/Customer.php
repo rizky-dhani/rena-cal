@@ -53,4 +53,12 @@ class Customer extends Model
     {
         return $this->belongsTo(CustomerCategory::class, 'categories_id');
     }
+
+    /**
+     * A customer belongs to a province
+     */
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id', 'code');
+    }
 }

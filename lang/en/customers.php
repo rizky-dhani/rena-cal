@@ -26,6 +26,8 @@ return [
         'delete_multiple_success' => 'Selected :label successfully deleted',
         'assign_admin' => 'Assign Admin',
         'assign_admin_success' => 'Admin successfully assigned to :label',
+        'unassign_admin' => 'Unassign Admin',
+        'unassign_admin_success' => 'Admin successfully unassigned',
     ],
 
     'form' => [
@@ -65,5 +67,14 @@ return [
         'assign' => [
             'label' => 'Assign',
         ],
+        'delete_user' => [
+            'label' => 'Delete user account',
+            'helper_text' => 'Check this if you want to permanently delete this user from the system.',
+        ],
+    ],
+
+    'sections' => [
+        'details' => 'Customer Details',
+        'admin' => 'Admin',
     ],
 ];

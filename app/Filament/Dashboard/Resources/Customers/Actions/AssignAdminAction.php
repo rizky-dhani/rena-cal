@@ -4,10 +4,11 @@ namespace App\Filament\Dashboard\Resources\Customers\Actions;
 
 use App\Models\User;
 use Filament\Actions\Action;
+use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Password;
 
 class AssignAdminAction
@@ -44,8 +45,10 @@ class AssignAdminAction
                     ->visible(fn ($get) => $get('create_new_user'))
                     ->maxLength(20),
             ])
-            ->action(function (array $data, $record) {
-                \Illuminate\Support\Facades\DB::transaction(function () use ($data, $record) {
+            ->action(function (array $data, $record, Action $action) {
+                $customer = $record ?? $action->getLivewire()->getOwnerRecord();
+
+                DB::transaction(function () use ($data, $customer) {
                     $user = null;
 
                     if (! ($data['create_new_user'] ?? false) && isset($data['user_id'])) {
@@ -55,7 +58,7 @@ class AssignAdminAction
                             'name' => $data['new_user_name'],
                             'email' => $data['new_user_email'],
                             'phone_number' => $data['new_user_phone'] ?? null,
-                            'customer_id' => $record->id,
+                            'customer_id' => $customer->id,
                         ]);
 
                         $user->assignRole('Hospital Admin');
@@ -64,14 +67,20 @@ class AssignAdminAction
                     }
 
                     if ($user) {
-                        $user->update(['customer_id' => $record->id]);
+                        $user->update(['customer_id' => $customer->id]);
+
+                        // Ensure role is assigned if linking existing user
+                        if (! $user->hasRole('Hospital Admin')) {
+                            $user->assignRole('Hospital Admin');
+                        }
                     }
                 });
             })
             ->modalHeading(__('customers.actions.assign_admin'))
             ->modalSubmitActionLabel(__('customers.actions.assign_admin'))
-            ->successNotificationTitle(function (Model $record) {
-                return __('customers.actions.assign_admin_success', ['label' => $record->name]);
+            ->successNotificationTitle(function ($record, Action $action) {
+                $customer = $record ?? $action->getLivewire()->getOwnerRecord();
+                return __('customers.actions.assign_admin_success', ['label' => $customer->name]);
             });
     }
 }
