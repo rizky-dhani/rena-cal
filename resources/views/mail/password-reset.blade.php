@@ -113,21 +113,23 @@
                                 {{-- Body content --}}
                                 <tr>
                                     <td class="content-cell">
-                                        <h1>Reset Your Password</h1>
+                                        <h1>Admin Account Created</h1>
 
                                         <p>Hello {{ $name ?? 'there' }}!</p>
 
-                                        <p>We received a request to reset the password for your account.</p>
+                                        <p>Your admin account for <strong>{{ $customerName }}</strong> has been successfully created.</p>
+
+                                        <p>To get started and log in to the system, you must first set your password by clicking the button below:</p>
 
                                         <div class="button-wrapper">
                                             <a href="{{ $signedUrl }}" class="button">
-                                                Reset Password
+                                                Set Password
                                             </a>
                                         </div>
 
-                                        <p>This password reset link is valid for {{ config('auth.passwords.users.expire') }} minutes.</p>
+                                        <p>This link is valid for {{ config('auth.passwords.users.expire') }} minutes.</p>
 
-                                        <p>If you did not request a password reset, please ignore this email.</p>
+                                        <p>If you were not expecting this account creation, please ignore this email.</p>
 
                                         <p>Regards,<br>{{ config('app.name') }}</p>
                                     </td>
