@@ -41,7 +41,7 @@ class DeviceNameResource extends Resource
 
     public static function getNavigationParentItem(): ?string
     {
-        return __('navigation.Devices');
+        return __('devices.navigation_label');
     }
 
     public static function form(Schema $schema): Schema

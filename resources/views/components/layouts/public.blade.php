@@ -12,9 +12,9 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="{{ asset('assets/fontawesome/brands.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/fontawesome/fontawesome.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/fontawesome/solid.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/fontawesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/brands.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/solid.min.css') }}">
 
         <!-- Scripts and Styles -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])

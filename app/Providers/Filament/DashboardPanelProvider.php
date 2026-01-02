@@ -7,6 +7,7 @@ use App\Filament\Dashboard\Pages\EditProfile;
 use App\Filament\Dashboard\Resources\Devices\Widgets\DevicesWidget;
 use App\Filament\Pages\Dashboard;
 use Filament\Auth\Pages\PasswordReset\RequestPasswordReset;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -35,6 +36,7 @@ class DashboardPanelProvider extends PanelProvider
             ->login()
             ->spa()
             ->passwordReset(RequestPasswordReset::class, CustomPasswordReset::class)
+            ->defaultThemeMode(ThemeMode::Light)
             ->viteTheme('resources/css/filament/dashboard/theme.css')
             ->brandName('Rena')
             ->brandLogo(fn () => asset('assets/images/logos/Rena-Logo.webp'))
