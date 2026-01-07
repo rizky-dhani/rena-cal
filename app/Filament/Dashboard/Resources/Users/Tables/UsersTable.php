@@ -2,14 +2,14 @@
 
 namespace App\Filament\Dashboard\Resources\Users\Tables;
 
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
 use Filament\Actions\Action;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
 
 class UsersTable
@@ -17,8 +17,12 @@ class UsersTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(function($query){
-                $query->where('id', '!=', auth()->user()->id)->orderByDesc('created_at');
+            ->modifyQueryUsing(function ($query) {
+                $query->where('id', '!=', auth()->user()->id)
+                    ->whereDoesntHave('roles', function ($query) {
+                        $query->where('name', 'Super Admin');
+                    })
+                    ->orderByDesc('created_at');
             })
             ->columns([
                 TextColumn::make('name')
@@ -31,7 +35,7 @@ class UsersTable
                     ->label(__('users.columns.initial'))
                     ->searchable(),
                 TextColumn::make('roles.name')
-                    ->label(__('users.columns.roles'))
+                    ->label(__('users.columns.roles')),
             ])
             ->filters([
                 //
@@ -42,10 +46,10 @@ class UsersTable
                     ->icon(Heroicon::ArrowPathRoundedSquare)
                     ->color('warning')
                     ->requiresConfirmation()
-                    ->visible(fn() => auth()->user()->can('reset-password-users'))
-                    ->action(function($record){
+                    ->visible(fn () => auth()->user()->can('reset-password-users'))
+                    ->action(function ($record) {
                         $record->update([
-                            'password' => Hash::make('Calibration2025!')
+                            'password' => Hash::make('Calibration2025!'),
                         ]);
                     })
                     ->successNotificationTitle(__('users.actions.reset_password_success')),
@@ -60,8 +64,8 @@ class UsersTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                    ->label(__('users.actions.delete'))
-                    ->successNotificationTitle(__('users.actions.delete_multiple_success', ['label' => __('users.plural_label')])),
+                        ->label(__('users.actions.delete'))
+                        ->successNotificationTitle(__('users.actions.delete_multiple_success', ['label' => __('users.plural_label')])),
                 ]),
             ]);
     }
