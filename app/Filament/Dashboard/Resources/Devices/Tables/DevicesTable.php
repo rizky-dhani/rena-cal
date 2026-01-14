@@ -168,6 +168,22 @@ class DevicesTable
                                 ->orWhereNull('cert_number');
                         });
                     }),
+                \Filament\Tables\Filters\Filter::make('more_than_60_days')
+                    ->label(__('widgets.device_calibration_status.more_than_60_days'))
+                    ->query(function ($query) {
+                        return $query->whereDate('next_calibration_date', '>', now()->addDays(60));
+                    }),
+                \Filament\Tables\Filters\Filter::make('within_60_days')
+                    ->label(__('widgets.device_calibration_status.within_60_days'))
+                    ->query(function ($query) {
+                        return $query->whereDate('next_calibration_date', '<=', now()->addDays(60))
+                                     ->whereDate('next_calibration_date', '>', now());
+                    }),
+                \Filament\Tables\Filters\Filter::make('overdue')
+                    ->label(__('widgets.device_calibration_status.overdue'))
+                    ->query(function ($query) {
+                        return $query->whereDate('next_calibration_date', '<=', now());
+                    }),
             ])
             ->recordActions([
                 ViewAction::make()
