@@ -34,11 +34,11 @@ This phase adds the manual "Send Renewal Notification" button to the dashboard.
 - [x] **Task: Add Manual Action to View Device Page** [5d7df04]
     - [x] Write Tests: Verify the action is present on the `ViewDevice` header.
     - [x] Implement: Update `app/Filament/Dashboard/Resources/Devices/Pages/ViewDevice.php` header actions.
-- [ ] **Task: Conductor - User Manual Verification 'Manual Trigger' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Manual Trigger' (Protocol in workflow.md)**
 
-## Phase 4: Final Polish and Quality Gates
+## Phase 4: Final Polish and Quality Gates [checkpoint: e634842]
 Final verification against project standards.
 
-- [ ] **Task: Final Quality Gate Check**
+- [~] **Task: Final Quality Gate Check**
     - [ ] Implement: Verify code coverage (80-90%), run Pint for formatting, and ensure all docstrings are complete.
 - [ ] **Task: Conductor - User Manual Verification 'Final Polish' (Protocol in workflow.md)**
