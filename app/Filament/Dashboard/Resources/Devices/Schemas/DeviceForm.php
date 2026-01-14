@@ -29,8 +29,7 @@ class DeviceForm
                             ->columnSpanFull()
                             ->required(),
                     ])
-                    ->columnSpanFull()
-                    ->required(),
+                    ->columnSpanFull(),
                 Grid::make(3)
                     ->schema([
                         TextInput::make('serial_number')
