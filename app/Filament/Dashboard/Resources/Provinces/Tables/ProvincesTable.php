@@ -24,11 +24,16 @@ class ProvincesTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->color('info')
+                    ->label(__('devices.actions.edit'))
+                    ->successNotificationTitle(__('provinces.notifications.success', ['label' => __('provinces.label')])),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->label(__('devices.actions.delete'))
+                        ->successNotificationTitle(__('devices.actions.delete_multiple_success', ['label' => __('provinces.label')])),
                 ]),
             ]);
     }

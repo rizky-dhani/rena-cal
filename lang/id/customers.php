@@ -48,6 +48,10 @@ return [
         ],
         'type' => [
             'label' => 'Tipe',
+            'options' => [
+                'Pemerintah' => 'Pemerintah',
+                'Swasta' => 'Swasta',
+            ],
         ],
         'create_new_user' => [
             'label' => 'Buat pengguna baru sebagai gantinya?',

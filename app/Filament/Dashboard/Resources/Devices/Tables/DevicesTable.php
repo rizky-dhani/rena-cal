@@ -217,7 +217,7 @@ class DevicesTable
             ->bulkActions([
                 BulkActionGroup::make([
                     BulkAction::make('bulk_print_qr')
-                        ->label('Print')
+                        ->label(__('devices.actions.print'))
                         ->icon('heroicon-o-document-arrow-down')->icon('heroicon-o-document-arrow-down')
                         ->action(function ($records) {
                             $ids = $records->pluck('id')->toArray();

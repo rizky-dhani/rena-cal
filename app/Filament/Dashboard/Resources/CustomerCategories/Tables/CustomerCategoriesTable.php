@@ -16,8 +16,10 @@ class CustomerCategoriesTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('customer_categories.columns.name.label'))
                     ->searchable(),
                 TextColumn::make('slug')
+                    ->label(__('customer_categories.columns.slug.label'))
                     ->searchable(),
             ])
             ->filters([
@@ -34,7 +36,9 @@ class CustomerCategoriesTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->label(__('customer_categories.actions.delete'))
+                        ->successNotificationTitle(__('customer_categories.actions.delete_multiple_success', ['label' => __('customer_categories.plural_label')])),
                 ]),
             ]);
     }

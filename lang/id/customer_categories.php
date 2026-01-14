@@ -14,6 +14,9 @@ return [
     'columns' => [
         'name' => [
             'label'=> 'Nama'
+        ],
+        'slug' => [
+            'label'=> 'Slug'
         ]
     ],
 

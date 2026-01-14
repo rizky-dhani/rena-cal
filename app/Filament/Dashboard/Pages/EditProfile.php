@@ -16,7 +16,7 @@ class EditProfile extends BaseEditProfile
             ->schema([
                 $this->getNameFormComponent(),
                 TextInput::make('initial')
-                    ->label('Initial'),
+                    ->label(__('users.form.initial.label')),
                 $this->getEmailFormComponent(),
                 $this->getPasswordFormComponent(),
                 $this->getPasswordConfirmationFormComponent(),
@@ -25,7 +25,7 @@ class EditProfile extends BaseEditProfile
 
     public function getSavedNotificationTitle(): string|null
     {
-        return 'Profile updated successfully';
+        return __('users.actions.edit_success', ['label' => __('users.label')]);
     }
 
     protected function getRedirectUrl(): string|null

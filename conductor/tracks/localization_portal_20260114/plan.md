@@ -6,9 +6,9 @@ This phase focuses on ensuring the backend and administrative interface are full
 - [x] **Task: Verify and Sync Language Files** [faa6f88]
     - [x] Write Tests: Ensure translation keys exist for core entities (Device, Brand, Location).
     - [x] Implement: Complete the `lang/id/*.php` files with missing translations.
-- [ ] **Task: Localize Filament Resources**
-    - [ ] Write Tests: Verify labels on `DeviceResource` reflect Indonesian translations.
-    - [ ] Implement: Update all Filament resources to use `translateLabel()` or explicit localized labels.
+- [x] **Task: Localize Filament Resources** [0faed94]
+    - [x] Write Tests: Verify labels on `DeviceResource` reflect Indonesian translations.
+    - [x] Implement: Update all Filament resources to use `translateLabel()` or explicit localized labels.
 - [ ] **Task: Localize Validation and Notifications**
     - [ ] Write Tests: Trigger a validation error and verify the message is in Indonesian.
     - [ ] Implement: Ensure `lang/id/validation.php` is complete and notifications use localized strings.

@@ -35,8 +35,8 @@ class CustomerForm
                 Select::make('type')
                     ->label(__('customers.form.type.label'))
                     ->options([
-                        'Pemerintah' => 'Pemerintah',
-                        'Swasta' => 'Swasta',
+                        'Pemerintah' => __('customers.form.type.options.Pemerintah'),
+                        'Swasta' => __('customers.form.type.options.Swasta'),
                     ])
                     ->columnSpanFull(),
                 Textarea::make('address')
