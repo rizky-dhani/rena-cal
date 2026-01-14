@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Validator;
 
 beforeEach(function () {
     App::setLocale('id');
@@ -60,4 +61,13 @@ it('translates pagination labels', function () {
 it('translates validation messages', function () {
     expect(__('validation.required', ['attribute' => 'nama']))->not->toBe('validation.required');
     expect(__('validation.required', ['attribute' => 'nama']))->toBe('nama wajib diisi.');
+});
+
+it('shows validation errors in Indonesian', function () {
+    $validator = Validator::make([], [
+        'name' => 'required',
+    ]);
+
+    expect($validator->fails())->toBeTrue();
+    expect($validator->errors()->first('name'))->toBe('name wajib diisi.');
 });

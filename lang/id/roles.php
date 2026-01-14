@@ -22,6 +22,13 @@ return [
         'edit_success' => ':label berhasil diperbarui',
         'delete_success' => ':label berhasil dihapus',
         'delete_multiple_success' => ':label terpilih berhasil dihapus',
+        'assign_permissions' => 'Tetapkan Izin',
+        'assign_permissions_success' => 'Izin terpilih berhasil ditetapkan',
+        'add_new_permission' => 'Tambah Izin Baru',
+    ],
+
+    'sections' => [
+        'role_details' => 'Detail Peran',
     ],
 
     'form' => [

@@ -25,7 +25,7 @@ class DeviceDetail extends Component
         }
     }
 
-    #[Title('Device Detail')]
+    #[Title('Detail Perangkat')]
     #[Layout('components.layouts.public')]
     public function render()
     {

@@ -25,10 +25,12 @@ class ViewRole extends ViewRecord
         return [
             EditAction::make()
                 ->color('info')
-                ->successNotificationTitle('Role updated successfully'),
+                ->successNotificationTitle(__('roles.actions.edit_success', ['label' => __('roles.label')])),
             Action::make('assign_permissions')
+                ->label(__('roles.actions.assign_permissions'))
                 ->form([
                     Select::make('permissions')
+                        ->label(__('roles.form.permissions.label'))
                         ->options(function () {
                             $roleId = $this->getRecord()->id;
                             // Get all permissions that are NOT already assigned to this role
@@ -42,11 +44,13 @@ class ViewRole extends ViewRecord
                         ->createOptionUsing(function (array $data) {
                             return Permission::create($data)->id;
                         })
-                        ->createOptionModalHeading('Add New Permission')
+                        ->createOptionModalHeading(__('roles.actions.add_new_permission'))
                         ->createOptionForm([
                             TextInput::make('name')
+                                ->label(__('permissions.form.name.label'))
                                 ->required(),
                             Select::make('guard_name')
+                                ->label(__('permissions.form.guard_name.label'))
                                 ->options([
                                     'web' => 'web'
                                 ])
@@ -62,7 +66,7 @@ class ViewRole extends ViewRecord
                 })
                 ->color('warning')
                 ->icon(Heroicon::ArrowsRightLeft)
-                ->successNotificationTitle('Selected Permission(s) assigned successfully')
+                ->successNotificationTitle(__('roles.actions.assign_permissions_success'))
         ];
     }
 
@@ -70,11 +74,13 @@ class ViewRole extends ViewRecord
     {
         return $schema
             ->components([
-                Section::make('Role Details')
+                Section::make(__('roles.sections.role_details'))
                     ->columns(2)
                     ->schema([
-                        TextEntry::make('name'),
+                        TextEntry::make('name')
+                            ->label(__('roles.columns.name')),
                         TextEntry::make('guard_name')
+                            ->label(__('roles.columns.guard_name'))
                     ])
                     ->columnSpanFull(),
             ]);

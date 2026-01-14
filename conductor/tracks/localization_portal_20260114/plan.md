@@ -9,9 +9,9 @@ This phase focuses on ensuring the backend and administrative interface are full
 - [x] **Task: Localize Filament Resources** [4266c8e]
     - [x] Write Tests: Verify labels on `DeviceResource` reflect Indonesian translations.
     - [x] Implement: Update all Filament resources to use `translateLabel()` or explicit localized labels.
-- [ ] **Task: Localize Validation and Notifications**
-    - [ ] Write Tests: Trigger a validation error and verify the message is in Indonesian.
-    - [ ] Implement: Ensure `lang/id/validation.php` is complete and notifications use localized strings.
+- [x] **Task: Localize Validation and Notifications** [bd2f8a1]
+    - [x] Write Tests: Trigger a validation error and verify the message is in Indonesian.
+    - [x] Implement: Ensure `lang/id/validation.php` is complete and notifications use localized strings.
 - [ ] **Task: Conductor - User Manual Verification 'Core Localization' (Protocol in workflow.md)**
 
 ## Phase 2: Secure Customer Portal Implementation
