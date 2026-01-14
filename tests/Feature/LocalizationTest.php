@@ -61,6 +61,14 @@ it('translates validation messages', function () {
     expect(__('validation.required', ['attribute' => 'nama']))->toBe('nama wajib diisi.');
 });
 
+it('translates calibration renewal notifications', function () {
+    expect(__('notifications.calibration_renewal.subject'))->not->toBe('notifications.calibration_renewal.subject');
+    expect(__('notifications.calibration_renewal.title'))->not->toBe('notifications.calibration_renewal.title');
+    expect(__('notifications.calibration_renewal.device_name'))->not->toBe('notifications.calibration_renewal.device_name');
+    expect(__('notifications.calibration_renewal.serial_number'))->not->toBe('notifications.calibration_renewal.serial_number');
+    expect(__('notifications.calibration_renewal.next_calibration_date'))->not->toBe('notifications.calibration_renewal.next_calibration_date');
+});
+
 it('shows validation errors in Indonesian', function () {
     $validator = Validator::make([], [
         'name' => 'required',
