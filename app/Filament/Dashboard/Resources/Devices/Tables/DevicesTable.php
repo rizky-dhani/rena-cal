@@ -86,18 +86,7 @@ class DevicesTable
                 TextColumn::make('result')
                     ->label(__('devices.columns.result'))
                     ->searchable()
-                    ->formatStateUsing(fn(string $state) => __('devices.form.result.options.'.strtolower(str_replace(' ', '_', $state))))
                     ->getStateUsing(fn ($record) => $record->result ?? 'N/A'),
-                TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match (strtolower($state)) {
-                        'available' => 'success',
-                        'unavailable' => 'danger',
-                        default => 'gray',
-                    })
-                    ->formatStateUsing(fn(string $state) => __('devices.form.status.options.'.strtolower($state)))
-                    ->label(__('devices.columns.status'))
-                    ->getStateUsing(fn ($record) => $record->status ?? 'N/A'),
                 TextColumn::make('admin_id')
                     ->label(__('devices.columns.admin_id'))
                     ->numeric()
