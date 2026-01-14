@@ -9,7 +9,7 @@ This phase focuses on creating the core notification class and ensuring all cont
 - [x] **Task: Localize Notification Content** [81de7d0]
     - [x] Write Tests: Ensure Indonesian translation keys for the notification and table headers exist.
     - [x] Implement: Create/update `lang/id/notifications.php` with the subject, body, action labels, and table column headers.
-- [x] **Task: Verify Email Rendering** [faa6f88]
+- [x] **Task: Verify Email Rendering** [b45ab2a]
     - [x] Write Tests: Assert that the mail message body contains an HTML table with the device name, serial number, and localized date for each device.
     - [x] Implement: Update the `toMail` method in the notification class to render a table using a custom Blade markdown view.
 - [ ] **Task: Conductor - User Manual Verification 'Notification Foundation' (Protocol in workflow.md)**
