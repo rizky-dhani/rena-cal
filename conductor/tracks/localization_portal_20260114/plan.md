@@ -3,7 +3,7 @@
 ## Phase 1: Core Localization (Bahasa Indonesia)
 This phase focuses on ensuring the backend and administrative interface are fully localized.
 
-- [x] **Task: Verify and Sync Language Files**
+- [x] **Task: Verify and Sync Language Files** [faa6f88]
     - [x] Write Tests: Ensure translation keys exist for core entities (Device, Brand, Location).
     - [x] Implement: Complete the `lang/id/*.php` files with missing translations.
 - [ ] **Task: Localize Filament Resources**
