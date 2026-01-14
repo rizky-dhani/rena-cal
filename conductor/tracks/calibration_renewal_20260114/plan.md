@@ -6,7 +6,7 @@ This phase focuses on creating the core notification class and ensuring all cont
 - [x] **Task: Create CalibrationRenewalNotification Class** [326f962]
     - [x] Write Tests: Verify the notification can be instantiated with a collection of devices and contains the correct data structure.
     - [x] Implement: Create `App\Notifications\CalibrationRenewalNotification` extending Laravel's `Notification`, accepting a collection of devices.
-- [x] **Task: Localize Notification Content** [bd2f8a1]
+- [x] **Task: Localize Notification Content** [81de7d0]
     - [x] Write Tests: Ensure Indonesian translation keys for the notification and table headers exist.
     - [x] Implement: Create/update `lang/id/notifications.php` with the subject, body, action labels, and table column headers.
 - [ ] **Task: Verify Email Rendering**
