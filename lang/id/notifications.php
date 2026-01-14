@@ -10,5 +10,7 @@ return [
         'serial_number' => 'Nomor Seri',
         'next_calibration_date' => 'Tanggal Kalibrasi Selanjutnya',
         'action' => 'Lihat Dashboard',
+        'send_renewal_manual' => 'Kirim Notifikasi Perpanjangan',
+        'send_renewal_manual_success' => 'Proses pengiriman notifikasi perpanjangan berhasil dijalankan',
     ],
 ];
