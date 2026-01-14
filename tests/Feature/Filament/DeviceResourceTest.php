@@ -127,9 +127,252 @@ it('can trigger the manual renewal action from bulk actions', function () {
         'next_calibration_date' => now()->addDays(100)->format('Y-m-d'),
     ]);
 
-    Livewire::actingAs($user)
-        ->test(ListDevices::class)
-        ->callTableBulkAction('send_renewal_bulk', [$device]);
+        Livewire::actingAs($user)
 
-    Notification::assertSentTo($hospitalAdmin, CalibrationRenewalNotification::class);
-});
+            ->test(ListDevices::class)
+
+            ->callTableBulkAction('send_renewal_bulk', [$device]);
+
+    
+
+        Notification::assertSentTo($hospitalAdmin, CalibrationRenewalNotification::class);
+
+    });
+
+    
+
+    it('can see the renewal action on view page if authorized and date is valid', function (string $roleName) {
+
+    
+
+        $user = User::factory()->create();
+
+    
+
+        $user->assignRole($roleName);
+
+    
+
+    
+
+    
+
+        $device = Device::create([
+
+    
+
+            'device_number' => 'VIEW-TEST-001',
+
+    
+
+            'next_calibration_date' => now()->addDays(10)->format('Y-m-d'),
+
+    
+
+        ]);
+
+    
+
+    
+
+    
+
+        Livewire::actingAs($user)
+
+    
+
+            ->test(\App\Filament\Dashboard\Resources\Devices\Pages\ViewDevice::class, ['record' => $device->deviceId])
+
+    
+
+            ->assertActionVisible('send_renewal_view');
+
+    
+
+    })->with(['Super Admin', 'Admin']);
+
+    
+
+    
+
+    
+
+    it('cannot see the renewal action on view page if device is overdue', function () {
+
+    
+
+        $user = User::factory()->create();
+
+    
+
+        $user->assignRole('Super Admin');
+
+    
+
+    
+
+    
+
+        $device = Device::create([
+
+    
+
+            'device_number' => 'VIEW-TEST-002',
+
+    
+
+            'next_calibration_date' => now()->subDay()->format('Y-m-d'),
+
+    
+
+        ]);
+
+    
+
+    
+
+    
+
+        Livewire::actingAs($user)
+
+    
+
+            ->test(\App\Filament\Dashboard\Resources\Devices\Pages\ViewDevice::class, ['record' => $device->deviceId])
+
+    
+
+            ->assertActionHidden('send_renewal_view');
+
+    
+
+    });
+
+    
+
+    
+
+    
+
+    it('can trigger the renewal action on view page', function () {
+
+    
+
+        Notification::fake();
+
+    
+
+    
+
+    
+
+        $user = User::factory()->create();
+
+    
+
+        $user->assignRole('Super Admin');
+
+    
+
+    
+
+    
+
+        $category = CustomerCategory::firstOrCreate(['name' => 'RS', 'slug' => 'rs']);
+
+    
+
+        $province = Province::firstOrCreate(['code' => 31, 'name' => 'Jakarta']);
+
+    
+
+        $customer = Customer::create([
+
+    
+
+            'name' => 'Test Hospital',
+
+    
+
+            'type' => 'Swasta',
+
+    
+
+            'province_id' => $province->code,
+
+    
+
+            'categories_id' => $category->id,
+
+    
+
+        ]);
+
+    
+
+    
+
+    
+
+        $hospitalAdmin = User::factory()->create(['customer_id' => $customer->id]);
+
+    
+
+        $hospitalAdmin->assignRole('Hospital Admin');
+
+    
+
+    
+
+    
+
+        $device = Device::create([
+
+    
+
+            'customer_id' => $customer->id,
+
+    
+
+            'device_number' => 'VIEW-TEST-003',
+
+    
+
+            'next_calibration_date' => now()->addDays(10)->format('Y-m-d'),
+
+    
+
+        ]);
+
+    
+
+    
+
+    
+
+        Livewire::actingAs($user)
+
+    
+
+            ->test(\App\Filament\Dashboard\Resources\Devices\Pages\ViewDevice::class, ['record' => $device->deviceId])
+
+    
+
+            ->callAction('send_renewal_view');
+
+    
+
+    
+
+    
+
+        Notification::assertSentTo($hospitalAdmin, CalibrationRenewalNotification::class);
+
+    
+
+    });
+
+    
+
+    
+
+    
