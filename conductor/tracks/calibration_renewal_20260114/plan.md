@@ -28,7 +28,7 @@ This phase implements the daily check to find devices requiring renewal.
 ## Phase 3: Manual Trigger (Filament Integration)
 This phase adds the manual "Send Renewal Notification" button to the dashboard.
 
-- [x] **Task: Add Manual Action to Devices Table** [faa6f88]
+- [x] **Task: Add Manual Action to Devices Table** [929e4bd]
     - [x] Write Tests: Verify the action is visible and calls the notification logic when triggered.
     - [x] Implement: Add a custom `Action` to `app/Filament/Dashboard/Resources/Devices/Pages/ListDevices.php` (Header Action).
 - [ ] **Task: Add Manual Action to View Device Page**
