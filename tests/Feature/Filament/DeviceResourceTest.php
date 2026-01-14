@@ -22,25 +22,55 @@ beforeEach(function () {
     Role::firstOrCreate(['name' => 'Technician']);
 });
 
-it('can see the manual renewal action if authorized', function (string $roleName) {
+it('can see the toolbar renewal action if authorized and filter active', function (string $roleName, string $filterName) {
     $user = User::factory()->create();
     $user->assignRole($roleName);
 
     Livewire::actingAs($user)
         ->test(ListDevices::class)
-        ->assertActionVisible('send_renewal_manual');
+        ->filterTable($filterName, true)
+        ->assertTableActionVisible('send_renewal_toolbar');
+})->with(['Super Admin', 'Admin'])->with(['more_than_60_days', 'within_60_days']);
+
+it('cannot see the toolbar renewal action if authorized but no filter active', function (string $roleName) {
+    $user = User::factory()->create();
+    $user->assignRole($roleName);
+
+    Livewire::actingAs($user)
+        ->test(ListDevices::class)
+        ->assertTableActionHidden('send_renewal_toolbar');
 })->with(['Super Admin', 'Admin']);
 
-it('cannot see the manual renewal action if not authorized', function (string $roleName) {
+it('can see the bulk renewal action if authorized and no filter active', function (string $roleName) {
     $user = User::factory()->create();
     $user->assignRole($roleName);
 
     Livewire::actingAs($user)
         ->test(ListDevices::class)
-        ->assertActionHidden('send_renewal_manual');
+        ->assertTableBulkActionVisible('send_renewal_bulk');
+})->with(['Super Admin', 'Admin']);
+
+it('cannot see the bulk renewal action if authorized but filter active', function (string $roleName, string $filterName) {
+    $user = User::factory()->create();
+    $user->assignRole($roleName);
+
+    Livewire::actingAs($user)
+        ->test(ListDevices::class)
+        ->filterTable($filterName, true)
+        ->assertTableBulkActionHidden('send_renewal_bulk');
+})->with(['Super Admin', 'Admin'])->with(['more_than_60_days', 'within_60_days']);
+
+it('cannot see the toolbar renewal action if not authorized', function (string $roleName) {
+    $user = User::factory()->create();
+    $user->assignRole($roleName);
+
+    Livewire::actingAs($user)
+        ->test(ListDevices::class)
+        ->filterTable('within_60_days', true)
+        ->assertTableActionHidden('send_renewal_toolbar');
 })->with(['Hospital Admin', 'Technician']);
 
-it('can trigger the manual renewal action', function () {
+it('can trigger the manual renewal action from toolbar', function () {
     Notification::fake();
 
     $user = User::factory()->create();
@@ -67,7 +97,39 @@ it('can trigger the manual renewal action', function () {
 
     Livewire::actingAs($user)
         ->test(ListDevices::class)
-        ->callAction('send_renewal_manual');
+        ->filterTable('within_60_days', true)
+        ->callTableAction('send_renewal_toolbar');
+
+    Notification::assertSentTo($hospitalAdmin, CalibrationRenewalNotification::class);
+});
+
+it('can trigger the manual renewal action from bulk actions', function () {
+    Notification::fake();
+
+    $user = User::factory()->create();
+    $user->assignRole('Super Admin');
+
+    $category = CustomerCategory::firstOrCreate(['name' => 'RS', 'slug' => 'rs']);
+    $province = Province::firstOrCreate(['code' => 31, 'name' => 'Jakarta']);
+    $customer = Customer::create([
+        'name' => 'Test Hospital',
+        'type' => 'Swasta',
+        'province_id' => $province->code,
+        'categories_id' => $category->id,
+    ]);
+
+    $hospitalAdmin = User::factory()->create(['customer_id' => $customer->id]);
+    $hospitalAdmin->assignRole('Hospital Admin');
+
+    $device = Device::create([
+        'customer_id' => $customer->id,
+        'device_number' => 'DEV-BULK-001',
+        'next_calibration_date' => now()->addDays(100)->format('Y-m-d'),
+    ]);
+
+    Livewire::actingAs($user)
+        ->test(ListDevices::class)
+        ->callTableBulkAction('send_renewal_bulk', [$device]);
 
     Notification::assertSentTo($hospitalAdmin, CalibrationRenewalNotification::class);
 });

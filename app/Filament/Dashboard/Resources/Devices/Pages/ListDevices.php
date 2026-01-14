@@ -15,19 +15,6 @@ class ListDevices extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('send_renewal_manual')
-                ->label(__('notifications.calibration_renewal.send_renewal_manual'))
-                ->icon('heroicon-o-envelope')
-                ->color('warning')
-                ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin']))
-                ->action(function () {
-                    \Illuminate\Support\Facades\Artisan::call('app:send-calibration-renewals');
-                    
-                    \Filament\Notifications\Notification::make()
-                        ->title(__('notifications.calibration_renewal.send_renewal_manual_success'))
-                        ->success()
-                        ->send();
-                }),
             Action::make('generate_empty_qr')
                 ->label(__('devices.actions.generate_empty_qr'))
                 ->icon('heroicon-o-qr-code')

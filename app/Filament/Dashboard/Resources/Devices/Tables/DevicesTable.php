@@ -206,8 +206,59 @@ class DevicesTable
                         $record->delete();
                     }),
             ])
+            ->headerActions([
+                Action::make('send_renewal_toolbar')
+                    ->label(__('notifications.calibration_renewal.send_renewal_manual'))
+                    ->icon('heroicon-o-envelope')
+                    ->color('warning')
+                    ->visible(fn ($livewire) => 
+                        auth()->user()->hasAnyRole(['Super Admin', 'Admin']) &&
+                        (
+                            ($livewire->tableFilters['more_than_60_days']['isActive'] ?? false) || 
+                            ($livewire->tableFilters['within_60_days']['isActive'] ?? false)
+                        )
+                    )
+                    ->action(function () {
+                        \Illuminate\Support\Facades\Artisan::call('app:send-calibration-renewals');
+                        
+                        \Filament\Notifications\Notification::make()
+                            ->title(__('notifications.calibration_renewal.send_renewal_manual_success'))
+                            ->success()
+                            ->send();
+                    }),
+            ])
             ->bulkActions([
                 BulkActionGroup::make([
+                    BulkAction::make('send_renewal_bulk')
+                        ->label(__('notifications.calibration_renewal.send_renewal_manual'))
+                        ->icon('heroicon-o-envelope')
+                        ->color('warning')
+                        ->visible(fn ($livewire) => 
+                            auth()->user()->hasAnyRole(['Super Admin', 'Admin']) &&
+                            !($livewire->tableFilters['more_than_60_days']['isActive'] ?? false) && 
+                            !($livewire->tableFilters['within_60_days']['isActive'] ?? false)
+                        )
+                        ->action(function (\Illuminate\Support\Collection $records) {
+                            $groupedDevices = $records->groupBy('customer_id');
+
+                            foreach ($groupedDevices as $customerId => $customerDevices) {
+                                if (!$customerId) continue;
+
+                                $admins = \App\Models\User::role('Hospital Admin')
+                                    ->where('customer_id', $customerId)
+                                    ->get();
+
+                                if ($admins->isNotEmpty()) {
+                                    \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\CalibrationRenewalNotification($customerDevices));
+                                }
+                            }
+
+                            \Filament\Notifications\Notification::make()
+                                ->title(__('notifications.calibration_renewal.send_renewal_manual_success'))
+                                ->success()
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion(),
                     BulkAction::make('bulk_print_qr')
                         ->label(__('devices.actions.print'))
                         ->icon('heroicon-o-document-arrow-down')->icon('heroicon-o-document-arrow-down')

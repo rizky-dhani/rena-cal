@@ -30,7 +30,7 @@ This phase adds the manual "Send Renewal Notification" button to the dashboard.
 
 - [x] **Task: Add Manual Action to Devices Table** [929e4bd]
     - [x] Write Tests: Verify the action is visible and calls the notification logic when triggered.
-    - [x] Implement: Add a custom `Action` to `app/Filament/Dashboard/Resources/Devices/Pages/ListDevices.php` (Header Action).
+    - [x] Implement: Add custom `Action` (Toolbar) and `BulkAction` to `app/Filament/Dashboard/Resources/Devices/Tables/DevicesTable.php`.
 - [ ] **Task: Add Manual Action to View Device Page**
     - [ ] Write Tests: Verify the action is present on the `ViewDevice` header.
     - [ ] Implement: Update `app/Filament/Dashboard/Resources/Devices/Pages/ViewDevice.php` header actions.
