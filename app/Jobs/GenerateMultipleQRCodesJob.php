@@ -71,7 +71,6 @@ class GenerateMultipleQRCodesJob implements ShouldQueue
                     'deviceId' => $device['deviceId'],
                     'device_number' => $deviceNumber,
                     'barcode' => $path,
-                    'result' => 'Fit For Use', // Default result based on the example
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
