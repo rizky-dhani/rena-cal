@@ -1,6 +1,6 @@
 # Plan: Bahasa Indonesia Localization & Secure Customer Portal
 
-## Phase 1: Core Localization (Bahasa Indonesia)
+## Phase 1: Core Localization (Bahasa Indonesia) [checkpoint: 831751b]
 This phase focuses on ensuring the backend and administrative interface are fully localized.
 
 - [x] **Task: Verify and Sync Language Files** [faa6f88]
@@ -12,7 +12,7 @@ This phase focuses on ensuring the backend and administrative interface are full
 - [x] **Task: Localize Validation and Notifications** [26fc18d]
     - [x] Write Tests: Trigger a validation error and verify the message is in Indonesian.
     - [x] Implement: Ensure `lang/id/validation.php` is complete and notifications use localized strings.
-- [ ] **Task: Conductor - User Manual Verification 'Core Localization' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Core Localization' (Protocol in workflow.md)**
 
 ## Phase 2: Secure Customer Portal Implementation
 This phase implements the customer-facing dashboard with data scoping.
