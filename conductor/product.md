@@ -16,6 +16,7 @@ Rena Calibration is a specialized web application for managing device tracking a
 - **Public Status Pages:** Scan-to-view landing pages that provide immediate device information and status without requiring a full login (while maintaining data privacy).
 - **Customer Dashboards:** Secure portals where customers can view filtered lists of their specific assets and service history.
 - **Batch QR Generation:** High-efficiency tools in the admin panel to generate and print QR codes for multiple devices simultaneously.
+- **Automated Renewal Alerts:** Proactive email notifications sent to Hospital Admins 60 days before a device's next calibration date, ensuring continuous compliance.
 
 ## Operational Constraints
 - **Privacy by Default:** Public-facing data must be carefully managed to ensure sensitive information is not exposed via QR scans.
