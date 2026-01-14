@@ -106,14 +106,6 @@ class DeviceForm
                         'Fit For Use' => __('devices.form.result.options.fit_for_use'),
                         'Not Fit For Use' => __('devices.form.result.options.not_fit_for_use'),
                     ]),
-                Select::make('status')
-                    ->label(__('devices.form.status.label'))
-                    ->options([
-                        'Available' => __('devices.form.status.options.available'),
-                        'Unavailable' => __('devices.form.status.options.unavailable'),
-                    ])
-                    ->default('Available')
-                    ->required(),
                 FileUpload::make('cert_number')
                     ->label(__('devices.form.cert_number.label'))
                     ->disk('public')
