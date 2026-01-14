@@ -14,7 +14,7 @@ This phase focuses on creating the core notification class and ensuring all cont
     - [x] Implement: Update the `toMail` method in the notification class to render a table using a custom Blade markdown view.
 - [x] **Task: Conductor - User Manual Verification 'Notification Foundation' (Protocol in workflow.md)**
 
-## Phase 2: Automated Trigger (Scheduled Task)
+## Phase 2: Automated Trigger (Scheduled Task) [checkpoint: a69d5ab]
 This phase implements the daily check to find devices requiring renewal.
 
 - [x] **Task: Create Renewal Check Command** [d1a31a9]
@@ -23,12 +23,12 @@ This phase implements the daily check to find devices requiring renewal.
 - [x] **Task: Register Daily Schedule** [410f8bd]
     - [x] Write Tests: Verify the command is registered in the console schedule.
     - [x] Implement: Add the command to `routes/console.php` to run daily.
-- [ ] **Task: Conductor - User Manual Verification 'Automated Trigger' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Automated Trigger' (Protocol in workflow.md)**
 
 ## Phase 3: Manual Trigger (Filament Integration)
 This phase adds the manual "Send Renewal Notification" button to the dashboard.
 
-- [ ] **Task: Add Manual Action to Devices Table**
+- [~] **Task: Add Manual Action to Devices Table**
     - [ ] Write Tests: Verify the action is visible and calls the notification logic when triggered.
     - [ ] Implement: Add a custom `Action` to `app/Filament/Dashboard/Resources/Devices/Tables/DevicesTable.php`.
 - [ ] **Task: Add Manual Action to View Device Page**
