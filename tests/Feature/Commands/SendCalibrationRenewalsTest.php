@@ -123,3 +123,14 @@ it('does not send notification if no devices are due in 60 days', function () {
 
     Notification::assertNothingSent();
 });
+
+it('is registered in the console schedule', function () {
+    $schedule = app(\Illuminate\Console\Scheduling\Schedule::class);
+
+    $event = collect($schedule->events())->first(function ($event) {
+        return str_contains($event->command, 'app:send-calibration-renewals');
+    });
+
+    expect($event)->not->toBeNull()
+        ->and($event->expression)->toBe('0 0 * * *'); // daily()
+});
