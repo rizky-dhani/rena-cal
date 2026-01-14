@@ -10,6 +10,7 @@ use Flowframe\Trend\TrendValue;
 
 class CustomerByCategoryChartWidget extends BarChartWidget
 {
+    protected static ?int $sort = 4;
     public ?string $filter = 'all';
     protected int|string|array $columnSpan = 2;
     protected ?string $maxHeight = '300px';

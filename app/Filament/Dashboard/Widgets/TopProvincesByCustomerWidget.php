@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class TopProvincesByCustomerWidget extends BaseWidget
 {
+    protected static ?int $sort = 6;
     protected static ?string $heading = 'Top 10 Provinces by Customer Count';
     protected static ?string $pollingInterval = null;
     protected int|string|array $columnSpan = 2;

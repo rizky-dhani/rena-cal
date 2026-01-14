@@ -10,6 +10,7 @@ use Flowframe\Trend\TrendValue;
 
 class CustomerByTypeChartWidget extends DoughnutChartWidget
 {
+    protected static ?int $sort = 5;
     protected static string $chartType = 'doughnut';
     protected int|string|array $columnSpan = 2;
     protected ?string $maxHeight = '300px';
