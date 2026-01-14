@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [ ] Track: Bahasa Indonesia Localization & Secure Customer Portal
+## [~] Track: Bahasa Indonesia Localization & Secure Customer Portal
 *Link: [./conductor/tracks/localization_portal_20260114/](./conductor/tracks/localization_portal_20260114/)*
