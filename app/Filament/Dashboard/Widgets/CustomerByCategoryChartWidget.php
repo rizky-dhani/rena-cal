@@ -33,12 +33,7 @@ class CustomerByCategoryChartWidget extends BarChartWidget
     {
         $user = auth()->user();
 
-        if (!$user) {
-            return false;
-        }
-
-        // Return true only if user does NOT have Admin or Super Admin role
-        return !$user->hasRole(['Super Admin', 'Admin']);
+        return $user && $user->hasRole(['Super Admin', 'Head', 'Admin']);
     }
 
     protected function getData(): array
