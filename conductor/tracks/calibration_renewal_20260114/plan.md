@@ -20,7 +20,7 @@ This phase implements the daily check to find devices requiring renewal.
 - [x] **Task: Create Renewal Check Command** [d1a31a9]
     - [x] Write Tests: Create test cases where multiple devices from the same customer are 60 days from renewal and verify one email is sent with all devices.
     - [x] Implement: Create a console command `app:send-calibration-renewals` to find devices, group them by `customer_id`, and notify Hospital Admins.
-- [x] **Task: Register Daily Schedule** [faa6f88]
+- [x] **Task: Register Daily Schedule** [410f8bd]
     - [x] Write Tests: Verify the command is registered in the console schedule.
     - [x] Implement: Add the command to `routes/console.php` to run daily.
 - [ ] **Task: Conductor - User Manual Verification 'Automated Trigger' (Protocol in workflow.md)**
