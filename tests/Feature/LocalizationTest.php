@@ -14,7 +14,6 @@ it('has core translation files', function () {
         'customers',
         'devicenames',
         'devices',
-        'locations',
         'navigation',
         'passwords',
         'permissions',
@@ -34,7 +33,6 @@ it('has core translation files', function () {
 it('translates core entity labels', function () {
     expect(__('devices.label'))->not->toBe('devices.label');
     expect(__('brands.label'))->not->toBe('brands.label');
-    expect(__('locations.label'))->not->toBe('locations.label');
 });
 
 it('translates navigation group labels', function () {

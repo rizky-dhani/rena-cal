@@ -3,7 +3,6 @@
 use App\Models\Brand;
 use App\Models\Customer;
 use App\Models\DeviceName;
-use App\Models\Location;
 use App\Models\Type;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;

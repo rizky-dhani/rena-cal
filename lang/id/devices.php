@@ -10,7 +10,7 @@ return [
         'device_name_id' => 'Nama Perangkat',
         'device_number' => 'Nomor Perangkat',
         'serial_number' => 'Nomor Seri',
-        'location_id' => 'Lokasi',
+        'room_name' => 'Nama Ruangan',
         'type_id' => 'Tipe',
         'brand_id' => 'Merek',
         'customer_id' => 'Pelanggan',
@@ -29,7 +29,6 @@ return [
         'cert_number' => 'Nomor Sertifikat',
         'result' => 'Hasil',
         'procurement_year' => 'Tahun Pengadaan',
-        'location' => 'Lokasi',
     ],
 
     'actions' => [
@@ -74,10 +73,9 @@ return [
         'serial_number' => [
             'label' => 'Nomor Seri',
         ],
-        'location_id' => [
-            'label' => 'Lokasi',
-            'placeholder' => 'Pilih lokasi',
-            'modal_heading' => 'Buat Lokasi',
+        'room_name' => [
+            'label' => 'Nama Ruangan',
+            'placeholder' => 'Masukkan nama ruangan',
         ],
         'type_id' => [
             'label' => 'Tipe',

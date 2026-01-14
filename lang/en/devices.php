@@ -10,7 +10,7 @@ return [
         'device_name_id' => 'Device Name',
         'device_number' => 'Device Number',
         'serial_number' => 'Serial Number',
-        'location_id' => 'Location',
+        'room_name' => 'Room Name',
         'type_id' => 'Type',
         'brand_id' => 'Brand',
         'customer_id' => 'Customer',
@@ -29,7 +29,6 @@ return [
         'cert_number' => 'Certificate Number',
         'result' => 'Result',
         'procurement_year' => 'Procurement Year',
-        'location' => 'Location',
     ],
 
     'actions' => [
@@ -73,10 +72,9 @@ return [
         'serial_number' => [
             'label' => 'Serial Number',
         ],
-        'location_id' => [
-            'label' => 'Location',
-            'placeholder' => 'Select location',
-            'modal_heading' => 'Create Location',
+        'room_name' => [
+            'label' => 'Room Name',
+            'placeholder' => 'Enter room name',
         ],
         'type_id' => [
             'label' => 'Type',
