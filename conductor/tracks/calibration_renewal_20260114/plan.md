@@ -17,7 +17,7 @@ This phase focuses on creating the core notification class and ensuring all cont
 ## Phase 2: Automated Trigger (Scheduled Task)
 This phase implements the daily check to find devices requiring renewal.
 
-- [x] **Task: Create Renewal Check Command** [faa6f88]
+- [x] **Task: Create Renewal Check Command** [d1a31a9]
     - [x] Write Tests: Create test cases where multiple devices from the same customer are 60 days from renewal and verify one email is sent with all devices.
     - [x] Implement: Create a console command `app:send-calibration-renewals` to find devices, group them by `customer_id`, and notify Hospital Admins.
 - [ ] **Task: Register Daily Schedule**
