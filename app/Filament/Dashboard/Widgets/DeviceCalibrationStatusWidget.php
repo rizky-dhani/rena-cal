@@ -28,15 +28,15 @@ class DeviceCalibrationStatusWidget extends BaseWidget
         }
 
         // Devices with next_calibration_date more than 60 days from today (well in advance)
-        $moreThan60Days = (clone $query)->whereDate('next_calibration_date', '>', now()->addDays(60))->count();
+        $moreThan60Days = $query->whereDate('next_calibration_date', '>', now()->addDays(60))->count();
 
         // Devices with next_calibration_date within 60 days from today (approaching)
-        $within60Days = (clone $query)->whereDate('next_calibration_date', '<=', now()->addDays(60))
-                              ->whereDate('next_calibration_date', '>', now())
-                              ->count();
+        $within60Days = $query->whereDate('next_calibration_date', '<=', now()->addDays(60))
+            ->whereDate('next_calibration_date', '>', now())
+            ->count();
 
         // Devices with next_calibration_date overdue (past due)
-        $overdue = (clone $query)->whereDate('next_calibration_date', '<=', now())->count();
+        $overdue = $query->whereDate('next_calibration_date', '<=', now())->count();
 
         return [
             Stat::make(__('widgets.device_calibration_status.more_than_60_days'), Number::format($moreThan60Days))
