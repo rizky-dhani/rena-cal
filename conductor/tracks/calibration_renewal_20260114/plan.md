@@ -1,6 +1,6 @@
 # Plan: Calibration Renewal Notifications (Bahasa Indonesia)
 
-## Phase 1: Notification Foundation and Localization
+## Phase 1: Notification Foundation and Localization [checkpoint: dbcd3ef]
 This phase focuses on creating the core notification class and ensuring all content is properly localized.
 
 - [x] **Task: Create CalibrationRenewalNotification Class** [326f962]
@@ -12,12 +12,12 @@ This phase focuses on creating the core notification class and ensuring all cont
 - [x] **Task: Verify Email Rendering** [b45ab2a]
     - [x] Write Tests: Assert that the mail message body contains an HTML table with the device name, serial number, and localized date for each device.
     - [x] Implement: Update the `toMail` method in the notification class to render a table using a custom Blade markdown view.
-- [ ] **Task: Conductor - User Manual Verification 'Notification Foundation' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Notification Foundation' (Protocol in workflow.md)**
 
 ## Phase 2: Automated Trigger (Scheduled Task)
 This phase implements the daily check to find devices requiring renewal.
 
-- [ ] **Task: Create Renewal Check Command**
+- [~] **Task: Create Renewal Check Command**
     - [ ] Write Tests: Create test cases where multiple devices from the same customer are 60 days from renewal and verify one email is sent with all devices.
     - [ ] Implement: Create a console command `app:send-calibration-renewals` to find devices, group them by `customer_id`, and notify Hospital Admins.
 - [ ] **Task: Register Daily Schedule**
