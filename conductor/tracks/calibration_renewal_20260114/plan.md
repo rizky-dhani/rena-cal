@@ -3,7 +3,7 @@
 ## Phase 1: Notification Foundation and Localization
 This phase focuses on creating the core notification class and ensuring all content is properly localized.
 
-- [x] **Task: Create CalibrationRenewalNotification Class** [faa6f88]
+- [x] **Task: Create CalibrationRenewalNotification Class** [326f962]
     - [x] Write Tests: Verify the notification can be instantiated with a collection of devices and contains the correct data structure.
     - [x] Implement: Create `App\Notifications\CalibrationRenewalNotification` extending Laravel's `Notification`, accepting a collection of devices.
 - [ ] **Task: Localize Notification Content**
