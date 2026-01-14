@@ -29,8 +29,8 @@ class DeviceInfolist
                                     ->label(__('devices.form.brand_id.label')),
                                 TextEntry::make('type.name')
                                     ->label(__('devices.form.type_id.label')),
-                                TextEntry::make('location.name')
-                                    ->label(__('devices.form.location_id.label')),
+                                TextEntry::make('room_name')
+                                    ->label(__('devices.form.room_name.label')),
                                 TextEntry::make('customer.name')
                                     ->label(__('devices.form.customer_id.label')),
                                 TextEntry::make('pic.name')

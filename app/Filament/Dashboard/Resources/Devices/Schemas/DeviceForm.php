@@ -66,20 +66,11 @@ class DeviceForm
                                     ->label(__('devices.form.name.label'))
                                     ->required(),
                             ]),
-                        ])
-                        ->columnSpanFull(),
-                Select::make('location_id')
-                    ->label(__('devices.form.location_id.label'))
-                    ->relationship('location', 'name')
-                    ->preload()
-                    ->searchable()
-                    ->createOptionModalHeading(__('devices.form.location_id.modal_heading'))
-                    ->createOptionForm([
-                        TextInput::make('name')
-                            ->label(__('devices.form.name.label'))
-                            ->required()
-                            ->columnSpanFull(),
-                    ]),
+                    ])
+                    ->columnSpanFull(),
+                TextInput::make('room_name')
+                    ->label(__('devices.form.room_name.label'))
+                    ->placeholder(__('devices.form.room_name.placeholder')),
                 Select::make('customer_id')
                     ->label(__('devices.form.customer_id.label'))
                     ->relationship('customer', 'name')

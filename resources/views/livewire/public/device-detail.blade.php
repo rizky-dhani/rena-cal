@@ -71,9 +71,8 @@
                     </div>
 
                     <div>
-                        <h3 class="text-sm font-medium text-gray-500">{{ __('devices.form.location_id.label') }}</h3>
-                        <p class="mt-1 text-gray-900">{{ $device->location->name ?? 'N/A' }}</p>
-                    </div>
+                                                        <h3 class="text-sm font-medium text-gray-500">{{ __('devices.form.room_name.label') }}</h3>
+                                                        <p class="mt-1 text-gray-900">{{ $device->room_name ?? 'N/A' }}</p>                    </div>
 
                     <div>
                         <h3 class="text-sm font-medium text-gray-500">{{ __('devices.form.procurement_year.label') }}</h3>
