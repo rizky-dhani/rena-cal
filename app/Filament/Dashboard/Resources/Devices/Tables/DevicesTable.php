@@ -58,14 +58,6 @@ class DevicesTable
                     ->label(__('devices.columns.room_name'))
                     ->searchable()
                     ->getStateUsing(fn ($record) => $record->room_name ?? 'N/A'),
-                TextColumn::make('procurement_year')
-                    ->label(__('devices.columns.procurement_year'))
-                    ->getStateUsing(fn ($record) => $record->procurement_year ?: 'N/A'),
-                TextColumn::make('pic_id')
-                    ->label(__('devices.columns.pic_id'))
-                    ->numeric()
-                    ->sortable()
-                    ->getStateUsing(fn ($record) => $record->pic?->name ?? 'N/A'),
                 TextColumn::make('customer_id')
                     ->label(__('devices.columns.customer_id'))
                     ->numeric()
@@ -87,11 +79,6 @@ class DevicesTable
                     ->label(__('devices.columns.result'))
                     ->searchable()
                     ->getStateUsing(fn ($record) => $record->result ?? 'N/A'),
-                TextColumn::make('admin_id')
-                    ->label(__('devices.columns.admin_id'))
-                    ->numeric()
-                    ->sortable()
-                    ->getStateUsing(fn ($record) => $record->admin?->name ?? 'N/A'),
             ])
             ->filters([
                 \Filament\Tables\Filters\Filter::make('filled')

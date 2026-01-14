@@ -103,8 +103,8 @@ class DeviceForm
                 Select::make('result')
                     ->label(__('devices.form.result.label'))
                     ->options([
-                        'Fit For Use' => __('devices.form.result.options.fit_for_use'),
-                        'Not Fit For Use' => __('devices.form.result.options.not_fit_for_use'),
+                        'Laik Pakai' => 'Laik Pakai',
+                        'Tidak Laik Pakai' => 'Tidak Laik Pakai',
                     ]),
                 FileUpload::make('cert_number')
                     ->label(__('devices.form.cert_number.label'))

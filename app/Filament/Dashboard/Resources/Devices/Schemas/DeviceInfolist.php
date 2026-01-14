@@ -60,8 +60,8 @@ class DeviceInfolist
                                     ->label(__('devices.form.result.label'))
                                     ->badge()
                                     ->color(fn (string $state): string => match ($state) {
-                                        'Fit For Use' => 'success',
-                                        'Not Fit For Use' => 'danger',
+                                        'Laik Pakai' => 'success',
+                                        'Tidak Laik Pakai' => 'danger',
                                         default => 'gray',
                                     }),
                             ])
