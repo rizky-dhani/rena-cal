@@ -5,8 +5,12 @@ namespace App\Filament\Dashboard\Resources\Devices\Pages;
 use App\Filament\Dashboard\Resources\Devices\DeviceResource;
 use App\Jobs\GenerateMultipleQRCodesJob;
 use Filament\Actions\Action;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Str;
+use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 class ListDevices extends ListRecords
 {
@@ -15,6 +19,53 @@ class ListDevices extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            ExportAction::make()
+                ->label(__('devices.export.label'))
+                ->color('info')
+                ->exports([
+                    \App\Exports\DeviceExport::make()
+                        ->modifyQueryUsing(function ($query, $data = []) {
+                            if (($data['export_type'] ?? null) === 'range') {
+                                $dateField = $data['date_field'] ?? null;
+                                $startDate = $data['start_date'] ?? null;
+                                $endDate = $data['end_date'] ?? null;
+
+                                if ($dateField && $startDate && $endDate) {
+                                    return $query->whereBetween($dateField, [$startDate, $endDate]);
+                                }
+                            }
+
+                            return $query;
+                        }),
+                ])
+                ->form([
+                    Radio::make('export_type')
+                        ->label(__('devices.export.type.label'))
+                        ->options([
+                            'all' => __('devices.export.type.all'),
+                            'range' => __('devices.export.type.range'),
+                        ])
+                        ->default('all')
+                        ->reactive(),
+                    Select::make('date_field')
+                        ->label(__('devices.export.date_field.label'))
+                        ->options([
+                            'calibration_date' => __('devices.export.date_field.calibration_date'),
+                            'next_calibration_date' => __('devices.export.date_field.next_calibration_date'),
+                        ])
+                        ->default('calibration_date')
+                        ->visible(fn ($get) => $get('export_type') === 'range')
+                        ->required(fn ($get) => $get('export_type') === 'range'),
+                    DatePicker::make('start_date')
+                        ->label(__('devices.export.date_range').' (Start)')
+                        ->visible(fn ($get) => $get('export_type') === 'range')
+                        ->required(fn ($get) => $get('export_type') === 'range'),
+                    DatePicker::make('end_date')
+                        ->label(__('devices.export.date_range').' (End)')
+                        ->visible(fn ($get) => $get('export_type') === 'range')
+                        ->required(fn ($get) => $get('export_type') === 'range'),
+                ])
+                ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Hospital Admin'])),
             Action::make('generate_empty_qr')
                 ->label(__('devices.actions.generate_empty_qr'))
                 ->icon('heroicon-o-qr-code')

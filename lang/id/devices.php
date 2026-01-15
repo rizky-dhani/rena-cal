@@ -163,4 +163,20 @@ return [
             'label' => 'Terisi Sebagian',
         ],
     ],
+
+    'export' => [
+        'label' => 'Ekspor Excel',
+        'type' => [
+            'label' => 'Jenis Ekspor',
+            'all' => 'Semua Data',
+            'range' => 'Rentang Tanggal',
+        ],
+        'date_field' => [
+            'label' => 'Kolom Tanggal',
+            'calibration_date' => 'Tanggal Kalibrasi',
+            'next_calibration_date' => 'Tanggal Kalibrasi Selanjutnya',
+        ],
+        'date_range' => 'Rentang Tanggal',
+        'filename' => 'Data-Perangkat-',
+    ],
 ];

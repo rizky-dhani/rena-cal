@@ -3,17 +3,17 @@
 namespace App\Filament\Dashboard\Resources\Devices\Tables;
 
 use Carbon\Carbon;
-use Filament\Tables\Table;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use Illuminate\Support\Facades\Storage;
-use Torgodly\Html2Media\Actions\Html2MediaAction;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class DevicesTable
 {
@@ -115,7 +115,7 @@ class DevicesTable
                 \Filament\Tables\Filters\Filter::make('partially_filled')
                     ->label(__('devices.filters.partially_filled.label'))
                     ->query(function ($query) {
-                        return $query->where(function($q) {
+                        return $query->where(function ($q) {
                             $q->whereNotNull('device_name_id')
                                 ->orWhereNotNull('device_number')
                                 ->orWhereNotNull('brand_id')
@@ -129,20 +129,20 @@ class DevicesTable
                                 ->orWhereNotNull('next_calibration_date')
                                 ->orWhereNotNull('cert_number');
                         })
-                        ->where(function($q) {
-                            $q->whereNull('device_name_id')
-                                ->orWhereNull('device_number')
-                                ->orWhereNull('brand_id')
-                                ->orWhereNull('type_id')
-                                ->orWhereNull('serial_number')
-                                ->orWhereNull('room_name')
-                                ->orWhereNull('procurement_year')
-                                ->orWhereNull('pic_id')
-                                ->orWhereNull('customer_id')
-                                ->orWhereNull('calibration_date')
-                                ->orWhereNull('next_calibration_date')
-                                ->orWhereNull('cert_number');
-                        });
+                            ->where(function ($q) {
+                                $q->whereNull('device_name_id')
+                                    ->orWhereNull('device_number')
+                                    ->orWhereNull('brand_id')
+                                    ->orWhereNull('type_id')
+                                    ->orWhereNull('serial_number')
+                                    ->orWhereNull('room_name')
+                                    ->orWhereNull('procurement_year')
+                                    ->orWhereNull('pic_id')
+                                    ->orWhereNull('customer_id')
+                                    ->orWhereNull('calibration_date')
+                                    ->orWhereNull('next_calibration_date')
+                                    ->orWhereNull('cert_number');
+                            });
                     }),
                 \Filament\Tables\Filters\Filter::make('more_than_60_days')
                     ->label(__('widgets.device_calibration_status.more_than_60_days'))
@@ -153,7 +153,7 @@ class DevicesTable
                     ->label(__('widgets.device_calibration_status.within_60_days'))
                     ->query(function ($query) {
                         return $query->whereDate('next_calibration_date', '<=', now()->addDays(60))
-                                     ->whereDate('next_calibration_date', '>', now());
+                            ->whereDate('next_calibration_date', '>', now());
                     }),
                 \Filament\Tables\Filters\Filter::make('overdue')
                     ->label(__('widgets.device_calibration_status.overdue'))
@@ -193,7 +193,7 @@ class DevicesTable
                     ->successNotificationTitle(__('devices.actions.edit_success', ['label' => __('devices.label')])),
                 DeleteAction::make()
                     ->label(__('devices.actions.delete'))
-                    ->color( 'danger')
+                    ->color('danger')
                     ->requiresConfirmation()
                     ->successNotificationTitle(__('devices.actions.delete_success', ['label' => __('devices.label')]))
                     ->action(function ($record) {
@@ -211,16 +211,15 @@ class DevicesTable
                     ->label(__('notifications.calibration_renewal.send_renewal_manual'))
                     ->icon('heroicon-o-envelope')
                     ->color('warning')
-                    ->visible(fn ($livewire) => 
-                        auth()->user()->hasAnyRole(['Super Admin', 'Admin']) &&
+                    ->visible(fn ($livewire) => auth()->user()->hasAnyRole(['Super Admin', 'Admin']) &&
                         (
-                            ($livewire->tableFilters['more_than_60_days']['isActive'] ?? false) || 
+                            ($livewire->tableFilters['more_than_60_days']['isActive'] ?? false) ||
                             ($livewire->tableFilters['within_60_days']['isActive'] ?? false)
                         )
                     )
                     ->action(function () {
                         \Illuminate\Support\Facades\Artisan::call('app:send-calibration-renewals');
-                        
+
                         \Filament\Notifications\Notification::make()
                             ->title(__('notifications.calibration_renewal.send_renewal_manual_success'))
                             ->success()
@@ -229,20 +228,27 @@ class DevicesTable
             ])
             ->bulkActions([
                 BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->label(__('devices.export.label'))
+                        ->exports([
+                            \App\Exports\DeviceExport::make(),
+                        ])
+                        ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Hospital Admin'])),
                     BulkAction::make('send_renewal_bulk')
                         ->label(__('notifications.calibration_renewal.send_renewal_manual'))
                         ->icon('heroicon-o-envelope')
                         ->color('warning')
-                        ->visible(fn ($livewire) => 
-                            auth()->user()->hasAnyRole(['Super Admin', 'Admin']) &&
-                            !($livewire->tableFilters['more_than_60_days']['isActive'] ?? false) && 
-                            !($livewire->tableFilters['within_60_days']['isActive'] ?? false)
+                        ->visible(fn ($livewire) => auth()->user()->hasAnyRole(['Super Admin', 'Admin']) &&
+                            ! ($livewire->tableFilters['more_than_60_days']['isActive'] ?? false) &&
+                            ! ($livewire->tableFilters['within_60_days']['isActive'] ?? false)
                         )
                         ->action(function (\Illuminate\Support\Collection $records) {
                             $groupedDevices = $records->groupBy('customer_id');
 
                             foreach ($groupedDevices as $customerId => $customerDevices) {
-                                if (!$customerId) continue;
+                                if (! $customerId) {
+                                    continue;
+                                }
 
                                 $admins = \App\Models\User::role('Hospital Admin')
                                     ->where('customer_id', $customerId)

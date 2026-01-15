@@ -163,4 +163,20 @@ return [
             'label' => 'Partially Filled',
         ],
     ],
+
+    'export' => [
+        'label' => 'Export Excel',
+        'type' => [
+            'label' => 'Export Type',
+            'all' => 'All Records',
+            'range' => 'Date Range',
+        ],
+        'date_field' => [
+            'label' => 'Date Field',
+            'calibration_date' => 'Calibration Date',
+            'next_calibration_date' => 'Next Calibration Date',
+        ],
+        'date_range' => 'Date Range',
+        'filename' => 'Device-Data-',
+    ],
 ];
