@@ -110,6 +110,52 @@ class ListDevices extends ListRecords
                         ->title(__('devices.generate.generate_success'))
                         ->success();
                 }),
+            Action::make('import_devices')
+                ->label(__('devices.import.label'))
+                ->icon('heroicon-o-arrow-up-tray')
+                ->color('warning')
+                ->form([
+                    \Filament\Forms\Components\Placeholder::make('template_download')
+                        ->label(__('devices.import.template'))
+                        ->content(new \Illuminate\Support\HtmlString('<a href="'.asset('storage/device_template.xlsx').'" class="text-primary-600 underline font-medium" download>'.__('devices.import.template').'</a>')),
+                    \Filament\Forms\Components\FileUpload::make('file')
+                        ->label(__('devices.import.file'))
+                        ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
+                        ->disk('public')
+                        ->directory('imports')
+                        ->required(),
+                ])
+                ->action(function (array $data) {
+                    $filePath = \Illuminate\Support\Facades\Storage::disk('public')->path($data['file']);
+
+                    try {
+                        \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\DeviceImport, $filePath);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title(__('devices.import.success'))
+                            ->success()
+                            ->send();
+                    } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+                        $failures = $e->failures();
+                        $errorMessage = '';
+                        foreach ($failures as $failure) {
+                            $errorMessage .= "Row {$failure->row()}: ".implode(', ', $failure->errors()).'. ';
+                        }
+                        \Filament\Notifications\Notification::make()
+                            ->title(__('devices.import.fail'))
+                            ->body($errorMessage)
+                            ->danger()
+                            ->persistent()
+                            ->send();
+                    } catch (\Exception $e) {
+                        \Filament\Notifications\Notification::make()
+                            ->title(__('devices.import.error'))
+                            ->body($e->getMessage())
+                            ->danger()
+                            ->send();
+                    }
+                })
+                ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin'])),
         ];
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\Filament\Dashboard\Resources\Devices\Schemas;
 
-use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Schema;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\FileUpload;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Schema;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class DeviceForm
@@ -67,6 +67,13 @@ class DeviceForm
                             ]),
                     ])
                     ->columnSpanFull(),
+                TextInput::make('device_number')
+                    ->label(__('devices.form.device_number.label'))
+                    ->required()
+                    ->unique(ignoreRecord: true),
+                TextInput::make('order_number')
+                    ->label(__('devices.form.order_number.label'))
+                    ->default(null),
                 TextInput::make('room_name')
                     ->label(__('devices.form.room_name.label'))
                     ->placeholder(__('devices.form.room_name.placeholder')),
@@ -112,7 +119,7 @@ class DeviceForm
                     ->acceptedFileTypes(['application/pdf'])
                     ->storeFileNamesIn('original_filename')
                     ->getUploadedFileNameForStorageUsing(
-                        fn(TemporaryUploadedFile $file, $record): string => 'CERT-' . $record->device_number . '.' . $file->getClientOriginalExtension()
+                        fn (TemporaryUploadedFile $file, $record): string => 'CERT-'.$record->device_number.'.'.$file->getClientOriginalExtension()
                     )
                     ->columnSpanFull(),
             ]);

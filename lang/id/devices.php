@@ -9,6 +9,7 @@ return [
         'deviceId' => 'ID Perangkat',
         'device_name_id' => 'Nama Perangkat',
         'device_number' => 'Nomor Perangkat',
+        'order_number' => 'Nomor Pesanan',
         'serial_number' => 'Nomor Seri',
         'room_name' => 'Nama Ruangan',
         'type_id' => 'Tipe',
@@ -50,7 +51,7 @@ return [
         'qr_number_helper' => 'Masukkan jumlah QR kosong yang akan dibuat',
         'invalid_number' => 'Jumlah yang dimasukkan tidak valid',
         'invalid_number_body' => 'Masukkan jumlah yang valid',
-        'generate_success' => 'Kode QR berhasil dibuat'
+        'generate_success' => 'Kode QR berhasil dibuat',
     ],
 
     'detail' => [
@@ -69,6 +70,9 @@ return [
         ],
         'device_number' => [
             'label' => 'Nomor Perangkat',
+        ],
+        'order_number' => [
+            'label' => 'Nomor Pesanan',
         ],
         'serial_number' => [
             'label' => 'Nomor Seri',
@@ -148,10 +152,10 @@ return [
         ],
         'notes' => [
             'label' => 'Catatan',
-            'empty' => 'Tidak ada catatan tersedia'
+            'empty' => 'Tidak ada catatan tersedia',
         ],
     ],
-    
+
     'filters' => [
         'filled' => [
             'label' => 'Terisi',
@@ -178,5 +182,14 @@ return [
         ],
         'date_range' => 'Rentang Tanggal',
         'filename' => 'Data-Perangkat-',
+    ],
+
+    'import' => [
+        'label' => 'Impor Perangkat',
+        'file' => 'File Excel',
+        'success' => 'Perangkat berhasil diimpor',
+        'fail' => 'Impor gagal',
+        'error' => 'Terjadi kesalahan saat impor',
+        'template' => 'Unduh Templat',
     ],
 ];

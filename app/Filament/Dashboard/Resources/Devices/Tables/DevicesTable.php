@@ -40,6 +40,10 @@ class DevicesTable
                     ->label(__('devices.columns.device_number'))
                     ->searchable()
                     ->getStateUsing(fn ($record) => $record->device_number ?? 'N/A'),
+                TextColumn::make('order_number')
+                    ->label(__('devices.columns.order_number'))
+                    ->searchable()
+                    ->getStateUsing(fn ($record) => $record->order_number ?? 'N/A'),
                 TextColumn::make('brand_id')
                     ->label(__('devices.columns.brand_id'))
                     ->numeric()

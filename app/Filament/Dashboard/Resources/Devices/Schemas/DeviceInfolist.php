@@ -23,6 +23,8 @@ class DeviceInfolist
                                     ->label(__('devices.form.device_name_id.label')),
                                 TextEntry::make('device_number')
                                     ->label(__('devices.form.device_number.label')),
+                                TextEntry::make('order_number')
+                                    ->label(__('devices.form.order_number.label')),
                                 TextEntry::make('serial_number')
                                     ->label(__('devices.form.serial_number.label')),
                                 TextEntry::make('brand.name')

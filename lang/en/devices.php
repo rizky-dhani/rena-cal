@@ -9,6 +9,7 @@ return [
         'deviceId' => 'Device ID',
         'device_name_id' => 'Device Name',
         'device_number' => 'Device Number',
+        'order_number' => 'Order Number',
         'serial_number' => 'Serial Number',
         'room_name' => 'Room Name',
         'type_id' => 'Type',
@@ -49,7 +50,7 @@ return [
         'qr_number_helper' => 'Enter how many empty QR codes to generate',
         'invalid_number' => 'Invalid number of devices',
         'invalid_number_body' => 'Please enter a valid number of devices',
-        'generate_success' => 'QR Code successfully generated'
+        'generate_success' => 'QR Code successfully generated',
     ],
 
     'detail' => [
@@ -68,6 +69,9 @@ return [
         ],
         'device_number' => [
             'label' => 'Device Number',
+        ],
+        'order_number' => [
+            'label' => 'Order Number',
         ],
         'serial_number' => [
             'label' => 'Serial Number',
@@ -148,10 +152,10 @@ return [
         ],
         'notes' => [
             'label' => 'Notes',
-            'empty' => 'No notes available'
+            'empty' => 'No notes available',
         ],
     ],
-    
+
     'filters' => [
         'filled' => [
             'label' => 'Filled',
@@ -178,5 +182,14 @@ return [
         ],
         'date_range' => 'Date Range',
         'filename' => 'Device-Data-',
+    ],
+
+    'import' => [
+        'label' => 'Import Devices',
+        'file' => 'Excel File',
+        'success' => 'Devices imported successfully',
+        'fail' => 'Import failed',
+        'error' => 'An error occurred during import',
+        'template' => 'Download Template',
     ],
 ];
