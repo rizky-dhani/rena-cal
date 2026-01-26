@@ -43,6 +43,15 @@ return [
         'delete_multiple_success' => 'Selected :label successfully deleted',
         'generate_empty_qr' => 'Generate Empty QR Codes',
         'public_detail' => 'Public Detail',
+        'print' => 'Print',
+        'print_size' => [
+            'label' => 'Label Size',
+            'placeholder' => 'Select label size',
+            'v1' => 'Version 1 (7x5 cm)',
+            'v2' => 'Version 2 (6x4 cm)',
+            'v3' => 'Version 3 (5x3 cm)',
+            'v4' => 'Version 4 (3x1.5 cm)',
+        ],
     ],
 
     'generate' => [

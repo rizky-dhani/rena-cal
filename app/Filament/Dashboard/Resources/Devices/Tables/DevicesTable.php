@@ -10,6 +10,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Storage;
@@ -271,10 +272,26 @@ class DevicesTable
                         ->deselectRecordsAfterCompletion(),
                     BulkAction::make('bulk_print_qr')
                         ->label(__('devices.actions.print'))
-                        ->icon('heroicon-o-document-arrow-down')->icon('heroicon-o-document-arrow-down')
-                        ->action(function ($records) {
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->form([
+                            Select::make('size')
+                                ->label(__('devices.actions.print_size.label'))
+                                ->placeholder(__('devices.actions.print_size.placeholder'))
+                                ->options([
+                                    'v1' => __('devices.actions.print_size.v1'),
+                                    'v2' => __('devices.actions.print_size.v2'),
+                                    'v3' => __('devices.actions.print_size.v3'),
+                                    'v4' => __('devices.actions.print_size.v4'),
+                                ])
+                                ->default('v1')
+                                ->required(),
+                        ])
+                        ->action(function ($records, array $data) {
                             $ids = $records->pluck('id')->toArray();
-                            session(['qr_ids' => $ids]);
+                            session([
+                                'qr_ids' => $ids,
+                                'qr_size' => $data['size'],
+                            ]);
 
                             return redirect()->route('devices.qr-print');
                         })

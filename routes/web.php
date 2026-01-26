@@ -34,24 +34,13 @@ Route::get('/certificate/download/{cert_number}', function ($cert_number) {
 // QR Code Cards Print route
 Route::get('/qr-print', function () {
     $ids = session()->get('qr_ids', []);
+    $size = session()->get('qr_size', 'v1');
 
     $assets = Device::whereIn('id', $ids)->get();
-    $filename = 'QR-RENA-'.now()->format('Y-m-d').'.pdf';
+    $filename = 'Calibration-Labels-'.now()->format('Y-m-d').'.pdf';
 
-    $pdf = Pdf::loadView('pdf.asset-list-new', compact('assets'))
+    $pdf = Pdf::loadView('pdf.asset-calibration-labels', compact('assets', 'size'))
         ->setPaper('A4');
-    // ->setOption('isHtml5ParserEnabled', true)
-    // ->setOption('isRemoteEnabled', true)
-
-    // $html = view('pdf.asset-list-new', compact('assets'));
-    // $pdf = Browsershot::html($html)
-    //     ->noSandbox()
-    //     ->format('A4')
-    //     ->showBackground()
-    //     ->pdf();
 
     return $pdf->stream($filename);
-    // return response($pdf, 200)
-    //     ->header('Content-Type', 'application/pdf')
-    //     ->header('Content-Disposition', 'inline; filename="' . $filename . '"');
 })->name('devices.qr-print');
