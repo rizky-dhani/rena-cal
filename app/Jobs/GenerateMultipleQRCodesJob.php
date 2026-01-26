@@ -49,21 +49,20 @@ class GenerateMultipleQRCodesJob implements ShouldQueue
                 // Get the highest existing RENA number from DB to start after that
                 $maxNumber = DB::table('devices')
                     ->where('device_number', 'LIKE', 'RENA-%')
-                    ->selectRaw("CAST(SUBSTRING(device_number, 6) AS UNSIGNED) as num")
+                    ->selectRaw('CAST(SUBSTRING(device_number, 6) AS UNSIGNED) as num')
                     ->orderByDesc('num')
                     ->value('num');
 
                 // Start checking from the next number after the highest existing number
                 $currentNumber = $maxNumber ? $maxNumber + 1 : 1;
 
-                // Keep incrementing until we find a number not in the DB or in the current batch
-                $deviceNumber = 'RENA-' . str_pad($currentNumber, 6, '0', STR_PAD_LEFT);
+                $deviceNumber = 'RENA-'.str_pad($currentNumber, 5, '0', STR_PAD_LEFT);
 
                 // Keep looking for the next available number that doesn't exist in DB or the current batch
                 while (DB::table('devices')->where('device_number', $deviceNumber)->exists() ||
                        in_array($deviceNumber, array_column($devicesToInsert, 'device_number'))) {
                     $currentNumber++;
-                    $deviceNumber = 'RENA-' . str_pad($currentNumber, 6, '0', STR_PAD_LEFT);
+                    $deviceNumber = 'RENA-'.str_pad($currentNumber, 5, '0', STR_PAD_LEFT);
                 }
 
                 // Prepare device data for insertion
