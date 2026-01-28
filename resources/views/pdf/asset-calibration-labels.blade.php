@@ -36,7 +36,7 @@
 
         /* Size Variants (applied to the wrapper and table) */
         .size-v3 { width: 5cm; height: 3cm; }
-        .size-v4 { width: 3cm; height: 1.5cm; }
+        .size-v4 { width: 3cm; height: 2cm; }
 
         /* Content Layout */
         .logo-row {
@@ -59,7 +59,7 @@
         .barcode-col {
             vertical-align: middle;
             text-align: center;
-            padding: 2px 3px 2px 0px;
+            padding: 2px 4px 2px 0px;
             overflow: hidden;
         }
         .info-col {
@@ -69,10 +69,10 @@
         }
 
         /* Size-specific column widths */
-        .size-v3 .info-col { width: 80%; }
-        .size-v3 .barcode-col { width: 20%; }
-        .size-v4 .info-col { width: 80%; }
-        .size-v4 .barcode-col { width: 20%; }
+        .size-v3 .info-col { width: 75%; }
+        .size-v3 .barcode-col { width: 25%; }
+        .size-v4 .info-col { width: 73%; }
+        .size-v4 .barcode-col { width: 27%; }
 
         .logo-img {
             height: 25px;
@@ -147,18 +147,25 @@
             height: 20px;
         }
         .status-bar-cell {
-            background-color: #79d248; /* Green from label.png */
-            color: #000;
             text-align: center;
             font-weight: bold;
             font-size: 12px;
             vertical-align: middle;
             border-top: 1px solid #000;
         }
+        .status-laik {
+            background-color: #79d248; /* Green */
+            color: #ffffff;
+        }
+        .status-tidak-laik {
+            background-color: #ff0000; /* Red */
+            color: #ffffff;
+        }
 
         /* V3 Specific Scaling */
         .size-v3 .logo-row { height: 30px; }
         .size-v3 .info-label, .size-v3 .date-label { width: 40px; font-size: 5.5px; white-space: normal; }
+        .size-v3 .barcode-col { padding: 0px 10px 0px 0px; }
         .size-v3 .info-value { font-size: 5.5px; }
         /*.size-v3 .date-colon { font-size: 5.5px; font-weight: bold; }*/
         .size-v3 .date-box { width: 12px; height: 10px; font-size: 6px; line-height: 10px; }
@@ -166,24 +173,27 @@
         .size-v3 .status-bar-cell { font-size: 9px; }
 
         /* V4 Specific Scaling */
-        .size-v4 .logo-row { height: 20px; }
-        .size-v4 .status-bar-row { height: 12px; }
-        .size-v4 .info-label, .size-v4 .info-colon { display: none; }
-        .size-v4 .info-value { font-size: 6px; font-weight: bold; }
-        .size-v4 .date-label { font-size: 5px; width: 45px; display: inline-block; }
-        .size-v4 .date-box { width: 10px; height: 8px; font-size: 5px; line-height: 8px; }
-        .size-v4 .date-year { width: 16px; }
-        .size-v4 .logo-img { height: 15px; }
-        .size-v4 .status-bar-cell { font-size: 8px; }
-        .size-v4 .barcode-col { padding: 2px 3px; }
-        .size-v4 .barcode-col img { width: 16px !important; }
+        .size-v4 .logo-row { height: 12px; }
+        .size-v4 .logo-cell { padding: 2px 5px 0px 5px; }
+        .size-v4 .status-bar-row { height: 10px; }
+        .size-v4 .info-section { display: none; }
+        .size-v4 .date-section { margin-top: 1px; }
+        .size-v4 .date-label { font-size: 3px; width: auto; min-width: 20px; white-space: nowrap; vertical-align: middle; }
+        .size-v4 .date-colon { font-size: 3px; vertical-align: middle; font-weight: bold; }
+        .size-v4 .date-box { width: 8px; height: 6px; font-size: 5px; line-height: 6px; vertical-align: middle; }
+        .size-v4 .date-year { width: 13px; }
+        .size-v4 .date-separator { font-size: 4.5px; }
+        .size-v4 .logo-img { height: 16px; }
+        .size-v4 .status-bar-cell { font-size: 7px; }
+        .size-v4 .barcode-col { padding: 2px 4px 2px 2px; }
+        .size-v4 .barcode-col img { width: 38px !important; }
 
         /* Barcode Images Scaling */
         .barcode-col img {
             max-width: 100%;
             height: auto;
         }
-        .size-v3 .barcode-col img { width: 30px; }
+        .size-v3 .barcode-col img { width: 38px; }
 
     </style>
 </head>
@@ -258,8 +268,8 @@
                         </td>
                     </tr>
                     <tr class="status-bar-row">
-                        <td class="status-bar-cell" colspan="2">
-                            LAIK PAKAI
+                        <td class="status-bar-cell {{ $asset->result === 'Tidak Laik Pakai' ? 'status-tidak-laik' : 'status-laik' }}" colspan="2">
+                            {{ strtoupper($asset->result ?? 'Laik Pakai') }}
                         </td>
                     </tr>
                 </table>
