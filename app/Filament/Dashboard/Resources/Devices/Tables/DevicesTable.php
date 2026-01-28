@@ -278,8 +278,6 @@ class DevicesTable
                                 ->label(__('devices.actions.print_size.label'))
                                 ->placeholder(__('devices.actions.print_size.placeholder'))
                                 ->options([
-                                    'v1' => __('devices.actions.print_size.v1'),
-                                    'v2' => __('devices.actions.print_size.v2'),
                                     'v3' => __('devices.actions.print_size.v3'),
                                     'v4' => __('devices.actions.print_size.v4'),
                                 ])

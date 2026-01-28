@@ -47,10 +47,8 @@ return [
         'print_size' => [
             'label' => 'Ukuran Label',
             'placeholder' => 'Pilih ukuran label',
-            'v1' => 'Versi 1 (7x5 cm)',
-            'v2' => 'Versi 2 (6x4 cm)',
-            'v3' => 'Versi 3 (5x3 cm)',
-            'v4' => 'Versi 4 (3x1.5 cm)',
+            'v3' => 'Normal (5x3 cm)',
+            'v4' => 'Kecil (3x1.5 cm)',
         ],
     ],
 
