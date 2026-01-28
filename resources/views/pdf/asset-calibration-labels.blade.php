@@ -35,8 +35,6 @@
         }
 
         /* Size Variants (applied to the wrapper and table) */
-        .size-v1 { width: 7cm; height: 5cm; }
-        .size-v2 { width: 6cm; height: 4cm; }
         .size-v3 { width: 5cm; height: 3cm; }
         .size-v4 { width: 3cm; height: 1.5cm; }
 
@@ -56,26 +54,28 @@
         .label-content-inner-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
         .barcode-col {
             vertical-align: middle;
             text-align: center;
-            border-left: 1px solid #000;
-            padding: 2px 5px;
+            padding: 2px 3px 2px 0px;
+            overflow: hidden;
         }
         .info-col {
             vertical-align: middle;
             padding: 5px;
+            overflow: hidden;
         }
 
         /* Size-specific column widths */
-        .size-v1 .barcode-col { width: 1.6cm; }
-        .size-v2 .barcode-col { width: 1.4cm; }
-        .size-v3 .barcode-col { width: 1.1cm; }
-        .size-v4 .barcode-col { width: 0.8cm; }
+        .size-v3 .info-col { width: 80%; }
+        .size-v3 .barcode-col { width: 20%; }
+        .size-v4 .info-col { width: 80%; }
+        .size-v4 .barcode-col { width: 20%; }
 
         .logo-img {
-            height: 30px;
+            height: 25px;
             width: auto;
             max-width: 100%;
             vertical-align: middle;
@@ -84,41 +84,42 @@
             display: none;
         }
 
-        /* Fields Section */
-        .field-row {
-            margin-bottom: 3px;
-            font-size: 10px;
+        /* Info Section */
+        .info-row, .date-section {
+            margin-bottom: 1px;
+            font-size: 0;
+            white-space: nowrap;
         }
-        .field-label {
+        .info-label, .date-label {
             font-weight: bold;
             display: inline-block;
-            width: 80px;
+            vertical-align: middle;
+            width: 60px;
+            line-height: 1.1;
+            font-size: 7px;
         }
-        .field-value {
+        .info-colon, .date-colon {
             display: inline-block;
+            vertical-align: middle;
+            font-size: 8px;
+            margin-right: 2px;
+            font-weight: bold;
+        }
+        .info-value {
+            display: inline-block;
+            vertical-align: middle;
+            white-space: nowrap;
+            font-size: 7px;
         }
 
         /* Date Boxes Section */
         .date-section {
-            margin-top: 3px;
-            font-size: 0;
-        }
-        .date-label {
-            font-size: 8px;
-            font-weight: bold;
-            display: inline-block;
-            vertical-align: middle;
-            width: 80px;
-        }
-        .date-colon {
-            display: inline-block;
-            vertical-align: middle;
-            font-size: 10px;
-            margin-right: 2px;
+            margin-top: 2px;
         }
         .date-boxes {
             display: inline-block;
             vertical-align: middle;
+            line-height: 1; /* Reset line height for boxes */
         }
         .date-box {
             display: inline-block;
@@ -127,8 +128,9 @@
             height: 12px;
             text-align: center;
             font-size: 8px;
-            line-height: 12px;
+            line-height: 11px; /* Slightly less than height to center text vertically */
             margin-right: 1px;
+            vertical-align: middle;
         }
         .date-year {
             width: 28px;
@@ -154,18 +156,26 @@
             border-top: 1px solid #000;
         }
 
+        /* V3 Specific Scaling */
+        .size-v3 .logo-row { height: 30px; }
+        .size-v3 .info-label, .size-v3 .date-label { width: 40px; font-size: 5.5px; white-space: normal; }
+        .size-v3 .info-value { font-size: 5.5px; }
+        /*.size-v3 .date-colon { font-size: 5.5px; font-weight: bold; }*/
+        .size-v3 .date-box { width: 12px; height: 10px; font-size: 6px; line-height: 10px; }
+        .size-v3 .date-year { width: 22px; }
+        .size-v3 .status-bar-cell { font-size: 9px; }
+
         /* V4 Specific Scaling */
         .size-v4 .logo-row { height: 20px; }
         .size-v4 .status-bar-row { height: 12px; }
-        .size-v4 .field-label { width: 40px; font-size: 6px; }
-        .size-v4 .field-value { font-size: 6px; }
-        .size-v4 .date-label { font-size: 5px; width: 40px; }
-        .size-v4 .date-colon { font-size: 6px; }
+        .size-v4 .info-label, .size-v4 .info-colon { display: none; }
+        .size-v4 .info-value { font-size: 6px; font-weight: bold; }
+        .size-v4 .date-label { font-size: 5px; width: 45px; display: inline-block; }
         .size-v4 .date-box { width: 10px; height: 8px; font-size: 5px; line-height: 8px; }
         .size-v4 .date-year { width: 16px; }
         .size-v4 .logo-img { height: 15px; }
         .size-v4 .status-bar-cell { font-size: 8px; }
-        .size-v4 .barcode-col { padding: 2px 3px; width: 0.8cm; }
+        .size-v4 .barcode-col { padding: 2px 3px; }
         .size-v4 .barcode-col img { width: 16px !important; }
 
         /* Barcode Images Scaling */
@@ -173,16 +183,14 @@
             max-width: 100%;
             height: auto;
         }
-        .size-v1 .barcode-col img { width: 45px; }
-        .size-v2 .barcode-col img { width: 36px; }
-        .size-v3 .barcode-col img { width: 28px; }
+        .size-v3 .barcode-col img { width: 30px; }
 
     </style>
 </head>
 <body>
     <div class="labels-container">
         @foreach($assets as $asset)
-            <div class="label-wrapper size-{{ $size ?? 'v1' }}">
+            <div class="label-wrapper size-{{ $size ?? 'v3' }}">
                 <table class="label-card">
                     <tr class="logo-row">
                         <td class="logo-cell" colspan="2">
@@ -195,17 +203,21 @@
                                 <tr>
                                     <!-- Info Column -->
                                     <td class="info-col">
-                                        <div class="field-row">
-                                            <span class="field-label">Nama Alat</span>
-                                            <span class="field-value">: {{ $asset->deviceName?->name }}</span>
-                                        </div>
-                                        <div class="field-row">
-                                            <span class="field-label">Nomor Seri</span>
-                                            <span class="field-value">: {{ $asset->serial_number }}</span>
+                                        <div class="info-section">
+                                            <div class="info-row">
+                                                <span class="info-label">Nama Alat</span>
+                                                <span class="info-colon">:</span>
+                                                <span class="info-value">{{ $asset->deviceName?->name }}</span>
+                                            </div>
+                                            <div class="info-row">
+                                                <span class="info-label">No. Seri</span>
+                                                <span class="info-colon">:</span>
+                                                <span class="info-value">{{ $asset->serial_number }}</span>
+                                            </div>
                                         </div>
 
                                         <div class="date-section">
-                                            <span class="date-label">Tanggal Kalibrasi</span>
+                                            <span class="date-label">Tgl<br>Kalibrasi</span>
                                             <span class="date-colon">:</span>
                                             <div class="date-boxes">
                                                 @php
@@ -220,7 +232,7 @@
                                         </div>
 
                                         <div class="date-section">
-                                            <span class="date-label">Kalibrasi Selanjutnya</span>
+                                            <span class="date-label">Kalibrasi<br>Selanjutnya</span>
                                             <span class="date-colon">:</span>
                                             <div class="date-boxes">
                                                 @php
