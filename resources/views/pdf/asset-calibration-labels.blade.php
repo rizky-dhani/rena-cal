@@ -195,6 +195,17 @@
         }
         .size-v3 .barcode-col img { width: 38px; }
 
+        .device-number {
+            font-size: 6px;
+            font-weight: bold;
+            margin-top: 1px;
+            text-align: center;
+        }
+
+        .size-v4 .device-number {
+            font-size: 3px;
+        }
+
     </style>
 </head>
 <body>
@@ -261,6 +272,7 @@
                                     <td class="barcode-col">
                                         @if($asset->barcode)
                                             <img src="{{ public_path('storage/' . $asset->barcode) }}" alt="Barcode">
+                                            <div class="device-number">{{ $asset->device_number }}</div>
                                         @endif
                                     </td>
                                 </tr>
