@@ -115,9 +115,6 @@ class ListDevices extends ListRecords
                 ->icon('heroicon-o-arrow-up-tray')
                 ->color('warning')
                 ->form([
-                    \Filament\Forms\Components\Placeholder::make('template_download')
-                        ->label(__('devices.import.template'))
-                        ->content(new \Illuminate\Support\HtmlString('<a href="'.asset('storage/device_template.xlsx').'" class="text-primary-600 underline font-medium" download>'.__('devices.import.template').'</a>')),
                     \Filament\Forms\Components\FileUpload::make('file')
                         ->label(__('devices.import.file'))
                         ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
