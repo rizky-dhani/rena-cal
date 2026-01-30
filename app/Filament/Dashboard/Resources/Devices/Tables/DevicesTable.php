@@ -281,11 +281,46 @@ class DevicesTable
                                     'v3' => __('devices.actions.print_size.v3'),
                                     'v4' => __('devices.actions.print_size.v4'),
                                 ])
-                                ->default('v1')
+                                ->default('v3')
                                 ->required(),
                         ])
                         ->action(function ($records, array $data) {
                             $ids = $records->pluck('id')->toArray();
+                            session([
+                                'qr_ids' => $ids,
+                                'qr_size' => $data['size'],
+                            ]);
+
+                            return redirect()->route('devices.qr-print');
+                        })
+                        ->deselectRecordsAfterCompletion(),
+                    BulkAction::make('bulk_print_qr_tidak_laik')
+                        ->label(__('devices.actions.print_tidak_laik'))
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->color('danger')
+                        ->form([
+                            Select::make('size')
+                                ->label(__('devices.actions.print_size.label'))
+                                ->placeholder(__('devices.actions.print_size.placeholder'))
+                                ->options([
+                                    'v3' => __('devices.actions.print_size.v3'),
+                                    'v4' => __('devices.actions.print_size.v4'),
+                                ])
+                                ->default('v3')
+                                ->required(),
+                        ])
+                        ->action(function ($records, array $data) {
+                            $ids = $records->where('result', 'Tidak Laik Pakai')->pluck('id')->toArray();
+
+                            if (empty($ids)) {
+                                \Filament\Notifications\Notification::make()
+                                    ->title('Tidak ada perangkat dengan hasil "Tidak Laik Pakai" yang dipilih.')
+                                    ->danger()
+                                    ->send();
+
+                                return;
+                            }
+
                             session([
                                 'qr_ids' => $ids,
                                 'qr_size' => $data['size'],

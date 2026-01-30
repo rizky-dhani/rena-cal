@@ -44,6 +44,7 @@ return [
         'generate_empty_qr' => 'Generate Empty QR Codes',
         'public_detail' => 'Public Detail',
         'print' => 'Print',
+        'print_tidak_laik' => 'Print (Not Fit For Use)',
         'print_size' => [
             'label' => 'Label Size',
             'placeholder' => 'Select label size',

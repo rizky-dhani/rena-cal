@@ -44,6 +44,7 @@ return [
         'generate_empty_qr' => 'Buat Kode QR Kosong',
         'public_detail' => 'Detail Publik',
         'print' => 'Cetak',
+        'print_tidak_laik' => 'Cetak (Tidak Laik Pakai)',
         'print_size' => [
             'label' => 'Ukuran Label',
             'placeholder' => 'Pilih ukuran label',
