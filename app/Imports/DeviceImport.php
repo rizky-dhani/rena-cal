@@ -9,9 +9,12 @@ use App\Models\DeviceName;
 use App\Models\Type;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Milon\Barcode\DNS2D;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class DeviceImport implements ToModel, WithHeadingRow, WithValidation
@@ -102,12 +105,18 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
                 }
             }
 
-            if (! $changed) {
+            if (! $changed && ! empty($device->barcode)) {
                 return null;
             }
 
             // Update existing device
             $device->update($data);
+
+            // Generate barcode if missing
+            if (empty($device->barcode)) {
+                $device->barcode = $this->generateQRCode($device->deviceId);
+                $device->save();
+            }
 
             return null;
         }
@@ -117,11 +126,31 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
         $newDevice->device_number = $deviceNumber;
 
         // If nomor_qr is a valid UUID, use it as deviceId
-        if (\Illuminate\Support\Str::isUuid($deviceNumber)) {
+        if (Str::isUuid($deviceNumber)) {
             $newDevice->deviceId = $deviceNumber;
+        } else {
+            $newDevice->deviceId = (string) Str::orderedUuid();
         }
 
+        // Generate barcode
+        $newDevice->barcode = $this->generateQRCode($newDevice->deviceId);
+
         return $newDevice;
+    }
+
+    /**
+     * Generate QR code for the device
+     */
+    private function generateQRCode(string $deviceId): string
+    {
+        $qr = new DNS2D;
+        $content = route('devices.publicDetail', $deviceId);
+        $qrCodePng = $qr->getBarcodePNG($content, 'QRCODE');
+        $path = 'qrcodes/'.$deviceId.'.png';
+
+        Storage::disk('public')->put($path, base64_decode($qrCodePng));
+
+        return $path;
     }
 
     public function rules(): array

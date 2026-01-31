@@ -21,6 +21,8 @@ use Spatie\Permission\Models\Role;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
+    \Illuminate\Support\Facades\Storage::fake('public');
+
     // Seed roles
     Role::create(['name' => 'Admin']);
     Role::create(['name' => 'Super Admin']);
@@ -79,6 +81,9 @@ test('it can import new devices from excel', function () {
     expect($device->deviceName->name)->toBe('Test Device');
     expect($device->brand->name)->toBe('Test Brand');
     expect($device->type->name)->toBe('Test Type');
+    expect($device->barcode)->toBe('qrcodes/'.$uuid.'.png');
+
+    \Illuminate\Support\Facades\Storage::disk('public')->assertExists($device->barcode);
 
     unlink($filePath);
 });
@@ -87,6 +92,7 @@ test('it updates existing devices based on device_number', function () {
     $device = Device::factory()->create([
         'device_number' => 'QR-002',
         'serial_number' => 'OLD-SN',
+        'barcode' => null,
     ]);
 
     $rows = [
@@ -101,6 +107,9 @@ test('it updates existing devices based on device_number', function () {
 
     expect($device->serial_number)->toBe('NEW-SN');
     expect($device->order_number)->toBe('ORD-002');
+    expect($device->barcode)->not->toBeNull();
+
+    \Illuminate\Support\Facades\Storage::disk('public')->assertExists($device->barcode);
 
     unlink($filePath);
 });
