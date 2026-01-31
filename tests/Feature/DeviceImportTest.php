@@ -16,10 +16,16 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Spatie\Permission\Models\Role;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
+    // Seed roles
+    Role::create(['name' => 'Admin']);
+    Role::create(['name' => 'Super Admin']);
+    Role::create(['name' => 'Technician']);
+
     // Create necessary data for relations
     $this->province = Province::create(['code' => '11', 'name' => 'ACEH']);
     $this->category = CustomerCategory::create(['name' => 'Test Category']);
@@ -78,19 +84,13 @@ test('it can import new devices from excel', function () {
 });
 
 test('it updates existing devices based on device_number', function () {
-
     $device = Device::factory()->create([
-
         'device_number' => 'QR-002',
-
         'serial_number' => 'OLD-SN',
-
     ]);
 
     $rows = [
-
         ['1', 'QR-002', 'ORD-002', 'Test Customer', 'Addr', 'Test Device', 'Test Brand', 'Test Type', 'NEW-SN', 'Hal', 'Room A', '2024-01-01', 'Test PIC', '2024-01-01', __('devices.form.result.options.fit_for_use'), '2025-01-01', '2024-01-01'],
-
     ];
 
     $filePath = createTestExcel($rows, 'test_update.xlsx');
@@ -100,21 +100,16 @@ test('it updates existing devices based on device_number', function () {
     $device->refresh();
 
     expect($device->serial_number)->toBe('NEW-SN');
-
     expect($device->order_number)->toBe('ORD-002');
 
     unlink($filePath);
-
 });
 
 test('it skips rows without device identifier', function () {
-
     $initialCount = Device::count();
 
     $rows = [
-
         ['1', '', 'ORD-003', 'Test Customer', 'Addr', 'Test Device', 'Test Brand', 'Test Type', 'SN-003', 'Hal', 'Room A', '2024-01-01', 'Test PIC', '2024-01-01', __('devices.form.result.options.fit_for_use'), '2025-01-01', '2024-01-01'],
-
     ];
 
     $filePath = createTestExcel($rows, 'test_skip_missing.xlsx');
@@ -124,45 +119,28 @@ test('it skips rows without device identifier', function () {
     expect(Device::count())->toBe($initialCount);
 
     unlink($filePath);
-
 });
 
 test('it skips rows if no changes are detected', function () {
-
     $deviceName = DeviceName::create(['name' => 'Static Device']);
-
     $brand = Brand::create(['name' => 'Static Brand']);
-
     $type = Type::create(['name' => 'Static Type', 'brand_id' => $brand->id]);
 
     $device = Device::create([
-
         'device_number' => 'QR-STATIC',
-
         'order_number' => 'ORD-STATIC',
-
         'device_name_id' => $deviceName->id,
-
         'brand_id' => $brand->id,
-
         'type_id' => $type->id,
-
         'customer_id' => $this->customer->id,
-
         'serial_number' => 'SN-STATIC',
-
         'calibration_date' => '2024-01-01',
-
         'next_calibration_date' => '2025-01-01',
-
         'result' => __('devices.form.result.options.fit_for_use'),
-
     ]);
 
     $rows = [
-
         ['1', 'QR-STATIC', 'ORD-STATIC', 'Test Customer', '', 'Static Device', 'Static Brand', 'Static Type', 'SN-STATIC', '', '', '', '', '2024-01-01', __('devices.form.result.options.fit_for_use'), '2025-01-01', ''],
-
     ];
 
     $filePath = createTestExcel($rows, 'test_skip_no_change.xlsx');
@@ -174,41 +152,69 @@ test('it skips rows if no changes are detected', function () {
     expect($device->device_number)->toBe('QR-STATIC');
 
     unlink($filePath);
-
 });
 
 test('it validates data and reports errors', function () {
-
     $rows = [
-
         ['1', 'QR-ERR', 'ORD-ERR', 'Test Customer', '', 'Test Device', 'Test Brand', 'Test Type', 'SN-ERR', '', '', '', '', 'not-a-date', __('devices.form.result.options.fit_for_use'), '2025-01-01', ''],
-
     ];
 
     $filePath = createTestExcel($rows, 'test_error.xlsx');
 
     try {
-
         Excel::import(new DeviceImport, $filePath);
-
         $this->fail('Validation exception should have been thrown');
-
     } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-
         $failures = $e->failures();
-
         expect($failures)->toHaveCount(1);
-
         expect($failures[0]->attribute())->toBe('tanggal_kalibrasi');
-
     }
 
     $this->assertDatabaseMissing('devices', [
-
         'device_number' => 'DEV-ERR',
-
     ]);
 
     unlink($filePath);
+});
 
+test('it fills admin_id with logged in user if they are Admin', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('Admin');
+    $this->actingAs($admin);
+
+    $uuid = (string) Str::orderedUuid();
+    $rows = [
+        ['1', $uuid, 'ORD-001', 'Test Customer', 'Addr', 'Test Device', 'Test Brand', 'Test Type', 'SN-001', 'Hal', 'Room A', '2024-01-01', 'Test PIC', '2024-01-01', __('devices.form.result.options.fit_for_use'), '2025-01-01', '2024-01-01'],
+    ];
+    $filePath = createTestExcel($rows, 'test_admin_import.xlsx');
+
+    Excel::import(new DeviceImport, $filePath);
+
+    $this->assertDatabaseHas('devices', [
+        'device_number' => $uuid,
+        'admin_id' => $admin->id,
+    ]);
+
+    unlink($filePath);
+});
+
+test('it fills pic_id with logged in user if they are Technician', function () {
+    $technician = User::factory()->create();
+    $technician->assignRole('Technician');
+    $this->actingAs($technician);
+
+    $uuid = (string) Str::orderedUuid();
+    $rows = [
+        ['1', $uuid, 'ORD-001', 'Test Customer', 'Addr', 'Test Device', 'Test Brand', 'Test Type', 'SN-001', 'Hal', 'Room A', '2024-01-01', 'Other PIC', '2024-01-01', __('devices.form.result.options.fit_for_use'), '2025-01-01', '2024-01-01'],
+    ];
+    $filePath = createTestExcel($rows, 'test_tech_import.xlsx');
+
+    Excel::import(new DeviceImport, $filePath);
+
+    $this->assertDatabaseHas('devices', [
+        'device_number' => $uuid,
+        'pic_id' => $technician->id,
+    ]);
+
+    unlink($filePath);
 });
