@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->text('address')->nullable();
             $table->enum('type', ['Pemerintah', 'Swasta']);
-            $table->foreignId('province_id')->constrained('provinces', 'code');
+            $table->foreignId('province_id')->constrained('provinces', 'code')->nullable();
             $table->timestamps();
         });
         Schema::table('users', function (Blueprint $table) {

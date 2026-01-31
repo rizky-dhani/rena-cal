@@ -38,8 +38,8 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
             $typeId = Type::firstOrCreate(['name' => $row['tipe'], 'brand_id' => $brandId])->id;
         }
 
-        // Customer lookup
-        $customerId = ! empty($row['nama_pemilik']) ? Customer::where('name', $row['nama_pemilik'])->first()?->id : null;
+        // Customer lookup, creating record if it doesn't exist
+        $customerId = ! empty($row['nama_pemilik']) ? Customer::firstOrCreate(['name' => $row['nama_pemilik']])->id : null;
 
         // PIC: Find by name
         $picId = ! empty($row['pic']) ? User::where('name', $row['pic'])->first()?->id : null;
