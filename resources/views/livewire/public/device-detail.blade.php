@@ -22,6 +22,7 @@
                     ['label' => 'Nama Ruangan', 'value' => $device->room_name ?? 'N/A'],
                     ['label' => 'Tanggal Kalibrasi', 'value' => $device->calibration_date ? \Carbon\Carbon::parse($device->calibration_date)->format('Y-m-d') : 'N/A'],
                     ['label' => 'Keterangan Hasil', 'value' => $device->result ?? 'N/A', 'is_status' => true],
+                    ['label' => 'PIC', 'value' => $device->pic->name ?? 'N/A'],
                 ];
             @endphp
 
