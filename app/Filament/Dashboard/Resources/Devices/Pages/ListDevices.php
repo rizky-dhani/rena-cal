@@ -79,6 +79,13 @@ class ListDevices extends ListRecords
                         ->default(1)
                         ->required()
                         ->helperText(__('devices.generate.qr_number_helper')),
+                    Select::make('result')
+                        ->label(__('devices.form.result.label'))
+                        ->options([
+                            'Laik Pakai' => 'Laik Pakai',
+                            'Tidak Laik Pakai' => 'Tidak Laik Pakai',
+                        ])
+                        ->required(),
                 ])
                 ->action(function (array $data) {
                     $numberOfQr = (int) $data['number_of_qr'];
@@ -99,6 +106,7 @@ class ListDevices extends ListRecords
                         $deviceId = (string) Str::orderedUuid();
                         $devices[] = [
                             'deviceId' => $deviceId,
+                            'result' => $data['result'],
                         ];
                     }
 
