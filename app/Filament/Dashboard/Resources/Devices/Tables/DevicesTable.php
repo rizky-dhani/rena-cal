@@ -13,7 +13,6 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Storage;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class DevicesTable
@@ -200,16 +199,7 @@ class DevicesTable
                     ->label(__('devices.actions.delete'))
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->successNotificationTitle(__('devices.actions.delete_success', ['label' => __('devices.label')]))
-                    ->action(function ($record) {
-                        // Delete the associated QR code file if it exists
-                        if ($record->barcode) {
-                            Storage::disk('public')->delete($record->barcode);
-                        }
-
-                        // Delete the record from the database
-                        $record->delete();
-                    }),
+                    ->successNotificationTitle(__('devices.actions.delete_success', ['label' => __('devices.label')])),
             ])
             ->headerActions([
                 Action::make('send_renewal_toolbar')
@@ -332,17 +322,6 @@ class DevicesTable
                     DeleteBulkAction::make()
                         ->label(__('devices.actions.delete'))
                         ->requiresConfirmation()
-                        ->action(function ($records) {
-                            foreach ($records as $record) {
-                                // Delete the associated QR code file if it exists
-                                if ($record->barcode) {
-                                    Storage::disk('public')->delete($record->barcode);
-                                }
-                            }
-
-                            // Delete the records from the database
-                            $records->each->delete();
-                        })
                         ->successNotificationTitle(__('devices.actions.delete_multiple_success', ['label' => __('devices.plural_label')])),
                 ]),
             ]);

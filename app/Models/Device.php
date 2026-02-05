@@ -42,6 +42,12 @@ class Device extends Model
                 $device->next_calibration_date = \Carbon\Carbon::parse($device->calibration_date)->addYear();
             }
         });
+
+        static::deleted(function ($device) {
+            if ($device->barcode) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($device->barcode);
+            }
+        });
     }
 
     /**

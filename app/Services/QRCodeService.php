@@ -13,17 +13,16 @@ class QRCodeService
         if (! $deviceId) {
             $deviceId = (string) Str::orderedUuid();
         }
-        $filename = 'devices/qrcodes/'.$deviceId.'.png';
+        $filename = 'qrcodes/'.$deviceId.'.png';
 
         // If no specific content is provided, use the public device detail route
         if (empty($content)) {
-            $content = route('devices.details', $deviceId);
+            $content = route('devices.publicDetail', $deviceId);
         }
 
         // Generate QR code with the public device detail route
         $qr = new DNS2D;
         $qrCodePng = $qr->getBarcodePNG($content, 'QRCODE');
-        $path = Storage::disk('public')->path($filename);
         Storage::disk('public')->put($filename, base64_decode($qrCodePng));
 
         return $filename;
@@ -35,7 +34,7 @@ class QRCodeService
 
         for ($i = 0; $i < $count; $i++) {
             $deviceId = (string) Str::orderedUuid();
-            $content = route('devices.publicDetail', $deviceId); // Create the public route URL with the device ID
+            $content = route('devices.publicDetail', $deviceId);
             $filename = $this->generateEmptyQRCode($content, $deviceId);
             $qrData[] = [
                 'filename' => $filename,

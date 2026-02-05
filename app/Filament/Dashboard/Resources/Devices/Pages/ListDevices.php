@@ -9,6 +9,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use pxlrbt\FilamentExcel\Actions\ExportAction;
 
@@ -100,23 +101,37 @@ class ListDevices extends ListRecords
                         return;
                     }
 
-                    // Create an array of devices with device IDs
-                    $devices = [];
-                    for ($i = 0; $i < $numberOfQr; $i++) {
-                        $deviceId = (string) Str::orderedUuid();
-                        $devices[] = [
-                            'deviceId' => $deviceId,
-                            'result' => $data['result'],
-                        ];
-                    }
+                    // Get the highest existing RENA number from DB to start after that
+                    $maxNumber = DB::table('devices')
+                        ->where('device_number', 'LIKE', 'RENA-%')
+                        ->selectRaw('CAST(SUBSTRING(device_number, 6) AS UNSIGNED) as num')
+                        ->orderByDesc('num')
+                        ->value('num');
 
-                    // Dispatch the job to generate QR codes in the background
-                    GenerateMultipleQRCodesJob::dispatch($devices);
+                    $startNumber = $maxNumber ? $maxNumber + 1 : 1;
+                    $chunkSize = 100;
+
+                    // Create an array of devices with device IDs and dispatch in chunks
+                    for ($i = 0; $i < $numberOfQr; $i += $chunkSize) {
+                        $chunkCount = min($chunkSize, $numberOfQr - $i);
+                        $devices = [];
+
+                        for ($j = 0; $j < $chunkCount; $j++) {
+                            $devices[] = [
+                                'deviceId' => (string) Str::orderedUuid(),
+                                'result' => $data['result'],
+                            ];
+                        }
+
+                        // Dispatch the job for this chunk
+                        GenerateMultipleQRCodesJob::dispatch($devices, $startNumber + $i);
+                    }
 
                     // Show success notification
                     \Filament\Notifications\Notification::make()
                         ->title(__('devices.generate.generate_success'))
-                        ->success();
+                        ->success()
+                        ->send();
                 }),
             Action::make('import_devices')
                 ->label(__('devices.import.label'))

@@ -17,12 +17,15 @@ class GenerateMultipleQRCodesJob implements ShouldQueue
 
     public $devices;
 
+    public $startNumber;
+
     /**
      * Create a new job instance.
      */
-    public function __construct($devices)
+    public function __construct($devices, int $startNumber)
     {
         $this->devices = $devices;
+        $this->startNumber = $startNumber;
     }
 
     /**
@@ -31,39 +34,23 @@ class GenerateMultipleQRCodesJob implements ShouldQueue
     public function handle(): void
     {
         $devicesToInsert = [];
+        $currentNumber = $this->startNumber;
 
-        foreach ($this->devices as $index => $device) {
+        $qr = new DNS2D;
+
+        foreach ($this->devices as $device) {
             try {
-                // Generate QR code and path
-                $qr = new DNS2D;
-                $content = route('devices.publicDetail', $device['deviceId']);
+                // Generate unique device number with template RENA- followed by 5 digits zero-padded
+                $deviceNumber = 'RENA-'.str_pad($currentNumber, 5, '0', STR_PAD_LEFT);
+                $currentNumber++;
 
-                $qrCodePng = $qr->getBarcodePNG($content, 'QRCODE');
+                // Generate QR code content and path
+                $content = route('devices.publicDetail', $device['deviceId']);
                 $path = 'qrcodes/'.$device['deviceId'].'.png';
 
+                // Generate PNG QR code
+                $qrCodePng = $qr->getBarcodePNG($content, 'QRCODE');
                 Storage::disk('public')->put($path, base64_decode($qrCodePng));
-
-                // Generate unique device number with template RENA- followed by 6 digits zero-padded
-                // Find the next available number sequentially for this device
-
-                // Get the highest existing RENA number from DB to start after that
-                $maxNumber = DB::table('devices')
-                    ->where('device_number', 'LIKE', 'RENA-%')
-                    ->selectRaw('CAST(SUBSTRING(device_number, 6) AS UNSIGNED) as num')
-                    ->orderByDesc('num')
-                    ->value('num');
-
-                // Start checking from the next number after the highest existing number
-                $currentNumber = $maxNumber ? $maxNumber + 1 : 1;
-
-                $deviceNumber = 'RENA-'.str_pad($currentNumber, 5, '0', STR_PAD_LEFT);
-
-                // Keep looking for the next available number that doesn't exist in DB or the current batch
-                while (DB::table('devices')->where('device_number', $deviceNumber)->exists() ||
-                       in_array($deviceNumber, array_column($devicesToInsert, 'device_number'))) {
-                    $currentNumber++;
-                    $deviceNumber = 'RENA-'.str_pad($currentNumber, 5, '0', STR_PAD_LEFT);
-                }
 
                 // Prepare device data for insertion
                 $devicesToInsert[] = [
@@ -75,8 +62,7 @@ class GenerateMultipleQRCodesJob implements ShouldQueue
                     'updated_at' => now(),
                 ];
             } catch (\Exception $e) {
-                // In a production environment, you might want to log this error
-                // \Log::error('Error generating QR code', ['error' => $e->getMessage()]);
+                // Error handling could be added here
             }
         }
 

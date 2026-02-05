@@ -11,6 +11,7 @@ use Livewire\Component;
 class DeviceDetail extends Component
 {
     public Device $device;
+
     public $qrCodeExists = false;
 
     public function mount($deviceId)
@@ -19,9 +20,8 @@ class DeviceDetail extends Component
         $this->device = Device::where('deviceId', $deviceId)->firstOrFail();
 
         // Check if QR code exists
-        if ($this->device->deviceId) {
-            $qrCodePath = 'qrcodes/' . $this->device->deviceId . '.png';
-            $this->qrCodeExists = Storage::disk('public')->exists($qrCodePath);
+        if ($this->device->barcode) {
+            $this->qrCodeExists = Storage::disk('public')->exists($this->device->barcode);
         }
     }
 

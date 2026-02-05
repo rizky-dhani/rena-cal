@@ -55,7 +55,7 @@ return [
 
     'generate' => [
         'qr_number' => 'Jumlah QR kosong',
-        'qr_number_helper' => 'Masukkan jumlah QR kosong yang akan dibuat',
+        'qr_number_helper' => 'Masukkan jumlah QR kosong yang akan dibuat (maks 1000)',
         'invalid_number' => 'Jumlah yang dimasukkan tidak valid',
         'invalid_number_body' => 'Masukkan jumlah yang valid',
         'generate_success' => 'Kode QR berhasil dibuat',
