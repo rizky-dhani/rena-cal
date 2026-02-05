@@ -41,6 +41,18 @@ class Device extends Model
             if ($device->isDirty('calibration_date')) {
                 $device->next_calibration_date = \Carbon\Carbon::parse($device->calibration_date)->addYear();
             }
+
+            // Automatically attribute PIC if updated by a Technician
+            $user = auth()->user();
+            if ($user) {
+                if ($user->hasRole('Technician')) {
+                    $device->pic_id = $user->id;
+                }
+
+                if ($user->hasRole(['Admin', 'Super Admin'])) {
+                    $device->admin_id = $user->id;
+                }
+            }
         });
 
         static::deleted(function ($device) {
