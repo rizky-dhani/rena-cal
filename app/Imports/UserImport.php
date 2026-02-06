@@ -21,9 +21,16 @@ class UserImport implements ToModel, WithHeadingRow
             return null;
         }
 
+        $email = strtolower($row['email']);
+
+        // Skip if user already exists
+        if (User::where('email', $email)->exists()) {
+            return null;
+        }
+
         $user = User::create([
             'name' => $row['nama'],
-            'email' => strtolower($row['email']),
+            'email' => $email,
             'initial' => ! empty($row['inisial']) ? strtoupper($row['inisial']) : null,
         ]);
 
