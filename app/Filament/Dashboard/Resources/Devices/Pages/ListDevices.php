@@ -26,6 +26,12 @@ class ListDevices extends ListRecords
                 ->exports([
                     \App\Exports\DeviceExport::make()
                         ->modifyQueryUsing(function ($query, $data = []) {
+                            $user = auth()->user();
+
+                            if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
+                                $query->where('customer_id', $user->customer_id);
+                            }
+
                             if (($data['export_type'] ?? null) === 'range') {
                                 $dateField = $data['date_field'] ?? null;
                                 $startDate = $data['start_date'] ?? null;
@@ -66,7 +72,7 @@ class ListDevices extends ListRecords
                         ->visible(fn ($get) => $get('export_type') === 'range')
                         ->required(fn ($get) => $get('export_type') === 'range'),
                 ])
-                ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Hospital Admin'])),
+                ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Hospital Admin', 'Technician'])),
             Action::make('generate_empty_qr')
                 ->label(__('devices.actions.generate_empty_qr'))
                 ->icon('heroicon-o-qr-code')
@@ -176,7 +182,7 @@ class ListDevices extends ListRecords
                             ->send();
                     }
                 })
-                ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin'])),
+                ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Technician'])),
         ];
     }
 }

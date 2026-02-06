@@ -30,17 +30,7 @@ it('can see export actions if authorized', function (string $roleName) {
         ->test(ListDevices::class)
         ->assertActionVisible('export')
         ->assertTableBulkActionVisible('export');
-})->with(['Super Admin', 'Admin', 'Hospital Admin']);
-
-it('cannot see export actions if not authorized', function () {
-    $user = User::factory()->create();
-    $user->assignRole('Technician');
-
-    Livewire::actingAs($user)
-        ->test(ListDevices::class)
-        ->assertActionHidden('export')
-        ->assertTableBulkActionHidden('export');
-});
+})->with(['Super Admin', 'Admin', 'Hospital Admin', 'Technician']);
 
 it('can trigger bulk export', function () {
     $user = User::factory()->create();

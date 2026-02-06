@@ -43,6 +43,8 @@ return [
         'delete_multiple_success' => 'Selected :label successfully deleted',
         'generate_empty_qr' => 'Generate Empty QR Codes',
         'public_detail' => 'Public Detail',
+        'upload_certificate' => 'Upload Certificate',
+        'upload_certificate_success' => 'Certificate uploaded successfully',
         'print' => 'Print',
         'print_tidak_laik' => 'Print (Not Fit For Use)',
         'print_size' => [

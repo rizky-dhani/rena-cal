@@ -11,24 +11,24 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     Role::firstOrCreate(['name' => 'Super Admin']);
     Role::firstOrCreate(['name' => 'Admin']);
-    Role::firstOrCreate(['name' => 'Hospital Admin']);
     Role::firstOrCreate(['name' => 'Technician']);
+    Role::firstOrCreate(['name' => 'Hospital Admin']);
 });
 
-it('can see generate empty qr action if Super Admin, Admin or Technician', function (string $roleName) {
+it('can see import devices action if Super Admin, Admin or Technician', function (string $roleName) {
     $user = User::factory()->create();
     $user->assignRole($roleName);
 
     Livewire::actingAs($user)
         ->test(ListDevices::class)
-        ->assertActionVisible('generate_empty_qr');
+        ->assertActionVisible('import_devices');
 })->with(['Super Admin', 'Admin', 'Technician']);
 
-it('cannot see generate empty qr action if Hospital Admin', function () {
+it('cannot see import devices action if Hospital Admin', function () {
     $user = User::factory()->create();
     $user->assignRole('Hospital Admin');
 
     Livewire::actingAs($user)
         ->test(ListDevices::class)
-        ->assertActionHidden('generate_empty_qr');
+        ->assertActionHidden('import_devices');
 });

@@ -76,7 +76,6 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
             'order_number' => $row['nomor_pesanan'] ?? null,
             'calibration_date' => $calibrationDate,
             'next_calibration_date' => $nextCalibrationDate,
-            'cert_number' => $row['tanggal_diterbitkan'] ?? null,
             'result' => $result,
             'room_name' => $row['ruang'] ?? null,
         ];

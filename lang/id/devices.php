@@ -43,6 +43,8 @@ return [
         'delete_multiple_success' => ':label terpilih berhasil dihapus',
         'generate_empty_qr' => 'Buat Kode QR Kosong',
         'public_detail' => 'Detail Publik',
+        'upload_certificate' => 'Unggah Sertifikat',
+        'upload_certificate_success' => 'Sertifikat berhasil diunggah',
         'print' => 'Cetak',
         'print_tidak_laik' => 'Cetak (Tidak Laik Pakai)',
         'print_size' => [

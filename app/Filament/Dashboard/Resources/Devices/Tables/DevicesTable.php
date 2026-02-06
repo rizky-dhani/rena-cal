@@ -2,6 +2,7 @@
 
 namespace App\Filament\Dashboard\Resources\Devices\Tables;
 
+use App\Models\Device;
 use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
@@ -10,7 +11,9 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -69,16 +72,21 @@ class DevicesTable
                     ->getStateUsing(fn ($record) => $record->customer?->name ?? 'N/A'),
                 TextColumn::make('calibration_date')
                     ->label(__('devices.columns.calibration_date'))
+                    ->date('d F Y')
                     ->sortable()
                     ->getStateUsing(fn ($record) => $record->calibration_date ? Carbon::parse($record->calibration_date)->format('Y-m-d') : 'N/A'),
                 TextColumn::make('next_calibration_date')
                     ->label(__('devices.columns.next_calibration_date'))
+                    ->date('d F Y')
                     ->sortable()
                     ->getStateUsing(fn ($record) => $record->next_calibration_date ? Carbon::parse($record->next_calibration_date)->format('Y-m-d') : 'N/A'),
                 TextColumn::make('cert_number')
                     ->label(__('devices.columns.cert_number'))
                     ->searchable()
-                    ->getStateUsing(fn ($record) => $record->cert_number ?? 'N/A'),
+                    ->formatStateUsing(fn ($state) => $state ? 'Lihat Sertifikat' : 'Belum Tersedia')
+                    ->color(fn ($state) => $state ? 'info' : 'gray')
+                    ->url(fn ($record) => $record->cert_number ? route('certificate.download', ['cert_number' => $record->cert_number]) : null)
+                    ->openUrlInNewTab(),
                 TextColumn::make('result')
                     ->label(__('devices.columns.result'))
                     ->searchable()
@@ -175,6 +183,29 @@ class DevicesTable
                     ->color('gray')
                     ->openUrlInNewTab()
                     ->url(fn ($record) => route('devices.publicDetail', $record->deviceId)),
+                Action::make('upload_certificate')
+                    ->label(__('devices.actions.upload_certificate'))
+                    ->icon('heroicon-o-document-arrow-up')
+                    ->color('success')
+                    ->form([
+                        FileUpload::make('cert_number')
+                            ->label(__('devices.columns.cert_number'))
+                            ->disk('public')
+                            ->directory('')
+                            ->preserveFilenames()
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->required(),
+                    ])
+                    ->action(function (Device $record, array $data): void {
+                        $record->update([
+                            'cert_number' => $data['cert_number'],
+                        ]);
+
+                        Notification::make()
+                            ->title(__('devices.actions.upload_certificate_success'))
+                            ->success()
+                            ->send();
+                    }),
                 EditAction::make()
                     ->color('info')
                     ->label(__('devices.actions.edit'))
@@ -184,6 +215,7 @@ class DevicesTable
                     ->label(__('devices.actions.delete'))
                     ->color('danger')
                     ->requiresConfirmation()
+                    ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin']))
                     ->successNotificationTitle(__('devices.actions.delete_success', ['label' => __('devices.label')])),
             ])
             ->headerActions([
@@ -211,9 +243,18 @@ class DevicesTable
                     ExportBulkAction::make()
                         ->label(__('devices.export.label'))
                         ->exports([
-                            \App\Exports\DeviceExport::make(),
+                            \App\Exports\DeviceExport::make()
+                                ->modifyQueryUsing(function ($query) {
+                                    $user = auth()->user();
+
+                                    if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
+                                        $query->where('customer_id', $user->customer_id);
+                                    }
+
+                                    return $query;
+                                }),
                         ])
-                        ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Hospital Admin'])),
+                        ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Hospital Admin', 'Technician'])),
                     BulkAction::make('send_renewal_bulk')
                         ->label(__('notifications.calibration_renewal.send_renewal_manual'))
                         ->icon('heroicon-o-envelope')
@@ -307,6 +348,7 @@ class DevicesTable
                     DeleteBulkAction::make()
                         ->label(__('devices.actions.delete'))
                         ->requiresConfirmation()
+                        ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin']))
                         ->successNotificationTitle(__('devices.actions.delete_multiple_success', ['label' => __('devices.plural_label')])),
                 ]),
             ]);
