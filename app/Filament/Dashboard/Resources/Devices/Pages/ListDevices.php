@@ -132,7 +132,8 @@ class ListDevices extends ListRecords
                         ->title(__('devices.generate.generate_success'))
                         ->success()
                         ->send();
-                }),
+                })
+                ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin'])),
             Action::make('import_devices')
                 ->label(__('devices.import.label'))
                 ->icon('heroicon-o-arrow-up-tray')

@@ -15,6 +15,7 @@
             @php
                 $details = [
                     ['label' => 'Nama Faskes', 'value' => $device->customer->name ?? 'N/A'],
+                    ['label' => 'Nomor Pesanan', 'value' => $device->order_number ?? 'N/A'],
                     ['label' => 'Nama Alat', 'value' => $device->deviceName->name ?? 'N/A'],
                     ['label' => 'Merk/Pembuat', 'value' => $device->brand->name ?? 'N/A'],
                     ['label' => 'Model/Tipe', 'value' => $device->type->name ?? 'N/A'],
