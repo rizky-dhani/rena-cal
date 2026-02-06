@@ -41,9 +41,10 @@
         <!-- Action Button Section -->
         <div class="mt-4 border-t border-slate-100 dark:border-white/10">
             @if($device->cert_number)
-                <a href="{{ route('certificate.download', ['cert_number' => $device->cert_number]) }}"
+                <a href="{{ route('certificate.download', ['cert_number' => $device->cert_number, 'no_download' => 1]) }}#toolbar=0"
+                   target="_blank"
                    class="flex items-center justify-center w-full py-5 bg-[#003cc2] hover:bg-[#0034a8] text-white font-semibold transition-colors duration-200">
-                    Unduh Sertifikat Kalibrasi
+                    Lihat Sertifikat Kalibrasi
                 </a>
             @else
                 <div class="flex items-center justify-center w-full py-5 bg-slate-100 dark:bg-[#1a1a1a] text-slate-400 dark:text-gray-500 font-semibold cursor-not-allowed">

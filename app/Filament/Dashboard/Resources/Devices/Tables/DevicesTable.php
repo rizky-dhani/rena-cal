@@ -85,7 +85,7 @@ class DevicesTable
                     ->searchable()
                     ->formatStateUsing(fn ($state) => $state ? 'Lihat Sertifikat' : 'Belum Tersedia')
                     ->color(fn ($state) => $state ? 'info' : 'gray')
-                    ->url(fn ($record) => $record->cert_number ? route('certificate.download', ['cert_number' => $record->cert_number]) : null)
+                    ->url(fn ($record) => $record->cert_number ? route('certificate.download', ['cert_number' => $record->cert_number, 'no_download' => 1]).'#toolbar=0' : null)
                     ->openUrlInNewTab(),
                 TextColumn::make('result')
                     ->label(__('devices.columns.result'))

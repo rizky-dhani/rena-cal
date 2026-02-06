@@ -159,6 +159,7 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
             'nomor_pesanan' => 'nullable',
             'tanggal_kalibrasi' => 'nullable|date',
             'berlaku_sd' => 'nullable|date',
+            'pic' => 'nullable|string',
         ];
     }
 
