@@ -74,12 +74,12 @@ class DevicesTable
                     ->label(__('devices.columns.calibration_date'))
                     ->date('d F Y')
                     ->sortable()
-                    ->getStateUsing(fn ($record) => $record->calibration_date ? Carbon::parse($record->calibration_date)->format('Y-m-d') : 'N/A'),
+                    ->getStateUsing(fn ($record) => $record->calibration_date ? Carbon::parse($record->calibration_date)->format('Y-m-d') : null),
                 TextColumn::make('next_calibration_date')
                     ->label(__('devices.columns.next_calibration_date'))
                     ->date('d F Y')
                     ->sortable()
-                    ->getStateUsing(fn ($record) => $record->next_calibration_date ? Carbon::parse($record->next_calibration_date)->format('Y-m-d') : 'N/A'),
+                    ->getStateUsing(fn ($record) => $record->next_calibration_date ? Carbon::parse($record->next_calibration_date)->format('Y-m-d') : null),
                 TextColumn::make('cert_number')
                     ->label(__('devices.columns.cert_number'))
                     ->searchable()
