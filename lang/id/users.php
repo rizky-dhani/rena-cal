@@ -34,7 +34,7 @@ return [
         'reset_password_success' => 'Kata sandi telah direset berhasil',
         'import_success' => ':plural_label berhasil diimpor',
         'import_failed' => 'Impor gagal',
-        'import_helper' => 'Unggah berkas Excel (.xlsx, .csv) berisi data pengguna yang akan diimpor. Berkas tersebut harus memiliki kolom: nama, email (kata sandi akan dibuatkan otomatis)',
+        'import_helper' => 'Unggah berkas Excel (.xlsx, .csv) berisi data pengguna yang akan diimpor. Berkas tersebut harus memiliki kolom: Nama, Email, Inisial, Jabatan',
         'import_file_not_found' => 'Berkas tidak ditemukan',
         'import_modal_desc' => 'Unggah berkas Excel untuk menambahkan pengguna',
         'import_modal_submit' => 'Impor',
