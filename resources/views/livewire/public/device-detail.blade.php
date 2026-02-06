@@ -28,9 +28,9 @@
             @endphp
 
             @foreach($details as $detail)
-                <div class="flex items-start text-[18px]">
-                    <span class="text-black dark:text-white w-50 shrink-0 font-bold ">{{ $detail['label'] }}</span>
-                    <span class="text-black dark:text-white mr-4">:</span>
+                <div class="flex flex-col md:flex-row md:items-start text-[18px]">
+                    <span class="text-black dark:text-white md:w-50 shrink-0 font-bold ">{{ $detail['label'] }}</span>
+                    <span class="hidden md:inline text-black dark:text-white mr-4">:</span>
                     <span class="text-black dark:text-white font-medium break-words">
                         {{ $detail['value'] }}
                     </span>
