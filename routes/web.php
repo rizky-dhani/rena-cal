@@ -45,7 +45,7 @@ Route::get('/qr-print', function () {
     $filename = 'Calibration-Labels-'.now()->format('Y-m-d').'.pdf';
 
     $pdf = Pdf::loadView('pdf.asset-calibration-labels', compact('assets', 'size'))
-        ->setPaper('A4');
+        ->setPaper('A3');
 
     return $pdf->stream($filename);
 })->name('devices.qr-print');
