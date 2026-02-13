@@ -176,6 +176,9 @@ return [
         'partially_filled' => [
             'label' => 'Partially Filled',
         ],
+        'result' => [
+            'label' => 'Result',
+        ],
     ],
 
     'export' => [

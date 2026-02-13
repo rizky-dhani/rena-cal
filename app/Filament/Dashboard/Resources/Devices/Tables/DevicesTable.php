@@ -14,6 +14,7 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -172,6 +173,12 @@ class DevicesTable
                     ->query(function ($query) {
                         return $query->whereDate('next_calibration_date', '<=', now());
                     }),
+                SelectFilter::make('result')
+                    ->label(__('devices.filters.result.label'))
+                    ->options([
+                        'Laik Pakai' => __('devices.form.result.options.fit_for_use'),
+                        'Tidak Laik Pakai' => __('devices.form.result.options.not_fit_for_use'),
+                    ]),
             ])
             ->recordActions([
                 ViewAction::make()

@@ -177,7 +177,11 @@
         .size-v4 .logo-cell { padding: 2px 5px 0px 5px; }
         .size-v4 .status-bar-row { height: 10px; }
         .size-v4 .info-section { display: none; }
-        .size-v4 .date-section { margin-top: 1px; }
+        .size-v4 .info-section-v4 { margin-bottom: 1px; }
+        .size-v4 .info-section-v4 .info-label { font-size: 3px; width: auto; min-width: 25px; white-space: nowrap; vertical-align: middle; }
+        .size-v4 .info-section-v4 .info-colon { font-size: 3px; vertical-align: middle; font-weight: bold; }
+        .size-v4 .info-section-v4 .info-value { font-size: 3px; vertical-align: middle; }
+        .size-v4 .date-section { margin-top: 5px; }
         .size-v4 .date-label { font-size: 3px; width: auto; min-width: 20px; white-space: nowrap; vertical-align: middle; }
         .size-v4 .date-colon { font-size: 3px; vertical-align: middle; font-weight: bold; }
         .size-v4 .date-box { width: 8px; height: 6px; font-size: 5px; line-height: 6px; vertical-align: middle; }
@@ -237,6 +241,21 @@
                                             </div>
                                         </div>
 
+                                        @if(($size ?? 'v3') === 'v4')
+                                        <div class="info-section-v4">
+                                            <div class="info-row">
+                                                <span class="info-label">Nama Alat</span>
+                                                <span class="info-colon">:</span>
+                                                <span class="info-value">{{ $asset->deviceName?->name }}</span>
+                                            </div>
+                                            <div class="info-row">
+                                                <span class="info-label">No. Seri</span>
+                                                <span class="info-colon">:</span>
+                                                <span class="info-value">{{ $asset->serial_number }}</span>
+                                            </div>
+                                        </div>
+                                        @endif
+
                                         <div class="date-section">
                                             <span class="date-label">Tgl<br>Kalibrasi</span>
                                             <span class="date-colon">:</span>
@@ -252,6 +271,7 @@
                                             </div>
                                         </div>
 
+                                        @if($asset->result !== 'Tidak Laik Pakai')
                                         <div class="date-section">
                                             <span class="date-label">Kalibrasi<br>Selanjutnya</span>
                                             <span class="date-colon">:</span>
@@ -266,6 +286,7 @@
                                                 <div class="date-box date-year">{{ $nextDate ? $nextDate->format('Y') : '' }}</div>
                                             </div>
                                         </div>
+                                        @endif
                                     </td>
 
                                     <!-- Barcode Column -->

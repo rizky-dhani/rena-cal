@@ -175,6 +175,9 @@ return [
         'partially_filled' => [
             'label' => 'Terisi Sebagian',
         ],
+        'result' => [
+            'label' => 'Hasil',
+        ],
     ],
 
     'export' => [
