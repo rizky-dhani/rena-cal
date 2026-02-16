@@ -30,7 +30,7 @@ class DeviceExport extends ExcelExport
                 ->heading(__('devices.columns.cert_number')),
             Column::make('result')
                 ->heading(__('devices.columns.result'))
-                ->formatStateUsing(fn ($state) => $state ? __('devices.form.result.options.'.$state) : ''),
+                ->formatStateUsing(fn ($state) => $state ?: ''),
             Column::make('customer.name')
                 ->heading(__('devices.columns.customer_id')),
             Column::make('room_name')
