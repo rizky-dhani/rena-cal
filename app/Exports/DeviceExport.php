@@ -12,8 +12,6 @@ class DeviceExport extends ExcelExport
         $this->withFilename(__('devices.export.filename').now()->format('dmY'));
 
         $this->withColumns([
-            Column::make('deviceId')
-                ->heading(__('devices.columns.deviceId')),
             Column::make('device_number')
                 ->heading(__('devices.columns.device_number')),
             Column::make('deviceName.name')
