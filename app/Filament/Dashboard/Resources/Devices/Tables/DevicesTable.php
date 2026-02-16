@@ -217,6 +217,7 @@ class DevicesTable
                     ->color('info')
                     ->label(__('devices.actions.edit'))
                     ->color('info')
+                    ->visible(fn () => ! auth()->user()->hasRole('Hospital Admin'))
                     ->successNotificationTitle(__('devices.actions.edit_success', ['label' => __('devices.label')])),
                 DeleteAction::make()
                     ->label(__('devices.actions.delete'))
@@ -296,6 +297,7 @@ class DevicesTable
                     BulkAction::make('bulk_print_qr')
                         ->label(__('devices.actions.print'))
                         ->icon('heroicon-o-document-arrow-down')
+                        ->visible(fn () => ! auth()->user()->hasRole('Hospital Admin'))
                         ->form([
                             Select::make('size')
                                 ->label(__('devices.actions.print_size.label'))
@@ -321,6 +323,7 @@ class DevicesTable
                         ->label(__('devices.actions.print_tidak_laik'))
                         ->icon('heroicon-o-document-arrow-down')
                         ->color('danger')
+                        ->visible(fn () => ! auth()->user()->hasRole('Hospital Admin'))
                         ->form([
                             Select::make('size')
                                 ->label(__('devices.actions.print_size.label'))

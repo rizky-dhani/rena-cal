@@ -17,7 +17,10 @@ class ViewDevice extends ViewRecord
         return [
             Actions\EditAction::make()
                 ->color('info')
-                ->visible(fn ($record) => auth()->id() === $record->pic_id || auth()->user()->hasAnyRole(['Admin', 'Super Admin'])),
+                ->visible(fn ($record) => 
+                    auth()->user()->hasAnyRole(['Admin', 'Super Admin']) ||
+                    (auth()->id() === $record->pic_id && ! auth()->user()->hasRole('Hospital Admin'))
+                ),
             Actions\Action::make('send_renewal_view')
                 ->label(__('notifications.calibration_renewal.send_renewal_manual'))
                 ->icon('heroicon-o-envelope')
@@ -48,7 +51,10 @@ class ViewDevice extends ViewRecord
                 }),
             Actions\DeleteAction::make()
                 ->color('danger')
-                ->visible(fn ($record) => auth()->id() === $record->pic_id || auth()->user()->hasAnyRole(['Admin', 'Super Admin'])),
+                ->visible(fn ($record) => 
+                    auth()->user()->hasAnyRole(['Admin', 'Super Admin']) ||
+                    (auth()->id() === $record->pic_id && ! auth()->user()->hasRole('Hospital Admin'))
+                ),
             Actions\Action::make('public_detail')
                 ->label(__('devices.actions.public_detail'))
                 ->icon('heroicon-o-eye')

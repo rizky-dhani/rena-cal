@@ -51,11 +51,6 @@ class DevicePolicy
             return true;
         }
 
-        // Hospital Admin can only update devices belonging to their customer
-        if ($user->hasRole('Hospital Admin') && $user->customer_id === $device->customer_id) {
-            return true;
-        }
-
         return $user->can('update-device');
     }
 
@@ -65,11 +60,6 @@ class DevicePolicy
     public function delete(User $user, Device $device): bool
     {
         if ($user->hasRole(['Super Admin', 'Admin', 'Technician'])) {
-            return true;
-        }
-
-        // Hospital Admin can only delete devices belonging to their customer
-        if ($user->hasRole('Hospital Admin') && $user->customer_id === $device->customer_id) {
             return true;
         }
 
