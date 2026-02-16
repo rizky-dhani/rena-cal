@@ -194,6 +194,7 @@ class DevicesTable
                     ->label(__('devices.actions.upload_certificate'))
                     ->icon('heroicon-o-document-arrow-up')
                     ->color('success')
+                    ->visible(fn () => ! auth()->user()->hasRole('Hospital Admin'))
                     ->form([
                         FileUpload::make('cert_number')
                             ->label(__('devices.columns.cert_number'))
