@@ -3,7 +3,6 @@
 namespace App\Livewire\Public;
 
 use App\Models\Device;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -15,8 +14,6 @@ class DeviceDetail extends Component
 
     public $qrCodeExists = false;
 
-    public $showCertificateButton = false;
-
     public function mount($deviceId)
     {
         // $this->device = Device::with(['deviceName', 'brand', 'type', 'pic', 'customer'])->findOrFail($deviceId);
@@ -26,10 +23,6 @@ class DeviceDetail extends Component
         if ($this->device->barcode) {
             $this->qrCodeExists = Storage::disk('public')->exists($this->device->barcode);
         }
-
-        // Show certificate button only for authenticated users without Hospital Admin role
-        $user = Auth::user();
-        $this->showCertificateButton = $user && ! $user->hasRole('Hospital Admin');
     }
 
     #[Title('Detail Perangkat')]
@@ -39,7 +32,6 @@ class DeviceDetail extends Component
         return view('livewire.public.device-detail', [
             'device' => $this->device,
             'qrCodeExists' => $this->qrCodeExists,
-            'showCertificateButton' => $this->showCertificateButton,
         ]);
     }
 }
