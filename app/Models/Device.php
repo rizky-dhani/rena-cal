@@ -21,6 +21,21 @@ class Device extends Model
         'deviceId' => 'string',
     ];
 
+    public function setCertPasswordAttribute($value)
+    {
+        if (! $value) {
+            $this->attributes['cert_password'] = null;
+
+            return;
+        }
+
+        if (! preg_match('/^\$2y\$/', $value)) {
+            $this->attributes['cert_password'] = bcrypt($value);
+        } else {
+            $this->attributes['cert_password'] = $value;
+        }
+    }
+
     /**
      * Generate a new UUID for the device ID when creating a new record
      */

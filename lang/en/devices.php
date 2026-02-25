@@ -160,6 +160,9 @@ return [
         'cert_number' => [
             'label' => 'Certificate Number',
         ],
+        'cert_password' => [
+            'label' => 'Certificate Password',
+        ],
         'notes' => [
             'label' => 'Notes',
             'empty' => 'No notes available',

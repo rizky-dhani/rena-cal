@@ -16,9 +16,29 @@ Route::get('/devices/{deviceId}', function ($deviceId) {
 
 // Certificate download route
 Route::get('/certificate/download/{cert_number}', function (Illuminate\Http\Request $request, $cert_number) {
-    // Block any attempts to traverse directories using ".."
     if (str_contains($cert_number, '..')) {
         abort(403, 'Invalid path');
+    }
+
+    $device = Device::where('cert_number', $cert_number)->first();
+
+    if ($device && $device->cert_password) {
+        $sessionKey = 'cert_verified_'.$device->id;
+        $verifiedAt = session()->get('cert_verified_at_'.$device->id);
+
+        if (! $verifiedAt || ! session()->get($sessionKey)) {
+            return redirect()->route('devices.show', ['deviceId' => $device->deviceId])
+                ->with('error', 'Silakan masukkan kata sandi untuk melihat sertifikat.');
+        }
+
+        $verifiedAt = \Carbon\Carbon::parse($verifiedAt);
+        if ($verifiedAt->diffInMinutes(now()) > 120) {
+            session()->forget($sessionKey);
+            session()->forget('cert_verified_at_'.$device->id);
+
+            return redirect()->route('devices.show', ['deviceId' => $device->deviceId])
+                ->with('error', 'Sesi verifikasi telah kedaluwarsa. Silakan masukkan kata sandi lagi.');
+        }
     }
 
     $disk = \Illuminate\Support\Facades\Storage::disk('public');

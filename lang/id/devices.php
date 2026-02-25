@@ -159,6 +159,9 @@ return [
         'cert_number' => [
             'label' => 'Nomor Sertifikat',
         ],
+        'cert_password' => [
+            'label' => 'Kata Sandi Sertifikat',
+        ],
         'notes' => [
             'label' => 'Catatan',
             'empty' => 'Tidak ada catatan tersedia',

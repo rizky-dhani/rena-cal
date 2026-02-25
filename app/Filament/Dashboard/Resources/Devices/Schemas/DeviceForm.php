@@ -122,6 +122,11 @@ class DeviceForm
                         fn (TemporaryUploadedFile $file, $record): string => 'CERT-'.$record->device_number.'.'.$file->getClientOriginalExtension()
                     )
                     ->columnSpanFull(),
+                TextInput::make('cert_password')
+                    ->label(__('devices.form.cert_password.label'))
+                    ->password()
+                    ->revealable()
+                    ->nullable(),
             ]);
     }
 }
