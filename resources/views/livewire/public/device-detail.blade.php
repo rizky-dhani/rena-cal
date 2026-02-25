@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] flex flex-col items-center justify-center p-4" oncontextmenu="return false" onselectstart="return false" ondragstart="return false" style="-webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+<div class="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] flex flex-col items-center justify-center p-4">
     <!-- Card Container -->
     <div class="w-full max-w-2xl bg-white dark:bg-[#141414] rounded-[1rem] border border-slate-200 dark:border-white/5 shadow-2xl overflow-hidden">
         
