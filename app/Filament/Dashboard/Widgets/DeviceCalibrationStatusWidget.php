@@ -54,7 +54,7 @@ class DeviceCalibrationStatusWidget extends BaseWidget
             Stat::make(__('widgets.device_calibration_status.within_60_days'), Number::format($within60Days))
                 ->description(__('widgets.device_calibration_status.alat'))
                 ->descriptionIcon(Heroicon::Clock)
-                ->color('success')
+                ->color('warning')
                 ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
                     'tableFilters' => [
                         'within_60_days' => [
