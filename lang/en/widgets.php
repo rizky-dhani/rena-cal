@@ -7,7 +7,7 @@ return [
         'filled' => 'Filled',
         'partial' => 'Partially Filled',
         'empty' => 'Empty',
-        'unit' => 'Device(s)'
+        'unit' => 'Device(s)',
     ],
     'device_stats' => [
         'heading' => 'Device Statistics',
@@ -20,6 +20,7 @@ return [
         'more_than_60_days' => 'More than 60 Days',
         'within_60_days' => 'Within 60 Days',
         'overdue' => 'Overdue',
+        'alat' => 'Alat',
     ],
     'record_count' => [
         'heading' => 'Record Count',

@@ -40,6 +40,7 @@ class DeviceCalibrationStatusWidget extends BaseWidget
 
         return [
             Stat::make(__('widgets.device_calibration_status.more_than_60_days'), Number::format($moreThan60Days))
+                ->description(__('widgets.device_calibration_status.alat'))
                 ->descriptionIcon(Heroicon::CheckCircle)
                 ->color('success')
                 ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
@@ -51,6 +52,7 @@ class DeviceCalibrationStatusWidget extends BaseWidget
                 ])),
 
             Stat::make(__('widgets.device_calibration_status.within_60_days'), Number::format($within60Days))
+                ->description(__('widgets.device_calibration_status.alat'))
                 ->descriptionIcon(Heroicon::Clock)
                 ->color('success')
                 ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
@@ -62,6 +64,7 @@ class DeviceCalibrationStatusWidget extends BaseWidget
                 ])),
 
             Stat::make(__('widgets.device_calibration_status.overdue'), Number::format($overdue))
+                ->description(__('widgets.device_calibration_status.alat'))
                 ->descriptionIcon(Heroicon::ExclamationTriangle)
                 ->color('danger')
                 ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [

@@ -7,7 +7,7 @@ return [
         'filled' => 'Terisi',
         'partial' => 'Terisi Sebagian',
         'empty' => 'Belum Terisi',
-        'unit' => 'Alat'
+        'unit' => 'Alat',
     ],
     'device_stats' => [
         'heading' => 'Statistik Alat',
@@ -20,6 +20,7 @@ return [
         'more_than_60_days' => 'Lebih dari 60 Hari',
         'within_60_days' => 'Dalam 60 Hari',
         'overdue' => 'Terlambat',
+        'alat' => 'Alat',
     ],
     'record_count' => [
         'heading' => 'Jumlah Catatan',

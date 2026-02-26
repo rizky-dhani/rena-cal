@@ -37,10 +37,6 @@ class DeviceInfolist
                                     ->label(__('devices.form.customer_id.label')),
                                 TextEntry::make('pic.name')
                                     ->label(__('devices.form.user_id.label')),
-                                TextEntry::make('notes')
-                                    ->label(__('devices.form.notes.label'))
-                                    ->columnSpanFull()
-                                    ->placeholder(__('devices.form.notes.empty')),
                             ])
                             ->columnSpan(3),
 
