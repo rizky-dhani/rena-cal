@@ -106,8 +106,7 @@ class DevicesTable
                             ->whereNotNull('pic_id')
                             ->whereNotNull('customer_id')
                             ->whereNotNull('calibration_date')
-                            ->whereNotNull('next_calibration_date')
-                            ->whereNotNull('cert_number');
+                            ->whereNotNull('next_calibration_date');
                     }),
                 \Filament\Tables\Filters\Filter::make('empty')
                     ->label(__('devices.filters.empty.label'))
@@ -120,8 +119,7 @@ class DevicesTable
                             ->whereNull('pic_id')
                             ->whereNull('customer_id')
                             ->whereNull('calibration_date')
-                            ->whereNull('next_calibration_date')
-                            ->whereNull('cert_number');
+                            ->whereNull('next_calibration_date');
                     }),
                 \Filament\Tables\Filters\Filter::make('partially_filled')
                     ->label(__('devices.filters.partially_filled.label'))
@@ -136,8 +134,7 @@ class DevicesTable
                                 ->orWhereNotNull('pic_id')
                                 ->orWhereNotNull('customer_id')
                                 ->orWhereNotNull('calibration_date')
-                                ->orWhereNotNull('next_calibration_date')
-                                ->orWhereNotNull('cert_number');
+                                ->orWhereNotNull('next_calibration_date');
                         })
                             ->where(function ($q) {
                                 $q->whereNull('device_name_id')
@@ -149,8 +146,7 @@ class DevicesTable
                                     ->orWhereNull('pic_id')
                                     ->orWhereNull('customer_id')
                                     ->orWhereNull('calibration_date')
-                                    ->orWhereNull('next_calibration_date')
-                                    ->orWhereNull('cert_number');
+                                    ->orWhereNull('next_calibration_date');
                             });
                     }),
                 \Filament\Tables\Filters\Filter::make('more_than_60_days')

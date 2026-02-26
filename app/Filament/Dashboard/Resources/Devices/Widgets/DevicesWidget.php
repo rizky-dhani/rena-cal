@@ -35,8 +35,7 @@ class DevicesWidget extends StatsOverviewWidget
             ->whereNotNull('pic_id')
             ->whereNotNull('customer_id')
             ->whereNotNull('calibration_date')
-            ->whereNotNull('next_calibration_date')
-            ->whereNotNull('cert_number');
+            ->whereNotNull('next_calibration_date');
 
         if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
             $filledDevices->where('customer_id', $user->customer_id);
@@ -52,8 +51,7 @@ class DevicesWidget extends StatsOverviewWidget
             ->whereNull('pic_id')
             ->whereNull('customer_id')
             ->whereNull('calibration_date')
-            ->whereNull('next_calibration_date')
-            ->whereNull('cert_number');
+            ->whereNull('next_calibration_date');
 
         if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
             $emptyDevices->where('customer_id', $user->customer_id);
