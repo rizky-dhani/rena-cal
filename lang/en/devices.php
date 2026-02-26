@@ -29,7 +29,6 @@ return [
         'calibrated_date' => 'Calibrated Date',
         'cert_number' => 'Certificate Number',
         'result' => 'Result',
-        'procurement_year' => 'Procurement Year',
     ],
 
     'actions' => [
@@ -136,9 +135,6 @@ return [
         ],
         'address' => [
             'label' => 'Address',
-        ],
-        'procurement_year' => [
-            'label' => 'Procurement Year',
         ],
         'calibrated_date' => [
             'label' => 'Calibrated Date',

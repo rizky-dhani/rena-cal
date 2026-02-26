@@ -97,9 +97,6 @@ class DeviceForm
                             ->default(null)
                             ->columnSpanFull(),
                     ]),
-                TextInput::make('procurement_year')
-                    ->label(__('devices.form.procurement_year.label'))
-                    ->default(null),
                 DatePicker::make('calibration_date')
                     ->label(__('devices.form.calibration_date.label'))
                     ->native(false)

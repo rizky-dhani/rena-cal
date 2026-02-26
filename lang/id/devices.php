@@ -29,7 +29,6 @@ return [
         'calibrated_date' => 'Tanggal Kalibrasi',
         'cert_number' => 'Nomor Sertifikat',
         'result' => 'Hasil',
-        'procurement_year' => 'Tahun Pengadaan',
     ],
 
     'actions' => [
@@ -136,9 +135,6 @@ return [
         ],
         'address' => [
             'label' => 'Alamat',
-        ],
-        'procurement_year' => [
-            'label' => 'Tahun Pengadaan',
         ],
         'calibrated_date' => [
             'label' => 'Tanggal Kalibrasi',

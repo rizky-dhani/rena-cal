@@ -14,39 +14,52 @@ class DevicesWidget extends StatsOverviewWidget
     }
 
     protected ?string $pollingInterval = null;
+
     protected function getStats(): array
     {
-        // Count total devices
-        $totalDevices = Device::count();
+        $user = auth()->user();
+        $query = Device::query();
 
-        // Count filled devices - where all non-exception fields are not null
+        if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
+            $query->where('customer_id', $user->customer_id);
+        }
+
+        $totalDevices = $query->count();
+
         $filledDevices = Device::whereNotNull('device_name_id')
             ->whereNotNull('device_number')
             ->whereNotNull('brand_id')
             ->whereNotNull('type_id')
             ->whereNotNull('serial_number')
             ->whereNotNull('room_name')
-            ->whereNotNull('procurement_year')
             ->whereNotNull('pic_id')
             ->whereNotNull('customer_id')
             ->whereNotNull('calibration_date')
             ->whereNotNull('next_calibration_date')
-            ->whereNotNull('cert_number')
-            ->count();
+            ->whereNotNull('cert_number');
 
-        // Count empty devices - where all non-exception fields are null
+        if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
+            $filledDevices->where('customer_id', $user->customer_id);
+        }
+
+        $filledDevices = $filledDevices->count();
+
         $emptyDevices = Device::whereNull('device_name_id')
             ->whereNull('brand_id')
             ->whereNull('type_id')
             ->whereNull('serial_number')
             ->whereNull('room_name')
-            ->whereNull('procurement_year')
             ->whereNull('pic_id')
             ->whereNull('customer_id')
             ->whereNull('calibration_date')
             ->whereNull('next_calibration_date')
-            ->whereNull('cert_number')
-            ->count();
+            ->whereNull('cert_number');
+
+        if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
+            $emptyDevices->where('customer_id', $user->customer_id);
+        }
+
+        $emptyDevices = $emptyDevices->count();
 
         // Count partially filled devices - where some but not all non-exception fields are null
         $partiallyFilledDevices = $totalDevices - $filledDevices - $emptyDevices;
@@ -64,10 +77,10 @@ class DevicesWidget extends StatsOverviewWidget
                 ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
                     'filters' => [
                         'filled' => [
-                            'isActive' => 'true'
+                            'isActive' => 'true',
                         ],
                         'empty' => [
-                            'isActive' => 'false'
+                            'isActive' => 'false',
                         ],
                     ],
                 ])),
@@ -79,7 +92,7 @@ class DevicesWidget extends StatsOverviewWidget
                 ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
                     'filters' => [
                         'partially_filled' => [
-                            'isActive' => 'true'
+                            'isActive' => 'true',
                         ],
                     ],
                 ])),
@@ -91,10 +104,10 @@ class DevicesWidget extends StatsOverviewWidget
                 ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
                     'filters' => [
                         'filled' => [
-                            'isActive' => 'false'
+                            'isActive' => 'false',
                         ],
                         'empty' => [
-                            'isActive' => 'true'
+                            'isActive' => 'true',
                         ],
                     ],
                 ])),

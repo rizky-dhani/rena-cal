@@ -14,8 +14,8 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
@@ -103,7 +103,6 @@ class DevicesTable
                             ->whereNotNull('type_id')
                             ->whereNotNull('serial_number')
                             ->whereNotNull('room_name')
-                            ->whereNotNull('procurement_year')
                             ->whereNotNull('pic_id')
                             ->whereNotNull('customer_id')
                             ->whereNotNull('calibration_date')
@@ -118,7 +117,6 @@ class DevicesTable
                             ->whereNull('type_id')
                             ->whereNull('serial_number')
                             ->whereNull('room_name')
-                            ->whereNull('procurement_year')
                             ->whereNull('pic_id')
                             ->whereNull('customer_id')
                             ->whereNull('calibration_date')
@@ -135,7 +133,6 @@ class DevicesTable
                                 ->orWhereNotNull('type_id')
                                 ->orWhereNotNull('serial_number')
                                 ->orWhereNotNull('room_name')
-                                ->orWhereNotNull('procurement_year')
                                 ->orWhereNotNull('pic_id')
                                 ->orWhereNotNull('customer_id')
                                 ->orWhereNotNull('calibration_date')
@@ -149,7 +146,6 @@ class DevicesTable
                                     ->orWhereNull('type_id')
                                     ->orWhereNull('serial_number')
                                     ->orWhereNull('room_name')
-                                    ->orWhereNull('procurement_year')
                                     ->orWhereNull('pic_id')
                                     ->orWhereNull('customer_id')
                                     ->orWhereNull('calibration_date')
