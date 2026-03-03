@@ -35,7 +35,7 @@ class BrandResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return null;
+        return __('navigation.Devices');
     }
 
     public static function getNavigationParentItem(): ?string

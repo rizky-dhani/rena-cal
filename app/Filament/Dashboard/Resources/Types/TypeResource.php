@@ -32,10 +32,10 @@ class TypeResource extends Resource
     {
         return __('types.navigation_label');
     }
-
+    
     public static function getNavigationGroup(): ?string
     {
-        return null;
+        return __('navigation.Devices');
     }
 
     public static function getNavigationParentItem(): ?string
