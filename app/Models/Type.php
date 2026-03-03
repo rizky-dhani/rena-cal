@@ -22,6 +22,17 @@ class Type extends Model
             if (empty($slug)) {
                 $slug = 'type-'.Str::random(8);
             }
+
+            $query = static::where('slug', $slug)->where('brand_id', $type->brand_id);
+            if ($type->exists) {
+                $query->where('id', '!=', $type->id);
+            }
+
+            $count = $query->count();
+            if ($count > 0) {
+                $slug = $slug.'-'.($count + 1);
+            }
+
             $type->slug = $slug;
         });
     }
