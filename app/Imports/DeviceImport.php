@@ -19,6 +19,8 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class DeviceImport implements ToModel, WithHeadingRow, WithValidation
 {
+    protected array $typeCache = [];
+
     /**
      * @return \Illuminate\Database\Eloquent\Model|null
      */
@@ -39,7 +41,14 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
         $typeId = null;
         $typeName = $row['tipe'] ?? '';
         if (! empty($typeName) && trim($typeName) !== '-' && $brandId) {
-            $typeId = Type::firstOrCreate(['name' => $typeName, 'brand_id' => $brandId])->id;
+            $cacheKey = $brandId.'|'.$typeName;
+            if (isset($this->typeCache[$cacheKey])) {
+                $typeId = $this->typeCache[$cacheKey];
+            } else {
+                $type = Type::firstOrCreate(['name' => $typeName, 'brand_id' => $brandId]);
+                $typeId = $type->id;
+                $this->typeCache[$cacheKey] = $typeId;
+            }
         }
 
         // Customer lookup, creating record if it doesn't exist
