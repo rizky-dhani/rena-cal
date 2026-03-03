@@ -21,6 +21,8 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
 {
     protected array $typeCache = [];
 
+    protected array $brandCache = [];
+
     /**
      * @return \Illuminate\Database\Eloquent\Model|null
      */
@@ -34,18 +36,37 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
         }
 
         // Map names to IDs, creating related records if they don't exist (where possible)
+        // Use case-insensitive matching for brand
+        $brandName = $row['merk'] ?? '';
+        if (! empty($brandName)) {
+            $brandCacheKey = strtolower(trim($brandName));
+            if (isset($this->brandCache[$brandCacheKey])) {
+                $brandId = $this->brandCache[$brandCacheKey];
+            } else {
+                $brand = Brand::whereRaw('LOWER(name) = ?', [strtolower($brandName)])->first();
+                if ($brand) {
+                    $brandId = $brand->id;
+                } else {
+                    $brand = Brand::create(['name' => $brandName]);
+                    $brandId = $brand->id;
+                }
+                $this->brandCache[$brandCacheKey] = $brandId;
+            }
+        } else {
+            $brandId = null;
+        }
+
         $deviceNameId = ! empty($row['nama_alat']) ? DeviceName::firstOrCreate(['name' => $row['nama_alat']])->id : null;
-        $brandId = ! empty($row['merk']) ? Brand::firstOrCreate(['name' => $row['merk']])->id : null;
 
         // Type requires brand_id
         $typeId = null;
         $typeName = $row['tipe'] ?? '';
         if (! empty($typeName) && trim($typeName) !== '-' && $brandId) {
-            $cacheKey = $brandId.'|'.$typeName;
+            $cacheKey = $brandId.'|'.strtolower($typeName);
             if (isset($this->typeCache[$cacheKey])) {
                 $typeId = $this->typeCache[$cacheKey];
             } else {
-                $type = Type::where('name', $typeName)->where('brand_id', $brandId)->first();
+                $type = Type::whereRaw('LOWER(name) = ?', [strtolower($typeName)])->where('brand_id', $brandId)->first();
                 if (! $type) {
                     $type = Type::create(['name' => $typeName, 'brand_id' => $brandId]);
                 }
