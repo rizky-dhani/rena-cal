@@ -44,19 +44,12 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
         // Customer lookup, creating record if it doesn't exist
         $customerId = ! empty($row['nama_pemilik']) ? Customer::firstOrCreate(['name' => $row['nama_pemilik']])->id : null;
 
-        // Determine admin_id and pic_id based on logged-in user role
+        // Determine pic_id based on logged-in user role
         $user = auth()->user();
-        $adminId = null;
         $picId = ! empty($row['pic']) ? User::where('name', $row['pic'])->first()?->id : null;
 
-        if ($user) {
-            if ($user->hasRole(['Admin', 'Super Admin'])) {
-                $adminId = $user->id;
-            }
-
-            if ($user->hasRole('Technician')) {
-                $picId = $user->id;
-            }
+        if ($user && $user->hasRole('Technician')) {
+            $picId = $user->id;
         }
 
         $calibrationDate = $this->transformDate($row['tanggal_kalibrasi'] ?? null);
@@ -71,7 +64,6 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
             'type_id' => $typeId,
             'customer_id' => $customerId,
             'pic_id' => $picId,
-            'admin_id' => $adminId,
             'serial_number' => $row['nomor_seri'] ?? null,
             'order_number' => $row['nomor_pesanan'] ?? null,
             'calibration_date' => $calibrationDate,
