@@ -17,8 +17,12 @@ class Type extends Model
      */
     protected static function booted()
     {
-        static::saving(function($type){
-            $type->slug = Str::slug($type->name);
+        static::saving(function ($type) {
+            $slug = Str::slug($type->name);
+            if (empty($slug)) {
+                $slug = 'type-'.Str::random(8);
+            }
+            $type->slug = $slug;
         });
     }
 

@@ -37,8 +37,9 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
 
         // Type requires brand_id
         $typeId = null;
-        if (! empty($row['tipe']) && $brandId) {
-            $typeId = Type::firstOrCreate(['name' => $row['tipe'], 'brand_id' => $brandId])->id;
+        $typeName = $row['tipe'] ?? '';
+        if (! empty($typeName) && trim($typeName) !== '-' && $brandId) {
+            $typeId = Type::firstOrCreate(['name' => $typeName, 'brand_id' => $brandId])->id;
         }
 
         // Customer lookup, creating record if it doesn't exist
