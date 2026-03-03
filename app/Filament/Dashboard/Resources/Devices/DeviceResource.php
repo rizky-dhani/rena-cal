@@ -13,7 +13,6 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use UnitEnum;
 
 class DeviceResource extends Resource
 {
@@ -39,6 +38,11 @@ class DeviceResource extends Resource
     public static function getNavigationGroup(): ?string
     {
         return __('navigation.Devices');
+    }
+
+    public static function getNavigationParentItem(): ?string
+    {
+        return null;
     }
 
     public static function form(Schema $schema): Schema

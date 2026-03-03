@@ -2,14 +2,11 @@
 
 namespace App\Filament\Dashboard\Resources\Types;
 
-use App\Filament\Dashboard\Resources\Types\Pages\CreateType;
-use App\Filament\Dashboard\Resources\Types\Pages\EditType;
 use App\Filament\Dashboard\Resources\Types\Pages\ListTypes;
 use App\Filament\Dashboard\Resources\Types\Schemas\TypeForm;
 use App\Filament\Dashboard\Resources\Types\Tables\TypesTable;
 use App\Models\Type;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -38,12 +35,12 @@ class TypeResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('navigation.Devices');
+        return null;
     }
 
     public static function getNavigationParentItem(): ?string
     {
-        return __('navigation.Devices');
+        return __('devices.navigation_label');
     }
 
     public static function form(Schema $schema): Schema
