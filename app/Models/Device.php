@@ -59,14 +59,8 @@ class Device extends Model
 
             // Automatically attribute PIC if updated by a Technician
             $user = auth()->user();
-            if ($user) {
-                if ($user->hasRole('Technician')) {
-                    $device->pic_id = $user->id;
-                }
-
-                if ($user->hasRole(['Admin', 'Super Admin'])) {
-                    $device->admin_id = $user->id;
-                }
+            if ($user && $user->hasRole('Technician')) {
+                $device->pic_id = $user->id;
             }
         });
 
@@ -107,14 +101,6 @@ class Device extends Model
     public function pic()
     {
         return $this->belongsTo(User::class, 'pic_id');
-    }
-
-    /**
-     * A device belongs to an admin user (who created it)
-     */
-    public function admin()
-    {
-        return $this->belongsTo(User::class, 'admin_id');
     }
 
     /**
