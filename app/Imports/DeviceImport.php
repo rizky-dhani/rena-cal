@@ -45,7 +45,10 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
             if (isset($this->typeCache[$cacheKey])) {
                 $typeId = $this->typeCache[$cacheKey];
             } else {
-                $type = Type::firstOrCreate(['name' => $typeName, 'brand_id' => $brandId]);
+                $type = Type::where('name', $typeName)->where('brand_id', $brandId)->first();
+                if (! $type) {
+                    $type = Type::create(['name' => $typeName, 'brand_id' => $brandId]);
+                }
                 $typeId = $type->id;
                 $this->typeCache[$cacheKey] = $typeId;
             }
