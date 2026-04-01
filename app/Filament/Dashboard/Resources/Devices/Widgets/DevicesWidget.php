@@ -44,24 +44,9 @@ class DevicesWidget extends StatsOverviewWidget
 
         $filledDevices = $filledDevices->count();
 
-        // Count partially filled devices - all required fields filled EXCEPT cert_number is empty
-        $partiallyFilledDevices = Device::whereNotNull('device_name_id')
-            ->whereNotNull('device_number')
-            ->whereNotNull('brand_id')
-            ->whereNotNull('type_id')
-            ->whereNotNull('serial_number')
-            ->whereNotNull('room_name')
-            ->whereNotNull('pic_id')
-            ->whereNotNull('customer_id')
-            ->whereNotNull('calibration_date')
-            ->whereNotNull('next_calibration_date')
-            ->whereNull('cert_number'); // Certificate NOT uploaded but all other fields filled
-
-        if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
-            $partiallyFilledDevices->where('customer_id', $user->customer_id);
-        }
-
-        $partiallyFilledDevices = $partiallyFilledDevices->count();
+        // Count partially filled devices - NOT empty AND NOT fully filled
+        // Uses same key fields as emptyDevices: order_number, brand_id, type_id, serial_number, customer_id, calibration_date, next_calibration_date
+        $partiallyFilledDevices = $totalDevices - $filledDevices - $emptyDevices;
 
         // Empty devices - key fields not filled yet (ANY of these fields empty)
         $emptyDevices = Device::where(function ($query) {
