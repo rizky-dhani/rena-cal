@@ -106,36 +106,40 @@ class DevicesTable
                             ->whereNotNull('pic_id')
                             ->whereNotNull('customer_id')
                             ->whereNotNull('calibration_date')
-                            ->whereNotNull('next_calibration_date');
+                            ->whereNotNull('next_calibration_date')
+                            ->whereNotNull('cert_number');
                     }),
                 \Filament\Tables\Filters\Filter::make('empty')
                     ->label(__('devices.filters.empty.label'))
                     ->query(function ($query) {
-                        return $query->whereNull('device_name_id')
+                        return $query->whereNull('order_number')
                             ->whereNull('brand_id')
                             ->whereNull('type_id')
                             ->whereNull('serial_number')
-                            ->whereNull('room_name')
-                            ->whereNull('pic_id')
                             ->whereNull('customer_id')
                             ->whereNull('calibration_date')
-                            ->whereNull('next_calibration_date');
+                            ->whereNull('next_calibration_date')
+                            ->whereNull('cert_number')
+                            ->whereNull('cert_password')
+                            ->whereNull('device_name_id')
+                            ->whereNull('room_name');
                     }),
                 \Filament\Tables\Filters\Filter::make('partially_filled')
                     ->label(__('devices.filters.partially_filled.label'))
                     ->query(function ($query) {
-                        return $query->where(function ($q) {
-                            $q->whereNotNull('device_name_id')
-                                ->orWhereNotNull('device_number')
-                                ->orWhereNotNull('brand_id')
-                                ->orWhereNotNull('type_id')
-                                ->orWhereNotNull('serial_number')
-                                ->orWhereNotNull('room_name')
-                                ->orWhereNotNull('pic_id')
-                                ->orWhereNotNull('customer_id')
-                                ->orWhereNotNull('calibration_date')
-                                ->orWhereNotNull('next_calibration_date');
-                        })
+                        // NOT empty AND NOT fully filled
+                        // First, exclude empty records
+                        return $query->whereNotNull('order_number')
+                            ->orWhereNotNull('brand_id')
+                            ->orWhereNotNull('type_id')
+                            ->orWhereNotNull('serial_number')
+                            ->orWhereNotNull('customer_id')
+                            ->orWhereNotNull('calibration_date')
+                            ->orWhereNotNull('next_calibration_date')
+                            ->orWhereNotNull('cert_number')
+                            ->orWhereNotNull('cert_password')
+                            ->orWhereNotNull('device_name_id')
+                            ->orWhereNotNull('room_name')
                             ->where(function ($q) {
                                 $q->whereNull('device_name_id')
                                     ->orWhereNull('device_number')
@@ -146,7 +150,8 @@ class DevicesTable
                                     ->orWhereNull('pic_id')
                                     ->orWhereNull('customer_id')
                                     ->orWhereNull('calibration_date')
-                                    ->orWhereNull('next_calibration_date');
+                                    ->orWhereNull('next_calibration_date')
+                                    ->orWhereNull('cert_number');
                             });
                     }),
                 \Filament\Tables\Filters\Filter::make('more_than_60_days')
