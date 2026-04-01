@@ -35,13 +35,33 @@ class DevicesWidget extends StatsOverviewWidget
             ->whereNotNull('pic_id')
             ->whereNotNull('customer_id')
             ->whereNotNull('calibration_date')
-            ->whereNotNull('next_calibration_date');
+            ->whereNotNull('next_calibration_date')
+            ->whereNotNull('cert_number'); // Certificate must be uploaded
 
         if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
             $filledDevices->where('customer_id', $user->customer_id);
         }
 
         $filledDevices = $filledDevices->count();
+
+        // Count partially filled devices - all required fields filled EXCEPT cert_number is empty
+        $partiallyFilledDevices = Device::whereNotNull('device_name_id')
+            ->whereNotNull('device_number')
+            ->whereNotNull('brand_id')
+            ->whereNotNull('type_id')
+            ->whereNotNull('serial_number')
+            ->whereNotNull('room_name')
+            ->whereNotNull('pic_id')
+            ->whereNotNull('customer_id')
+            ->whereNotNull('calibration_date')
+            ->whereNotNull('next_calibration_date')
+            ->whereNull('cert_number'); // Certificate NOT uploaded but all other fields filled
+
+        if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
+            $partiallyFilledDevices->where('customer_id', $user->customer_id);
+        }
+
+        $partiallyFilledDevices = $partiallyFilledDevices->count();
 
         $emptyDevices = Device::whereNull('device_name_id')
             ->whereNull('brand_id')
@@ -58,9 +78,6 @@ class DevicesWidget extends StatsOverviewWidget
         }
 
         $emptyDevices = $emptyDevices->count();
-
-        // Count partially filled devices - where some but not all non-exception fields are null
-        $partiallyFilledDevices = $totalDevices - $filledDevices - $emptyDevices;
 
         return [
             Stat::make(__('widgets.qr.total'), $totalDevices)
