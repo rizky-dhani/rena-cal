@@ -54,7 +54,8 @@ class DevicesWidget extends StatsOverviewWidget
             ->whereNull('next_calibration_date')
             ->whereNull('cert_number')
             ->whereNull('cert_password')
-            ->whereNull('device_name_id');
+            ->whereNull('device_name_id')
+            ->whereNull('room_name');
 
         if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
             $emptyDevices->where('customer_id', $user->customer_id);
