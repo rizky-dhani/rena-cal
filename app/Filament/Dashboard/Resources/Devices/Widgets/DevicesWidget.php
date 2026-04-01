@@ -63,14 +63,16 @@ class DevicesWidget extends StatsOverviewWidget
 
         $partiallyFilledDevices = $partiallyFilledDevices->count();
 
-        // Empty devices - key fields not filled yet
-        $emptyDevices = Device::whereNull('order_number')
-            ->whereNull('brand_id')
-            ->whereNull('type_id')
-            ->whereNull('serial_number')
-            ->whereNull('customer_id')
-            ->whereNull('calibration_date')
-            ->whereNull('next_calibration_date');
+        // Empty devices - key fields not filled yet (ANY of these fields empty)
+        $emptyDevices = Device::where(function ($query) {
+            $query->whereNull('order_number')
+                ->orWhereNull('brand_id')
+                ->orWhereNull('type_id')
+                ->orWhereNull('serial_number')
+                ->orWhereNull('customer_id')
+                ->orWhereNull('calibration_date')
+                ->orWhereNull('next_calibration_date');
+        });
 
         if ($user && $user->hasRole('Hospital Admin') && $user->customer_id) {
             $emptyDevices->where('customer_id', $user->customer_id);
