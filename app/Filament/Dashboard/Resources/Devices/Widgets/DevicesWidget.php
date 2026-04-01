@@ -44,10 +44,6 @@ class DevicesWidget extends StatsOverviewWidget
 
         $filledDevices = $filledDevices->count();
 
-        // Count partially filled devices - NOT empty AND NOT fully filled
-        // Uses same key fields as emptyDevices: order_number, brand_id, type_id, serial_number, customer_id, calibration_date, next_calibration_date
-        $partiallyFilledDevices = $totalDevices - $filledDevices - $emptyDevices;
-
         // Empty devices - ALL key fields are NULL
         $emptyDevices = Device::whereNull('order_number')
             ->whereNull('brand_id')
@@ -62,6 +58,10 @@ class DevicesWidget extends StatsOverviewWidget
         }
 
         $emptyDevices = $emptyDevices->count();
+
+        // Count partially filled devices - NOT empty AND NOT fully filled
+        // Uses same key fields as emptyDevices: order_number, brand_id, type_id, serial_number, customer_id, calibration_date, next_calibration_date
+        $partiallyFilledDevices = $totalDevices - $filledDevices - $emptyDevices;
 
         return [
             Stat::make(__('widgets.qr.total'), $totalDevices)
