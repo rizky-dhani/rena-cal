@@ -357,7 +357,27 @@ class DevicesTable
                         ->label(__('devices.actions.delete'))
                         ->requiresConfirmation()
                         ->visible(fn () => auth()->user()->hasAnyRole(['Super Admin', 'Admin']))
-                        ->successNotificationTitle(__('devices.actions.delete_multiple_success', ['label' => __('devices.plural_label')])),
+                        ->successNotificationTitle(__('devices.actions.delete_multiple_success', ['label' => __('devices.plural_label')]))
+                        ->after(function () {
+                            // Sync device sequence after bulk delete
+                            $maxDeviceNum = \App\Models\Device::where('device_number', 'REGEXP', '^RENA-[0-9]+$')
+                                ->selectRaw('MAX(CAST(SUBSTRING(device_number, 6) AS UNSIGNED)) as max_num')
+                                ->value('max_num');
+
+                            $shouldBeNextValue = $maxDeviceNum ? (int) $maxDeviceNum + 1 : 1;
+
+                            \Illuminate\Support\Facades\DB::table('device_sequences')
+                                ->where('sequence_name', 'device_number')
+                                ->update([
+                                    'next_value' => $shouldBeNextValue,
+                                    'updated_at' => now(),
+                                ]);
+
+                            \Illuminate\Support\Facades\Log::info('Device sequence synced after bulk delete', [
+                                'new_value' => $shouldBeNextValue,
+                                'max_device_num' => $maxDeviceNum,
+                            ]);
+                        }),
                 ]),
             ]);
     }
