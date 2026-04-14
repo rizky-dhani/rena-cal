@@ -107,14 +107,6 @@ class ListDevices extends ListRecords
                         return;
                     }
 
-                    // Get the highest existing RENA number from DB to start after that
-                    $maxNumber = DB::table('devices')
-                        ->where('device_number', 'LIKE', 'RENA-%')
-                        ->selectRaw('CAST(SUBSTRING(device_number, 6) AS UNSIGNED) as num')
-                        ->orderByDesc('num')
-                        ->value('num');
-
-                    $startNumber = $maxNumber ? (int) ($maxNumber + 1) : 1;
                     $chunkSize = 100;
 
                     // Create an array of devices with device IDs and dispatch in chunks
@@ -129,8 +121,8 @@ class ListDevices extends ListRecords
                             ];
                         }
 
-                        // Dispatch the job for this chunk
-                        GenerateMultipleQRCodesJob::dispatch($devices, $startNumber + $i);
+                        // Dispatch the job for this chunk - job will determine next number automatically
+                        GenerateMultipleQRCodesJob::dispatch($devices);
                     }
 
                     // Show success notification

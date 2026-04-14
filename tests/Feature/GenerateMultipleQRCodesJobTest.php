@@ -25,7 +25,7 @@ it('generates multiple QR codes efficiently', function () {
     }
 
     // Measure time/queries if we wanted to be fancy, but let's just check correctness first
-    (new GenerateMultipleQRCodesJob($devices, 1))->handle();
+    (new GenerateMultipleQRCodesJob($devices))->handle();
 
     expect(Device::count())->toBe($count);
 
@@ -59,7 +59,7 @@ it('continues sequence from existing devices', function () {
         ['deviceId' => (string) Str::orderedUuid(), 'result' => 'Laik Pakai'],
     ];
 
-    (new GenerateMultipleQRCodesJob($devices, 11))->handle();
+    (new GenerateMultipleQRCodesJob($devices))->handle();
 
     expect(Device::where('device_number', 'RENA-00011')->exists())->toBeTrue();
     expect(Device::where('device_number', 'RENA-00012')->exists())->toBeTrue();
@@ -73,7 +73,7 @@ it('handles gaps in sequence if necessary', function () {
         ['deviceId' => (string) Str::orderedUuid(), 'result' => 'Laik Pakai'],
     ];
 
-    (new GenerateMultipleQRCodesJob($devices, 11))->handle();
+    (new GenerateMultipleQRCodesJob($devices))->handle();
 
     // The current logic gets the MAX and adds 1, so it will be RENA-00011
     expect(Device::where('device_number', 'RENA-00011')->exists())->toBeTrue();
