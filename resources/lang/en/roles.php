@@ -36,7 +36,7 @@ return array (
     'edit_success' => ':label edited successfully',
     'delete' => 'Delete',
     'delete_success' => ':label deleted successfully',
-    'delete_multiple_success' => ':plural_label deleted successfully',
+    'delete_multiple_success' => ':label deleted successfully',
     'create_success' => ':label created successfully',
     'assign_permissions' => 'Assign Permissions',
     'assign_permissions_success' => 'Permissions assigned successfully',

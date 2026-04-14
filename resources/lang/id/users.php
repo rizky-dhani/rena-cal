@@ -39,7 +39,7 @@ return [
         'edit_success' => ':label berhasil diubah',
         'delete' => 'Hapus',
         'delete_success' => ':label berhasil dihapus',
-        'delete_multiple_success' => ':plural_label berhasil dihapus',
+        'delete_multiple_success' => ':label berhasil dihapus',
         'create_success' => ':label berhasil dibuat',
         'import_helper' => 'Unggah file Excel berisi data pengguna',
         'import_file_not_found' => 'File tidak ditemukan',

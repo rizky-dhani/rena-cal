@@ -97,7 +97,7 @@ return [
         'edit_success' => ':label berhasil diubah',
         'delete' => 'Hapus',
         'delete_success' => ':label berhasil dihapus',
-        'delete_multiple_success' => ':plural_label berhasil dihapus',
+        'delete_multiple_success' => ':label berhasil dihapus',
         'print' => 'Cetak',
         'print_tidak_laik' => 'Cetak Tidak Laik',
         'print_size' => [

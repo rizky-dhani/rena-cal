@@ -97,7 +97,7 @@ return [
         'edit_success' => ':label edited successfully',
         'delete' => 'Delete',
         'delete_success' => ':label deleted successfully',
-        'delete_multiple_success' => ':plural_label deleted successfully',
+        'delete_multiple_success' => ':label deleted successfully',
         'print' => 'Print',
         'print_tidak_laik' => 'Print Not Fit',
         'print_size' => [

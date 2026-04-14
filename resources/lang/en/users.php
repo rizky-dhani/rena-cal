@@ -39,7 +39,7 @@ return [
         'edit_success' => ':label edited successfully',
         'delete' => 'Delete',
         'delete_success' => ':label deleted successfully',
-        'delete_multiple_success' => ':plural_label deleted successfully',
+        'delete_multiple_success' => ':label deleted successfully',
         'create_success' => ':label created successfully',
         'import_helper' => 'Upload Excel file with user data',
         'import_file_not_found' => 'File not found',
