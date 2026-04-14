@@ -36,6 +36,21 @@ class GenerateMultipleQRCodesJob implements ShouldQueue
         // Atomically reserve a block of sequence numbers for this job
         $currentNumber = DeviceSequence::getNext('device_number', count($this->devices));
 
+        // Sanity check: ensure we're not creating duplicate device_numbers
+        $existingMax = DB::table('devices')
+            ->where('device_number', 'REGEXP', '^RENA-[0-9]+$')
+            ->selectRaw('MAX(CAST(SUBSTRING(device_number, 6) AS UNSIGNED)) as max_num')
+            ->value('max_num');
+
+        if ($existingMax && $currentNumber <= $existingMax) {
+            \Log::warning('Device sequence may be out of sync', [
+                'sequence_value' => $currentNumber,
+                'existing_max' => $existingMax,
+                'action' => 'Using existing_max + 1 as starting point'
+            ]);
+            $currentNumber = (int) $existingMax + 1;
+        }
+
         $qr = new DNS2D;
 
         foreach ($this->devices as $device) {

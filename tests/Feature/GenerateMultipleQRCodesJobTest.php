@@ -131,3 +131,20 @@ it('handles concurrent chunked dispatch without race conditions', function () {
     $nextValue = DeviceSequence::where('sequence_name', 'device_number')->value('next_value');
     expect($nextValue)->toBe(4);
 });
+
+it('respects existing devices when sequence is initialized', function () {
+    // Create an existing device with high number
+    Device::factory()->create(['device_number' => 'RENA-05000']);
+
+    // Reset sequence to simulate proper initialization (max + 1)
+    DeviceSequence::where('sequence_name', 'device_number')->update(['next_value' => 5001]);
+
+    $devices = [
+        ['deviceId' => (string) Str::orderedUuid(), 'result' => 'Laik Pakai'],
+    ];
+
+    (new GenerateMultipleQRCodesJob($devices))->handle();
+
+    // New device should be RENA-05001
+    expect(Device::where('device_number', 'RENA-05001')->exists())->toBeTrue();
+});

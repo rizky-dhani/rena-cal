@@ -19,10 +19,17 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Seed initial sequence for device_number
+        // Smart seeding: check for existing max device number
+        $maxNumber = DB::table('devices')
+            ->where('device_number', 'REGEXP', '^RENA-[0-9]+$')
+            ->selectRaw('MAX(CAST(SUBSTRING(device_number, 6) AS UNSIGNED)) as max_num')
+            ->value('max_num');
+
+        $nextValue = $maxNumber ? (int) $maxNumber + 1 : 1;
+
         DB::table('device_sequences')->insert([
             'sequence_name' => 'device_number',
-            'next_value' => 1,
+            'next_value' => $nextValue,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
