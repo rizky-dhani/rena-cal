@@ -114,7 +114,7 @@ class ListDevices extends ListRecords
                         ->orderByDesc('num')
                         ->value('num');
 
-                    $startNumber = $maxNumber ? $maxNumber + 1 : 1;
+                    $startNumber = $maxNumber ? (int) ($maxNumber + 1) : 1;
                     $chunkSize = 100;
 
                     // Create an array of devices with device IDs and dispatch in chunks
