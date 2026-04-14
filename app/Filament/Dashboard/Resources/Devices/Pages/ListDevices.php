@@ -109,6 +109,15 @@ class ListDevices extends ListRecords
 
                     $chunkSize = 100;
 
+                    // Pre-calculate the starting device number to avoid race conditions
+                    $maxNumber = DB::table('devices')
+                        ->where('device_number', 'LIKE', 'RENA-%')
+                        ->selectRaw('CAST(SUBSTRING(device_number, 6) AS UNSIGNED) as num')
+                        ->orderByDesc('num')
+                        ->value('num');
+
+                    $startNumber = $maxNumber ? (int) $maxNumber + 1 : 1;
+
                     // Create an array of devices with device IDs and dispatch in chunks
                     for ($i = 0; $i < $numberOfQr; $i += $chunkSize) {
                         $chunkCount = min($chunkSize, $numberOfQr - $i);
@@ -121,8 +130,11 @@ class ListDevices extends ListRecords
                             ];
                         }
 
-                        // Dispatch the job for this chunk - job will determine next number automatically
-                        GenerateMultipleQRCodesJob::dispatch($devices);
+                        // Calculate the starting number for this chunk
+                        $chunkStartNumber = $startNumber + $i;
+
+                        // Dispatch the job for this chunk with the calculated starting number
+                        GenerateMultipleQRCodesJob::dispatch($devices, $chunkStartNumber);
                     }
 
                     // Show success notification
