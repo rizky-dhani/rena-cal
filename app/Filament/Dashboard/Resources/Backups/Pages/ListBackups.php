@@ -2,6 +2,7 @@
 
 namespace App\Filament\Dashboard\Resources\Backups\Pages;
 
+use App\Filament\Dashboard\Resources\Backups\Widgets\BackupsStatsWidget;
 use App\Filament\Dashboard\Resources\BackupsResource;
 use Filament\Resources\Pages\ListRecords;
 
