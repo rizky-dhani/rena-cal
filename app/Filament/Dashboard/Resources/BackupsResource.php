@@ -24,7 +24,7 @@ class BackupsResource extends Resource
 
     public static function canAccess(): bool
     {
-        return Auth::user()->hasAnyRole(['Super Admin', 'Admin']);
+        return Auth::user()->hasRole('Super Admin');
     }
 
     public static function getNavigationLabel(): string

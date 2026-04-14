@@ -13,7 +13,7 @@ class BackupPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['Super Admin', 'Admin']);
+        return $user->hasRole('Super Admin');
     }
 
     /**
@@ -21,7 +21,7 @@ class BackupPolicy
      */
     public function view(User $user, Backup $backup): bool
     {
-        return $user->hasAnyRole(['Super Admin', 'Admin']);
+        return $user->hasRole('Super Admin');
     }
 
     /**
@@ -29,7 +29,7 @@ class BackupPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['Super Admin', 'Admin']);
+        return $user->hasRole('Super Admin');
     }
 
     /**
@@ -37,7 +37,7 @@ class BackupPolicy
      */
     public function update(User $user, Backup $backup): bool
     {
-        return $user->hasAnyRole(['Super Admin', 'Admin']);
+        return $user->hasRole('Super Admin');
     }
 
     /**
