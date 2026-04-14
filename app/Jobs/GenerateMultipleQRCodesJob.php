@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\DeviceSequence;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -16,15 +17,13 @@ class GenerateMultipleQRCodesJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $devices;
-    public $startNumber;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($devices, $startNumber = null)
+    public function __construct($devices)
     {
         $this->devices = $devices;
-        $this->startNumber = $startNumber;
     }
 
     /**
@@ -34,19 +33,8 @@ class GenerateMultipleQRCodesJob implements ShouldQueue
     {
         $devicesToInsert = [];
 
-        // Use provided startNumber or calculate from database (for backward compatibility)
-        if ($this->startNumber !== null) {
-            $currentNumber = (int) $this->startNumber;
-        } else {
-            // Get the current max device number at execution time to avoid race conditions
-            $maxNumber = DB::table('devices')
-                ->where('device_number', 'LIKE', 'RENA-%')
-                ->selectRaw('CAST(SUBSTRING(device_number, 6) AS UNSIGNED) as num')
-                ->orderByDesc('num')
-                ->value('num');
-
-            $currentNumber = $maxNumber ? (int) $maxNumber + 1 : 1;
-        }
+        // Atomically reserve a block of sequence numbers for this job
+        $currentNumber = DeviceSequence::getNext('device_number', count($this->devices));
 
         $qr = new DNS2D;
 

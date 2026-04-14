@@ -9,7 +9,6 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\ListRecords;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use pxlrbt\FilamentExcel\Actions\ExportAction;
 
@@ -109,15 +108,6 @@ class ListDevices extends ListRecords
 
                     $chunkSize = 100;
 
-                    // Pre-calculate the starting device number to avoid race conditions
-                    $maxNumber = DB::table('devices')
-                        ->where('device_number', 'LIKE', 'RENA-%')
-                        ->selectRaw('CAST(SUBSTRING(device_number, 6) AS UNSIGNED) as num')
-                        ->orderByDesc('num')
-                        ->value('num');
-
-                    $startNumber = $maxNumber ? (int) $maxNumber + 1 : 1;
-
                     // Create an array of devices with device IDs and dispatch in chunks
                     for ($i = 0; $i < $numberOfQr; $i += $chunkSize) {
                         $chunkCount = min($chunkSize, $numberOfQr - $i);
@@ -130,11 +120,8 @@ class ListDevices extends ListRecords
                             ];
                         }
 
-                        // Calculate the starting number for this chunk
-                        $chunkStartNumber = $startNumber + $i;
-
-                        // Dispatch the job for this chunk with the calculated starting number
-                        GenerateMultipleQRCodesJob::dispatch($devices, $chunkStartNumber);
+                        // Each job will atomically get its own unique sequence from device_sequences table
+                        GenerateMultipleQRCodesJob::dispatch($devices);
                     }
 
                     // Show success notification

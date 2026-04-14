@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Jobs\GenerateMultipleQRCodesJob;
 use App\Models\Device;
+use App\Models\DeviceSequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -13,6 +13,15 @@ uses(RefreshDatabase::class);
 
 beforeEach(function () {
     Storage::fake('public');
+    
+    // Reset the device_sequences table for each test
+    \Illuminate\Support\Facades\DB::table('device_sequences')->updateOrInsert(
+        ['sequence_name' => 'device_number'],
+        [
+            'next_value' => 1,
+            'updated_at' => now(),
+        ]
+    );
 });
 
 it('generates multiple QR codes efficiently', function () {
@@ -52,8 +61,8 @@ it('generates multiple QR codes efficiently', function () {
 });
 
 it('continues sequence from existing devices', function () {
-    // Create existing devices
-    Device::factory()->create(['device_number' => 'RENA-00010']);
+    // Update sequence to start from 11 (simulating 10 existing devices)
+    DeviceSequence::where('sequence_name', 'device_number')->update(['next_value' => 11]);
 
     $devices = [
         ['deviceId' => (string) Str::orderedUuid(), 'result' => 'Laik Pakai'],
@@ -66,9 +75,9 @@ it('continues sequence from existing devices', function () {
     expect(Device::where('device_number', 'RENA-00012')->exists())->toBeTrue();
 });
 
-it('handles gaps in sequence if necessary', function () {
-    Device::factory()->create(['device_number' => 'RENA-00005']);
-    Device::factory()->create(['device_number' => 'RENA-00010']);
+it('handles gaps in sequence correctly', function () {
+    // Sequence doesn't care about gaps - it just increments
+    DeviceSequence::where('sequence_name', 'device_number')->update(['next_value' => 11]);
 
     $devices = [
         ['deviceId' => (string) Str::orderedUuid(), 'result' => 'Laik Pakai'],
@@ -76,49 +85,49 @@ it('handles gaps in sequence if necessary', function () {
 
     (new GenerateMultipleQRCodesJob($devices))->handle();
 
-    // The current logic gets the MAX and adds 1, so it will be RENA-00011
+    // Will be RENA-00011 regardless of gaps
     expect(Device::where('device_number', 'RENA-00011')->exists())->toBeTrue();
 });
 
-it('uses provided startNumber for sequence', function () {
+it('uses device sequence table for atomic number generation', function () {
+    DeviceSequence::where('sequence_name', 'device_number')->update(['next_value' => 50]);
+
     $devices = [
         ['deviceId' => (string) Str::orderedUuid(), 'result' => 'Laik Pakai'],
         ['deviceId' => (string) Str::orderedUuid(), 'result' => 'Laik Pakai'],
         ['deviceId' => (string) Str::orderedUuid(), 'result' => 'Laik Pakai'],
     ];
 
-    // Start from number 50
-    (new GenerateMultipleQRCodesJob($devices, 50))->handle();
+    (new GenerateMultipleQRCodesJob($devices))->handle();
 
     expect(Device::where('device_number', 'RENA-00050')->exists())->toBeTrue();
     expect(Device::where('device_number', 'RENA-00051')->exists())->toBeTrue();
     expect(Device::where('device_number', 'RENA-00052')->exists())->toBeTrue();
+
+    // Verify sequence table was updated
+    $nextValue = DeviceSequence::where('sequence_name', 'device_number')->value('next_value');
+    expect($nextValue)->toBe(53);
 });
 
-it('handles chunked dispatch without race conditions', function () {
-    // Simulate chunked dispatch like in ListDevices
-    $maxNumber = DB::table('devices')
-        ->where('device_number', 'LIKE', 'RENA-%')
-        ->selectRaw('CAST(SUBSTRING(device_number, 6) AS UNSIGNED) as num')
-        ->orderByDesc('num')
-        ->value('num');
-
-    $startNumber = $maxNumber ? (int) $maxNumber + 1 : 1;
-
-    // Dispatch first chunk starting at $startNumber
+it('handles concurrent chunked dispatch without race conditions', function () {
+    // Simulate chunked dispatch like in ListDevices - each job gets its own block atomically
     $chunk1 = [
         ['deviceId' => (string) Str::orderedUuid(), 'result' => 'Laik Pakai'],
         ['deviceId' => (string) Str::orderedUuid(), 'result' => 'Laik Pakai'],
     ];
-    (new GenerateMultipleQRCodesJob($chunk1, $startNumber))->handle();
+    (new GenerateMultipleQRCodesJob($chunk1))->handle();
 
-    // Dispatch second chunk starting at $startNumber + 2
     $chunk2 = [
         ['deviceId' => (string) Str::orderedUuid(), 'result' => 'Laik Pakai'],
     ];
-    (new GenerateMultipleQRCodesJob($chunk2, $startNumber + 2))->handle();
+    (new GenerateMultipleQRCodesJob($chunk2))->handle();
 
-    expect(Device::where('device_number', 'RENA-'.str_pad($startNumber, 5, '0', STR_PAD_LEFT))->exists())->toBeTrue();
-    expect(Device::where('device_number', 'RENA-'.str_pad($startNumber + 1, 5, '0', STR_PAD_LEFT))->exists())->toBeTrue();
-    expect(Device::where('device_number', 'RENA-'.str_pad($startNumber + 2, 5, '0', STR_PAD_LEFT))->exists())->toBeTrue();
+    // Chunk 1 gets 1-2, Chunk 2 gets 3
+    expect(Device::where('device_number', 'RENA-00001')->exists())->toBeTrue();
+    expect(Device::where('device_number', 'RENA-00002')->exists())->toBeTrue();
+    expect(Device::where('device_number', 'RENA-00003')->exists())->toBeTrue();
+
+    // Verify sequence table is at 4
+    $nextValue = DeviceSequence::where('sequence_name', 'device_number')->value('next_value');
+    expect($nextValue)->toBe(4);
 });
