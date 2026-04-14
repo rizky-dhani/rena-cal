@@ -22,13 +22,16 @@ class BackupsResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CloudArrowDown;
 
-    protected static ?string $navigationGroup = 'navigation.User Management';
-
     protected static ?int $navigationSort = 5;
 
     public static function canAccess(): bool
     {
         return Auth::user()->hasRole('Super Admin');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.User Management');
     }
 
     public static function getNavigationLabel(): string
