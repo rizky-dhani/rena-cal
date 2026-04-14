@@ -57,13 +57,18 @@ class SyncDeviceSequenceCommand extends Command
             ]
         );
 
-        if ($currentValue >= $shouldbeNextValue) {
+        if ($currentValue == $shouldbeNextValue) {
             $this->info('✓ Sequence is already in sync. No changes needed.');
             return Command::SUCCESS;
         }
 
-        $diff = $shouldbeNextValue - $currentValue;
-        $this->warn("⚠ Sequence is behind by {$diff} number(s).");
+        if ($currentValue > $shouldbeNextValue) {
+            $diff = $currentValue - $shouldbeNextValue;
+            $this->warn("⚠ Sequence is AHEAD by {$diff} number(s). It will be reduced.");
+        } else {
+            $diff = $shouldbeNextValue - $currentValue;
+            $this->warn("⚠ Sequence is behind by {$diff} number(s).");
+        }
 
         if ($this->option('dry-run')) {
             $this->info('[DRY RUN] Would update sequence from ' . $currentValue . ' to ' . $shouldbeNextValue);
@@ -76,11 +81,11 @@ class SyncDeviceSequenceCommand extends Command
         }
 
         try {
-            // Use GREATEST to prevent going backward
+            // Directly sync to match actual max device number
             DB::table('device_sequences')
                 ->where('sequence_name', 'device_number')
                 ->update([
-                    'next_value' => DB::raw("GREATEST(next_value, {$shouldbeNextValue})"),
+                    'next_value' => $shouldbeNextValue,
                     'updated_at' => now(),
                 ]);
 
