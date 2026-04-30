@@ -1,9 +1,12 @@
 <?php
 
 use App\Models\Customer;
+use App\Models\CustomerCategory;
 use App\Models\Device;
+use App\Models\Province;
 use App\Models\User;
 use App\Notifications\CalibrationRenewalNotification;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Notification;
@@ -19,12 +22,12 @@ beforeEach(function () {
 it('sends calibration renewal notifications to hospital admins', function () {
     Notification::fake();
 
-    $category = \App\Models\CustomerCategory::create([
+    $category = CustomerCategory::create([
         'name' => 'RSUD',
         'slug' => 'rsud',
     ]);
 
-    $province = \App\Models\Province::create([
+    $province = Province::create([
         'code' => 31,
         'name' => 'DKI JAKARTA',
     ]);
@@ -35,7 +38,7 @@ it('sends calibration renewal notifications to hospital admins', function () {
         'province_id' => $province->code,
         'categories_id' => $category->id,
     ]);
-    
+
     $admin = User::create([
         'name' => 'Admin User',
         'email' => 'admin@hospital.com',
@@ -88,12 +91,12 @@ it('sends calibration renewal notifications to hospital admins', function () {
 it('does not send notification if no devices are due in 60 days', function () {
     Notification::fake();
 
-    $category = \App\Models\CustomerCategory::create([
+    $category = CustomerCategory::create([
         'name' => 'RSUD',
         'slug' => 'rsud',
     ]);
 
-    $province = \App\Models\Province::create([
+    $province = Province::create([
         'code' => 32,
         'name' => 'JAWA BARAT',
     ]);
@@ -125,7 +128,7 @@ it('does not send notification if no devices are due in 60 days', function () {
 });
 
 it('is registered in the console schedule', function () {
-    $schedule = app(\Illuminate\Console\Scheduling\Schedule::class);
+    $schedule = app(Schedule::class);
 
     $event = collect($schedule->events())->first(function ($event) {
         return str_contains($event->command, 'app:send-calibration-renewals');

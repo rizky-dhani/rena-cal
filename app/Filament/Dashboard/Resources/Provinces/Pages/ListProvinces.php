@@ -2,13 +2,13 @@
 
 namespace App\Filament\Dashboard\Resources\Provinces\Pages;
 
+use App\Filament\Dashboard\Resources\Provinces\ProvinceResource;
 use App\Models\Province;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Notifications\Notification;
-use Illuminate\Support\Facades\Http;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Dashboard\Resources\Provinces\ProvinceResource;
+use Illuminate\Support\Facades\Http;
 
 class ListProvinces extends ListRecords
 {
@@ -20,7 +20,7 @@ class ListProvinces extends ListRecords
             Action::make('import_from_api')
                 ->label(__('provinces.buttons.import.label'))
                 ->requiresConfirmation()
-                ->action(function() {
+                ->action(function () {
                     $response = Http::get('https://wilayah.id/api/provinces.json');
 
                     if ($response->successful()) {
@@ -48,7 +48,7 @@ class ListProvinces extends ListRecords
                 }),
             CreateAction::make()
                 ->label(__('provinces.buttons.create.label'))
-                ->successNotificationTitle(__('provinces.notifications.success', ['label' => __('provinces.label')]))
+                ->successNotificationTitle(__('provinces.notifications.success', ['label' => __('provinces.label')])),
         ];
     }
 }

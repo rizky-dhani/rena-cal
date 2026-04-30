@@ -2,10 +2,10 @@
 
 namespace App\Filament\Dashboard\Resources\Roles\Pages;
 
-use Filament\Support\Enums\Width;
+use App\Filament\Dashboard\Resources\Roles\RoleResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Dashboard\Resources\Roles\RoleResource;
+use Filament\Support\Enums\Width;
 
 class ListRoles extends ListRecords
 {

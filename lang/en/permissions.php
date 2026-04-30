@@ -30,7 +30,7 @@ return [
         'count_success' => ' permissions generated successfully',
         'empty' => 'No Permission(s) generated',
         'success' => 'Permission successfully created',
-        'button_label' => 'Generate'
+        'button_label' => 'Generate',
     ],
 
     'form' => [

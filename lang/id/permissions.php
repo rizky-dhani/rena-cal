@@ -30,7 +30,7 @@ return [
         'count_success' => ' izin berhasil dibuat',
         'empty' => 'Tidak ada izin yang dibuat',
         'success' => 'Izin berhasil dibuat',
-        'button_label' => 'Buat'
+        'button_label' => 'Buat',
     ],
 
     'form' => [

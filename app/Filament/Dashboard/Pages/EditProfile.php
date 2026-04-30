@@ -2,11 +2,10 @@
 
 namespace App\Filament\Dashboard\Pages;
 
+use Filament\Auth\Pages\EditProfile as BaseEditProfile;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Dashboard;
-use Filament\Pages\Page;
 use Filament\Schemas\Schema;
-use Filament\Auth\Pages\EditProfile as BaseEditProfile;
 
 class EditProfile extends BaseEditProfile
 {
@@ -23,14 +22,13 @@ class EditProfile extends BaseEditProfile
             ]);
     }
 
-    public function getSavedNotificationTitle(): string|null
+    public function getSavedNotificationTitle(): ?string
     {
         return __('users.actions.edit_success', ['label' => __('users.label')]);
     }
 
-    protected function getRedirectUrl(): string|null
+    protected function getRedirectUrl(): ?string
     {
         return Dashboard::getUrl();
     }
-    
 }

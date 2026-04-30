@@ -2,10 +2,10 @@
 
 namespace App\Filament\Dashboard\Resources\CustomerCategories\Pages;
 
-use Filament\Support\Enums\Width;
+use App\Filament\Dashboard\Resources\CustomerCategories\CustomerCategoriesResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Dashboard\Resources\CustomerCategories\CustomerCategoriesResource;
+use Filament\Support\Enums\Width;
 
 class ListCustomerCategories extends ListRecords
 {

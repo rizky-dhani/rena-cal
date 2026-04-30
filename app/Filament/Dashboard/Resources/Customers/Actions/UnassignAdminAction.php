@@ -4,8 +4,8 @@ namespace App\Filament\Dashboard\Resources\Customers\Actions;
 
 use Filament\Actions\Action;
 use Filament\Forms\Components\Toggle;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Model;
 
 class UnassignAdminAction
 {

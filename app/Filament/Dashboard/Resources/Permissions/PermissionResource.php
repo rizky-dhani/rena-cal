@@ -2,21 +2,22 @@
 
 namespace App\Filament\Dashboard\Resources\Permissions;
 
-use UnitEnum;
-use BackedEnum;
-use Filament\Tables\Table;
-use Filament\Schemas\Schema;
-use Filament\Resources\Resource;
-use Filament\Support\Icons\Heroicon;
-use Spatie\Permission\Models\Permission;
 use App\Filament\Dashboard\Resources\Permissions\Pages\ListPermissions;
 use App\Filament\Dashboard\Resources\Permissions\Schemas\PermissionForm;
 use App\Filament\Dashboard\Resources\Permissions\Tables\PermissionsTable;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use Spatie\Permission\Models\Permission;
 
 class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
+
     protected static ?string $recordTitleAttribute = 'name';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::LockClosed;
 
     public static function getModelLabel(): string
@@ -37,6 +38,7 @@ class PermissionResource extends Resource
     public static function canViewAny(): bool
     {
         $user = auth()->user();
+
         return $user->hasRole('Super Admin');
     }
 

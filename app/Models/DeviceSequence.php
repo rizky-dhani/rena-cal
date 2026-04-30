@@ -32,7 +32,7 @@ class DeviceSequence extends Model
                 ->lockForUpdate()
                 ->first();
 
-            if (!$sequence) {
+            if (! $sequence) {
                 throw new \RuntimeException("Sequence '{$sequenceName}' not found");
             }
 

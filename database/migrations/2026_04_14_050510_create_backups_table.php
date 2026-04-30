@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('error_message')->nullable();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
-            
+
             $table->index('status');
             $table->index('created_at');
         });

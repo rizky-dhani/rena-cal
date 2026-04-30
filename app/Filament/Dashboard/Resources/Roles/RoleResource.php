@@ -2,23 +2,24 @@
 
 namespace App\Filament\Dashboard\Resources\Roles;
 
-use UnitEnum;
-use BackedEnum;
-use Filament\Tables\Table;
-use Filament\Schemas\Schema;
-use Filament\Resources\Resource;
-use Spatie\Permission\Models\Role;
-use Filament\Support\Icons\Heroicon;
-use App\Filament\Dashboard\Resources\Roles\Pages\ViewRole;
 use App\Filament\Dashboard\Resources\Roles\Pages\ListRoles;
+use App\Filament\Dashboard\Resources\Roles\Pages\ViewRole;
+use App\Filament\Dashboard\Resources\Roles\RelationManagers\PermissionsRelationManager;
 use App\Filament\Dashboard\Resources\Roles\Schemas\RoleForm;
 use App\Filament\Dashboard\Resources\Roles\Tables\RolesTable;
-use App\Filament\Dashboard\Resources\Roles\RelationManagers\PermissionsRelationManager;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use Spatie\Permission\Models\Role;
 
 class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
+
     protected static ?string $recordTitleAttribute = 'name';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
 
     public static function getModelLabel(): string
@@ -39,6 +40,7 @@ class RoleResource extends Resource
     public static function canViewAny(): bool
     {
         $user = auth()->user();
+
         return $user->hasRole('Super Admin');
     }
 
@@ -55,7 +57,7 @@ class RoleResource extends Resource
     public static function getRelations(): array
     {
         return [
-            PermissionsRelationManager::class
+            PermissionsRelationManager::class,
         ];
     }
 

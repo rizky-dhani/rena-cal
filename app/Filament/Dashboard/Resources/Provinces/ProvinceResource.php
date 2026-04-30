@@ -2,8 +2,6 @@
 
 namespace App\Filament\Dashboard\Resources\Provinces;
 
-use App\Filament\Dashboard\Resources\Provinces\Pages\CreateProvince;
-use App\Filament\Dashboard\Resources\Provinces\Pages\EditProvince;
 use App\Filament\Dashboard\Resources\Provinces\Pages\ListProvinces;
 use App\Filament\Dashboard\Resources\Provinces\Schemas\ProvinceForm;
 use App\Filament\Dashboard\Resources\Provinces\Tables\ProvincesTable;
@@ -17,12 +15,16 @@ use Filament\Tables\Table;
 class ProvinceResource extends Resource
 {
     protected static ?string $model = Province::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::GlobeAlt;
+
     protected static ?string $recordTitleAttribute = 'name';
+
     public static function getModelLabel(): string
     {
         return __('provinces.label');
     }
+
     public static function getNavigationGroup(): ?string
     {
         return __('navigation.User Management');

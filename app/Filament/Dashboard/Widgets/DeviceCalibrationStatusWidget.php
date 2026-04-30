@@ -2,6 +2,7 @@
 
 namespace App\Filament\Dashboard\Widgets;
 
+use App\Filament\Dashboard\Resources\Devices\DeviceResource;
 use App\Models\Device;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -43,7 +44,7 @@ class DeviceCalibrationStatusWidget extends BaseWidget
                 ->description(__('widgets.device_calibration_status.alat'))
                 ->descriptionIcon(Heroicon::CheckCircle)
                 ->color('success')
-                ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
+                ->url(DeviceResource::getUrl('index', [
                     'tableFilters' => [
                         'more_than_60_days' => [
                             'isActive' => true,
@@ -55,7 +56,7 @@ class DeviceCalibrationStatusWidget extends BaseWidget
                 ->description(__('widgets.device_calibration_status.alat'))
                 ->descriptionIcon(Heroicon::Clock)
                 ->color('warning')
-                ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
+                ->url(DeviceResource::getUrl('index', [
                     'tableFilters' => [
                         'within_60_days' => [
                             'isActive' => true,
@@ -67,7 +68,7 @@ class DeviceCalibrationStatusWidget extends BaseWidget
                 ->description(__('widgets.device_calibration_status.alat'))
                 ->descriptionIcon(Heroicon::ExclamationTriangle)
                 ->color('danger')
-                ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
+                ->url(DeviceResource::getUrl('index', [
                     'tableFilters' => [
                         'overdue' => [
                             'isActive' => true,

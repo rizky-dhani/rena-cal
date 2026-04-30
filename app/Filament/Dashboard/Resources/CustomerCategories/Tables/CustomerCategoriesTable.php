@@ -2,12 +2,12 @@
 
 namespace App\Filament\Dashboard\Resources\CustomerCategories\Tables;
 
-use Filament\Tables\Table;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class CustomerCategoriesTable
 {
@@ -32,7 +32,7 @@ class CustomerCategoriesTable
                     ->successNotificationTitle(__('customer_categories.actions.edit_success', ['label' => __('customer_categories.label')])),
                 DeleteAction::make()
                     ->label(__('customer_categories.actions.delete'))
-                    ->successNotificationTitle(__('customer_categories.actions.delete_success', ['label' => __('customer_categories.label')]))
+                    ->successNotificationTitle(__('customer_categories.actions.delete_success', ['label' => __('customer_categories.label')])),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

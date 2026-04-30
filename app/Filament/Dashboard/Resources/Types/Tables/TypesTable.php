@@ -40,8 +40,8 @@ class TypesTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                    ->label(__('types.actions.delete'))
-                    ->successNotificationTitle(__('types.actions.delete_multiple_success', ['label' => __('types.plural_label')])),
+                        ->label(__('types.actions.delete'))
+                        ->successNotificationTitle(__('types.actions.delete_multiple_success', ['label' => __('types.plural_label')])),
                 ]),
             ]);
     }

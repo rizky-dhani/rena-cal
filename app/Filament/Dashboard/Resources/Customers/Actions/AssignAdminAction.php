@@ -4,11 +4,10 @@ namespace App\Filament\Dashboard\Resources\Customers\Actions;
 
 use App\Models\User;
 use Filament\Actions\Action;
-use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 
 class AssignAdminAction
@@ -80,6 +79,7 @@ class AssignAdminAction
             ->modalSubmitActionLabel(__('customers.actions.assign_admin'))
             ->successNotificationTitle(function ($record, Action $action) {
                 $customer = $record ?? $action->getLivewire()->getOwnerRecord();
+
                 return __('customers.actions.assign_admin_success', ['label' => $customer->name]);
             });
     }

@@ -1,0 +1,36 @@
+{
+  "library": "Filament",
+  "package": "filament/filament",
+  "last_updated": "2026-04-30T00:00:00Z",
+  "source": "Filament Official Docs + GitHub + Livewire Docs",
+  "files": [
+    {
+      "filename": "filament-4-to-5-upgrade-guide.md",
+      "topic": "Filament 4.x to 5.x complete upgrade guide",
+      "tech_stack": "Laravel",
+      "fetched": "2026-04-30T00:00:00Z",
+      "source": "Filament Official Docs"
+    },
+    {
+      "filename": "livewire-v4-upgrade-reference.md",
+      "topic": "Livewire v3 to v4 upgrade reference for Filament 5",
+      "tech_stack": "Laravel Livewire",
+      "fetched": "2026-04-30T00:00:00Z",
+      "source": "Livewire Official Docs"
+    },
+    {
+      "filename": "filament-5-new-features.md",
+      "topic": "New features in Filament 5.x",
+      "tech_stack": "Laravel",
+      "fetched": "2026-04-30T00:00:00Z",
+      "source": "Filament Official Docs + GitHub Releases"
+    },
+    {
+      "filename": "tailwind-v4-theme-upgrade.md",
+      "topic": "Tailwind CSS v4 theme changes for Filament 5",
+      "tech_stack": "Tailwind CSS",
+      "fetched": "2026-04-30T00:00:00Z",
+      "source": "Filament Official Docs"
+    }
+  ]
+}

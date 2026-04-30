@@ -2,6 +2,7 @@
 
 namespace App\Filament\Dashboard\Resources\Devices\Widgets;
 
+use App\Filament\Dashboard\Resources\Devices\DeviceResource;
 use App\Models\Device;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -71,13 +72,13 @@ class DevicesWidget extends StatsOverviewWidget
             Stat::make(__('widgets.qr.total'), $totalDevices)
                 ->description(__('widgets.qr.unit'))
                 ->color('primary')
-                ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index')),
+                ->url(DeviceResource::getUrl('index')),
 
             Stat::make(__('widgets.qr.filled'), $filledDevices)
                 ->description(__('widgets.qr.unit'))
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success')
-                ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
+                ->url(DeviceResource::getUrl('index', [
                     'filters' => [
                         'filled' => [
                             'isActive' => 'true',
@@ -92,7 +93,7 @@ class DevicesWidget extends StatsOverviewWidget
                 ->description(__('widgets.qr.unit'))
                 ->descriptionIcon('heroicon-m-minus-circle')
                 ->color('warning')
-                ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
+                ->url(DeviceResource::getUrl('index', [
                     'filters' => [
                         'partially_filled' => [
                             'isActive' => 'true',
@@ -104,7 +105,7 @@ class DevicesWidget extends StatsOverviewWidget
                 ->description(__('widgets.qr.unit'))
                 ->descriptionIcon('heroicon-m-x-circle')
                 ->color('danger')
-                ->url(\App\Filament\Dashboard\Resources\Devices\DeviceResource::getUrl('index', [
+                ->url(DeviceResource::getUrl('index', [
                     'filters' => [
                         'filled' => [
                             'isActive' => 'false',

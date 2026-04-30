@@ -2,12 +2,13 @@
 
 namespace App\Filament\Dashboard\Resources\Roles\Tables;
 
-use Filament\Tables\Table;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class RolesTable
 {
@@ -26,7 +27,7 @@ class RolesTable
                 //
             ])
             ->recordActions([
-                \Filament\Actions\ViewAction::make()
+                ViewAction::make()
                     ->label(__('roles.actions.view'))
                     ->color('dark'),
                 EditAction::make()

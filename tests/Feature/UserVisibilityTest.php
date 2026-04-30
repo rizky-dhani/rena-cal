@@ -1,13 +1,13 @@
 <?php
 
 use App\Filament\Dashboard\Resources\Users\Pages\ListUsers;
-use App\Models\User;
 use App\Models\Customer;
-use App\Models\Province;
 use App\Models\CustomerCategory;
+use App\Models\Province;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Spatie\Permission\Models\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
@@ -20,7 +20,7 @@ beforeEach(function () {
 it('shows the customer field when Hospital Admin role is selected', function () {
     $user = User::factory()->create();
     $user->assignRole('Super Admin');
-    
+
     $hospitalAdminRole = Role::where('name', 'Hospital Admin')->first();
 
     Livewire::actingAs($user)
@@ -33,7 +33,7 @@ it('shows the customer field when Hospital Admin role is selected', function () 
 it('hides the customer field when Hospital Admin role is not selected', function () {
     $user = User::factory()->create();
     $user->assignRole('Super Admin');
-    
+
     $adminRole = Role::where('name', 'Admin')->first();
 
     Livewire::actingAs($user)
@@ -46,7 +46,7 @@ it('hides the customer field when Hospital Admin role is not selected', function
 it('requires customer_id when Hospital Admin role is selected', function () {
     $user = User::factory()->create();
     $user->assignRole('Super Admin');
-    
+
     $hospitalAdminRole = Role::where('name', 'Hospital Admin')->first();
 
     Livewire::actingAs($user)
@@ -64,7 +64,7 @@ it('requires customer_id when Hospital Admin role is selected', function () {
 it('does not require customer_id when Hospital Admin role is not selected', function () {
     $user = User::factory()->create();
     $user->assignRole('Super Admin');
-    
+
     $adminRole = Role::where('name', 'Admin')->first();
 
     Livewire::actingAs($user)
@@ -82,9 +82,9 @@ it('does not require customer_id when Hospital Admin role is not selected', func
 it('saves customer_id when Hospital Admin role is selected', function () {
     $user = User::factory()->create();
     $user->assignRole('Super Admin');
-    
+
     $hospitalAdminRole = Role::where('name', 'Hospital Admin')->first();
-    
+
     $category = CustomerCategory::firstOrCreate(['name' => 'RS', 'slug' => 'rs']);
     $province = Province::firstOrCreate(['code' => 31, 'name' => 'Jakarta']);
     $customer = Customer::create([
@@ -104,7 +104,7 @@ it('saves customer_id when Hospital Admin role is selected', function () {
         ->set('mountedActions.0.data.customer_id', $customer->id)
         ->callMountedAction()
         ->assertHasNoFormErrors();
-    
+
     $newUser = User::where('email', 'hospital@example.com')->first();
     expect($newUser)->not->toBeNull()
         ->and($newUser->customer_id)->toBe($customer->id);
@@ -114,7 +114,7 @@ it('saves customer_id when Hospital Admin role is selected', function () {
 it('shows customer field when editing a user with Hospital Admin role', function () {
     $admin = User::factory()->create();
     $admin->assignRole('Super Admin');
-    
+
     $hospitalAdminRole = Role::where('name', 'Hospital Admin')->first();
     $targetUser = User::factory()->create();
     $targetUser->assignRole('Hospital Admin');

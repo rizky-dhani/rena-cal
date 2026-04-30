@@ -2,23 +2,22 @@
 
 namespace App\Filament\Dashboard\Resources\CustomerCategories;
 
-use App\Models\CustomerCategory;
-use BackedEnum;
-use Filament\Tables\Table;
-use Filament\Schemas\Schema;
-use Filament\Resources\Resource;
-use Filament\Support\Icons\Heroicon;
-use App\Filament\Dashboard\Resources\CustomerCategories\Pages\CreateCustomerCategory;
-use App\Filament\Dashboard\Resources\CustomerCategories\Pages\EditCustomerCategory;
 use App\Filament\Dashboard\Resources\CustomerCategories\Pages\ListCustomerCategories;
-use App\Filament\Dashboard\Resources\CustomerCategories\Pages\ViewCustomerCategory;
 use App\Filament\Dashboard\Resources\CustomerCategories\Schemas\CustomerCategoryForm;
 use App\Filament\Dashboard\Resources\CustomerCategories\Tables\CustomerCategoriesTable;
+use App\Models\CustomerCategory;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
 
 class CustomerCategoriesResource extends Resource
 {
     protected static ?string $model = CustomerCategory::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function getNavigationLabel(): string

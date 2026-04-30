@@ -2,14 +2,22 @@
 
 namespace App\Filament\Dashboard\Resources\Devices\Pages;
 
+use App\Exports\DeviceExport;
 use App\Filament\Dashboard\Resources\Devices\DeviceResource;
+use App\Imports\DeviceImport;
 use App\Jobs\GenerateMultipleQRCodesJob;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 use pxlrbt\FilamentExcel\Actions\ExportAction;
 
 class ListDevices extends ListRecords
@@ -23,7 +31,7 @@ class ListDevices extends ListRecords
                 ->label(__('devices.export.label'))
                 ->color('info')
                 ->exports([
-                    \App\Exports\DeviceExport::make()
+                    DeviceExport::make()
                         ->modifyQueryUsing(function ($query, $data = []) {
                             $user = auth()->user();
 
@@ -77,7 +85,7 @@ class ListDevices extends ListRecords
                 ->icon('heroicon-o-qr-code')
                 ->color('success')
                 ->form([
-                    \Filament\Forms\Components\TextInput::make('number_of_qr')
+                    TextInput::make('number_of_qr')
                         ->label(__('devices.generate.qr_number'))
                         ->numeric()
                         ->minValue(1)
@@ -97,7 +105,7 @@ class ListDevices extends ListRecords
                     $numberOfQr = (int) $data['number_of_qr'];
 
                     if ($numberOfQr <= 0) {
-                        \Filament\Notifications\Notification::make()
+                        Notification::make()
                             ->title(__('devices.generate.invalid_number'))
                             ->body(__('devices.generate.invalid_number_body'))
                             ->danger()
@@ -125,7 +133,7 @@ class ListDevices extends ListRecords
                     }
 
                     // Show success notification
-                    \Filament\Notifications\Notification::make()
+                    Notification::make()
                         ->title(__('devices.generate.generate_success'))
                         ->success()
                         ->send();
@@ -136,7 +144,7 @@ class ListDevices extends ListRecords
                 ->icon('heroicon-o-arrow-up-tray')
                 ->color('warning')
                 ->form([
-                    \Filament\Forms\Components\FileUpload::make('file')
+                    FileUpload::make('file')
                         ->label(__('devices.import.file'))
                         ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
                         ->disk('public')
@@ -144,29 +152,29 @@ class ListDevices extends ListRecords
                         ->required(),
                 ])
                 ->action(function (array $data) {
-                    $filePath = \Illuminate\Support\Facades\Storage::disk('public')->path($data['file']);
+                    $filePath = Storage::disk('public')->path($data['file']);
 
                     try {
-                        \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\DeviceImport, $filePath);
+                        Excel::import(new DeviceImport, $filePath);
 
-                        \Filament\Notifications\Notification::make()
+                        Notification::make()
                             ->title(__('devices.import.success'))
                             ->success()
                             ->send();
-                    } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+                    } catch (ValidationException $e) {
                         $failures = $e->failures();
                         $errorMessage = '';
                         foreach ($failures as $failure) {
                             $errorMessage .= "Row {$failure->row()}: ".implode(', ', $failure->errors()).'. ';
                         }
-                        \Filament\Notifications\Notification::make()
+                        Notification::make()
                             ->title(__('devices.import.fail'))
                             ->body($errorMessage)
                             ->danger()
                             ->persistent()
                             ->send();
                     } catch (\Exception $e) {
-                        \Filament\Notifications\Notification::make()
+                        Notification::make()
                             ->title(__('devices.import.error'))
                             ->body($e->getMessage())
                             ->danger()

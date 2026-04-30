@@ -38,13 +38,14 @@ class SendCalibrationRenewals extends Command
 
         if ($devices->isEmpty()) {
             $this->info('No devices due for calibration in 60 days.');
+
             return;
         }
 
         $groupedDevices = $devices->groupBy('customer_id');
 
         foreach ($groupedDevices as $customerId => $customerDevices) {
-            if (!$customerId) {
+            if (! $customerId) {
                 continue;
             }
 

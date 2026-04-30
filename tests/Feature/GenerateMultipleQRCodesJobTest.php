@@ -6,6 +6,7 @@ use App\Jobs\GenerateMultipleQRCodesJob;
 use App\Models\Device;
 use App\Models\DeviceSequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -13,9 +14,9 @@ uses(RefreshDatabase::class);
 
 beforeEach(function () {
     Storage::fake('public');
-    
+
     // Reset the device_sequences table for each test
-    \Illuminate\Support\Facades\DB::table('device_sequences')->updateOrInsert(
+    DB::table('device_sequences')->updateOrInsert(
         ['sequence_name' => 'device_number'],
         [
             'next_value' => 1,
@@ -152,7 +153,7 @@ it('respects existing devices when sequence is initialized', function () {
 it('syncs sequence when max device is deleted', function () {
     // Create devices up to 100
     for ($i = 1; $i <= 100; $i++) {
-        Device::factory()->create(['device_number' => 'RENA-' . str_pad($i, 5, '0', STR_PAD_LEFT)]);
+        Device::factory()->create(['device_number' => 'RENA-'.str_pad($i, 5, '0', STR_PAD_LEFT)]);
     }
 
     // Set sequence to 101

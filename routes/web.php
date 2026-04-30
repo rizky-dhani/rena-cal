@@ -3,7 +3,10 @@
 use App\Livewire\Public\DeviceDetail;
 use App\Models\Device;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,7 +18,7 @@ Route::get('/devices/{deviceId}', function ($deviceId) {
 })->name('devices.publicDetail');
 
 // Certificate download route
-Route::get('/certificate/download/{cert_number}', function (Illuminate\Http\Request $request, $cert_number) {
+Route::get('/certificate/download/{cert_number}', function (Request $request, $cert_number) {
     if (str_contains($cert_number, '..')) {
         abort(403, 'Invalid path');
     }
@@ -31,7 +34,7 @@ Route::get('/certificate/download/{cert_number}', function (Illuminate\Http\Requ
                 ->with('error', 'Silakan masukkan kata sandi untuk melihat sertifikat.');
         }
 
-        $verifiedAt = \Carbon\Carbon::parse($verifiedAt);
+        $verifiedAt = Carbon::parse($verifiedAt);
         if ($verifiedAt->diffInMinutes(now()) > 120) {
             session()->forget($sessionKey);
             session()->forget('cert_verified_at_'.$device->id);
@@ -41,7 +44,7 @@ Route::get('/certificate/download/{cert_number}', function (Illuminate\Http\Requ
         }
     }
 
-    $disk = \Illuminate\Support\Facades\Storage::disk('public');
+    $disk = Storage::disk('public');
 
     if ($disk->exists($cert_number)) {
         $response = $disk->response($cert_number);

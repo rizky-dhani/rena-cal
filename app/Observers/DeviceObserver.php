@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\Device;
-use App\Models\DeviceSequence;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;

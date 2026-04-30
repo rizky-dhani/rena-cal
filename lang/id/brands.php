@@ -4,7 +4,7 @@ return [
     'label' => 'Merek',
     'plural_label' => 'Merek',
     'navigation_label' => 'Merek',
-    
+
     'columns' => [
         'name' => 'Nama',
         'slug' => 'Slug',
@@ -12,7 +12,7 @@ return [
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',
     ],
-    
+
     'actions' => [
         'edit' => 'Edit',
         'delete' => 'Hapus',
@@ -24,7 +24,7 @@ return [
         'delete_success' => ':label berhasil dihapus',
         'delete_multiple_success' => ':label terpilih berhasil dihapus',
     ],
-    
+
     'form' => [
         'name' => [
             'label' => 'Nama',

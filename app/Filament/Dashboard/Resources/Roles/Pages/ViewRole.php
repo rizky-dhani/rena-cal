@@ -2,19 +2,18 @@
 
 namespace App\Filament\Dashboard\Resources\Roles\Pages;
 
-use Filament\Infolists;
+use App\Filament\Dashboard\Resources\Roles\RoleResource;
 use Filament\Actions\Action;
-use Filament\Schemas\Schema;
 use Filament\Actions\EditAction;
-use Spatie\Permission\Models\Role;
-use Filament\Support\Icons\Heroicon;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Spatie\Permission\Models\Permission;
-use Filament\Infolists\Components\TextEntry;
-use App\Filament\Dashboard\Resources\Roles\RoleResource;    
+use Spatie\Permission\Models\Role;
 
 class ViewRole extends ViewRecord
 {
@@ -36,6 +35,7 @@ class ViewRole extends ViewRecord
                             // Get all permissions that are NOT already assigned to this role
                             $assignedPermissionIds = Role::findById($roleId)->permissions()->pluck('id')->toArray();
                             $availablePermissions = Permission::whereNotIn('id', $assignedPermissionIds)->get();
+
                             return $availablePermissions->pluck('name', 'id');
                         })
                         ->preload()
@@ -52,21 +52,21 @@ class ViewRole extends ViewRecord
                             Select::make('guard_name')
                                 ->label(__('permissions.form.guard_name.label'))
                                 ->options([
-                                    'web' => 'web'
+                                    'web' => 'web',
                                 ])
                                 ->default('web')
                                 ->required(),
-                        ])
+                        ]),
                 ])
                 ->action(function (array $data): void {
                     $role = $this->getRecord();
-                    if (isset($data['permissions']) && !empty($data['permissions'])) {
+                    if (isset($data['permissions']) && ! empty($data['permissions'])) {
                         $role->givePermissionTo($data['permissions']);
                     }
                 })
                 ->color('warning')
                 ->icon(Heroicon::ArrowsRightLeft)
-                ->successNotificationTitle(__('roles.actions.assign_permissions_success'))
+                ->successNotificationTitle(__('roles.actions.assign_permissions_success')),
         ];
     }
 
@@ -80,7 +80,7 @@ class ViewRole extends ViewRecord
                         TextEntry::make('name')
                             ->label(__('roles.columns.name')),
                         TextEntry::make('guard_name')
-                            ->label(__('roles.columns.guard_name'))
+                            ->label(__('roles.columns.guard_name')),
                     ])
                     ->columnSpanFull(),
             ]);

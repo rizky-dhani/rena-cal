@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class Backup extends Model
 {
@@ -37,7 +38,7 @@ class Backup extends Model
      */
     public function getFormattedSizeAttribute(): string
     {
-        if (!$this->file_size) {
+        if (! $this->file_size) {
             return 'Unknown';
         }
 
@@ -50,7 +51,7 @@ class Backup extends Model
             $unit++;
         }
 
-        return round($size, 2) . ' ' . $units[$unit];
+        return round($size, 2).' '.$units[$unit];
     }
 
     /**
@@ -58,7 +59,7 @@ class Backup extends Model
      */
     public function fileExists(): bool
     {
-        return \Illuminate\Support\Facades\Storage::disk('local')->exists('backups/' . $this->filename);
+        return Storage::disk('local')->exists('backups/'.$this->filename);
     }
 
     /**
@@ -78,6 +79,6 @@ class Backup extends Model
      */
     public function getStatusLabelAttribute(): string
     {
-        return __('backup.status.' . $this->status);
+        return __('backup.status.'.$this->status);
     }
 }

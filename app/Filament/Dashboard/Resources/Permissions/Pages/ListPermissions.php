@@ -2,15 +2,13 @@
 
 namespace App\Filament\Dashboard\Resources\Permissions\Pages;
 
-use App\Services\GeneratePermissionsService;
-use Filament\Notifications\Notification;
-use Filament\Support\Enums\Width;
-use Filament\Actions\{
-    Action,
-    CreateAction
-};
-use Filament\Resources\Pages\ListRecords;
 use App\Filament\Dashboard\Resources\Permissions\PermissionResource;
+use App\Services\GeneratePermissionsService;
+use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Enums\Width;
 
 class ListPermissions extends ListRecords
 {
@@ -29,7 +27,7 @@ class ListPermissions extends ListRecords
 
                     if (count($generatedPermissions) > 0) {
                         Notification::make()
-                            ->title(fn() => count($generatedPermissions).__('permissions.generate.count_success'))
+                            ->title(fn () => count($generatedPermissions).__('permissions.generate.count_success'))
                             ->success()
                             ->send();
                     } else {

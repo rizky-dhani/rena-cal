@@ -34,8 +34,9 @@ class SyncDeviceSequenceCommand extends Command
         // Get current sequence value
         $sequence = DeviceSequence::where('sequence_name', 'device_number')->first();
 
-        if (!$sequence) {
+        if (! $sequence) {
             $this->error('Device sequence not found! Please run the migration first.');
+
             return Command::FAILURE;
         }
 
@@ -59,6 +60,7 @@ class SyncDeviceSequenceCommand extends Command
 
         if ($currentValue == $shouldbeNextValue) {
             $this->info('✓ Sequence is already in sync. No changes needed.');
+
             return Command::SUCCESS;
         }
 
@@ -71,12 +73,14 @@ class SyncDeviceSequenceCommand extends Command
         }
 
         if ($this->option('dry-run')) {
-            $this->info('[DRY RUN] Would update sequence from ' . $currentValue . ' to ' . $shouldbeNextValue);
+            $this->info('[DRY RUN] Would update sequence from '.$currentValue.' to '.$shouldbeNextValue);
+
             return Command::SUCCESS;
         }
 
-        if (!$this->confirm('Do you want to sync the sequence now?')) {
+        if (! $this->confirm('Do you want to sync the sequence now?')) {
             $this->info('Sync cancelled.');
+
             return Command::SUCCESS;
         }
 
@@ -91,7 +95,7 @@ class SyncDeviceSequenceCommand extends Command
 
             $newValue = DeviceSequence::where('sequence_name', 'device_number')->value('next_value');
 
-            $this->info("✓ Sequence synced successfully!");
+            $this->info('✓ Sequence synced successfully!');
             $this->line("  From: {$currentValue}");
             $this->line("  To:   {$newValue}");
 
@@ -103,10 +107,11 @@ class SyncDeviceSequenceCommand extends Command
 
             return Command::SUCCESS;
         } catch (\Exception $e) {
-            $this->error('Failed to sync sequence: ' . $e->getMessage());
+            $this->error('Failed to sync sequence: '.$e->getMessage());
             Log::error('Device sequence sync failed via artisan command', [
                 'error' => $e->getMessage(),
             ]);
+
             return Command::FAILURE;
         }
     }

@@ -2,10 +2,10 @@
 
 namespace App\Filament\Dashboard\Resources\Types\Pages;
 
-use Filament\Support\Enums\Width;
+use App\Filament\Dashboard\Resources\Types\TypeResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Dashboard\Resources\Types\TypeResource;
+use Filament\Support\Enums\Width;
 
 class ListTypes extends ListRecords
 {

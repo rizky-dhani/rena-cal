@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Device extends Model
@@ -47,14 +49,14 @@ class Device extends Model
             }
             // Make next calibrated date a year from calibration_date
             if ($device->calibration_date) {
-                $device->next_calibration_date = \Carbon\Carbon::parse($device->calibration_date)->addYear();
+                $device->next_calibration_date = Carbon::parse($device->calibration_date)->addYear();
             }
         });
 
         static::updating(function ($device) {
             // Update next calibrated date to be a year from calibration_date if calibration_date is changed
             if ($device->isDirty('calibration_date')) {
-                $device->next_calibration_date = \Carbon\Carbon::parse($device->calibration_date)->addYear();
+                $device->next_calibration_date = Carbon::parse($device->calibration_date)->addYear();
             }
 
             // Automatically attribute PIC if updated by a Technician
@@ -66,7 +68,7 @@ class Device extends Model
 
         static::deleted(function ($device) {
             if ($device->barcode) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($device->barcode);
+                Storage::disk('public')->delete($device->barcode);
             }
         });
     }

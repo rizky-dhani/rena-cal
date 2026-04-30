@@ -18,7 +18,7 @@ class ProvincesTable
                     ->label(__('provinces.columns.code.label')),
                 TextColumn::make('name')
                     ->label(__('provinces.columns.name.label'))
-                    ->searchable()
+                    ->searchable(),
             ])
             ->filters([
                 //

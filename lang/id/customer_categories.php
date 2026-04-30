@@ -7,17 +7,17 @@ return [
 
     'form' => [
         'name' => [
-            'label' => 'Nama'
-        ]
+            'label' => 'Nama',
+        ],
     ],
 
     'columns' => [
         'name' => [
-            'label'=> 'Nama'
+            'label' => 'Nama',
         ],
         'slug' => [
-            'label'=> 'Slug'
-        ]
+            'label' => 'Slug',
+        ],
     ],
 
     'actions' => [
@@ -29,15 +29,15 @@ return [
         'create_success' => ':label berhasil dibuat',
         'edit_success' => ':label berhasil diperbarui',
         'delete_success' => ':label berhasil dihapus',
-        'delete_multiple_success' => ':label terpilih berhasil dihapus'
+        'delete_multiple_success' => ':label terpilih berhasil dihapus',
     ],
 
     'widgets' => [
         'by_categories' => [
-            'heading' => 'Kategori Faskes'
+            'heading' => 'Kategori Faskes',
         ],
         'by_types' => [
-            'heading' => 'Segmen'
-        ]
-    ]
+            'heading' => 'Segmen',
+        ],
+    ],
 ];

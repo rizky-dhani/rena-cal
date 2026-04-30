@@ -3,15 +3,15 @@
 namespace App\Services;
 
 use App\Models\Backup;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DatabaseBackupService
 {
     protected $disk = 'local';
+
     protected $backupPath = 'backups';
 
     /**
@@ -27,23 +27,23 @@ class DatabaseBackupService
 
         try {
             $fullPath = $this->getFullPath($backup->filename);
-            
+
             // Get database credentials
-            $config = config('database.connections.' . config('database.default'));
-            
+            $config = config('database.connections.'.config('database.default'));
+
             // Build mysqldump command
             $command = $this->buildDumpCommand($config, $fullPath);
-            
+
             // Execute the backup
             $result = Process::timeout(300)->run($command);
-            
+
             if ($result->failed()) {
-                throw new \RuntimeException('Backup failed: ' . $result->errorOutput());
+                throw new \RuntimeException('Backup failed: '.$result->errorOutput());
             }
 
             // Get file size
-            $fileSize = Storage::disk($this->disk)->size($this->backupPath . '/' . $backup->filename);
-            
+            $fileSize = Storage::disk($this->disk)->size($this->backupPath.'/'.$backup->filename);
+
             // Update backup record
             $backup->update([
                 'status' => 'completed',
@@ -78,7 +78,7 @@ class DatabaseBackupService
      */
     public function restore(Backup $backup): bool
     {
-        if (!$backup->fileExists()) {
+        if (! $backup->fileExists()) {
             throw new \RuntimeException('Backup file not found on disk');
         }
 
@@ -88,16 +88,16 @@ class DatabaseBackupService
 
         try {
             $fullPath = $this->getFullPath($backup->filename);
-            $config = config('database.connections.' . config('database.default'));
+            $config = config('database.connections.'.config('database.default'));
 
             // Build restore command
             $command = $this->buildRestoreCommand($config, $fullPath);
-            
+
             // Execute the restore
             $result = Process::timeout(600)->run($command);
-            
+
             if ($result->failed()) {
-                throw new \RuntimeException('Restore failed: ' . $result->errorOutput());
+                throw new \RuntimeException('Restore failed: '.$result->errorOutput());
             }
 
             Log::info('Database restored from backup', [
@@ -122,11 +122,11 @@ class DatabaseBackupService
      */
     public function download(Backup $backup): StreamedResponse
     {
-        if (!$backup->fileExists()) {
+        if (! $backup->fileExists()) {
             abort(404, 'Backup file not found');
         }
 
-        return Storage::disk($this->disk)->download($this->backupPath . '/' . $backup->filename);
+        return Storage::disk($this->disk)->download($this->backupPath.'/'.$backup->filename);
     }
 
     /**
@@ -136,7 +136,7 @@ class DatabaseBackupService
     {
         // Delete file from disk
         if ($backup->fileExists()) {
-            Storage::disk($this->disk)->delete($this->backupPath . '/' . $backup->filename);
+            Storage::disk($this->disk)->delete($this->backupPath.'/'.$backup->filename);
         }
 
         // Delete record
@@ -178,7 +178,7 @@ class DatabaseBackupService
      */
     protected function generateFilename(): string
     {
-        return 'db_backup_' . now()->format('Y_m_d_His') . '.sql.gz';
+        return 'db_backup_'.now()->format('Y_m_d_His').'.sql.gz';
     }
 
     /**
@@ -186,7 +186,7 @@ class DatabaseBackupService
      */
     protected function getFullPath(string $filename): string
     {
-        return Storage::disk($this->disk)->path($this->backupPath . '/' . $filename);
+        return Storage::disk($this->disk)->path($this->backupPath.'/'.$filename);
     }
 
     /**
@@ -195,7 +195,7 @@ class DatabaseBackupService
     protected function buildDumpCommand(array $config, string $outputPath): string
     {
         // Ensure backup directory exists
-        if (!Storage::disk($this->disk)->exists($this->backupPath)) {
+        if (! Storage::disk($this->disk)->exists($this->backupPath)) {
             Storage::disk($this->disk)->makeDirectory($this->backupPath);
         }
 
@@ -258,6 +258,6 @@ class DatabaseBackupService
             $unit++;
         }
 
-        return round($size, 2) . ' ' . $units[$unit];
+        return round($size, 2).' '.$units[$unit];
     }
 }

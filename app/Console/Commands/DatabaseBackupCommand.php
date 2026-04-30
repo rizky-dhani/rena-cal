@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Backup;
+use App\Models\User;
 use App\Services\DatabaseBackupService;
 use Illuminate\Console\Command;
 
@@ -53,24 +55,24 @@ class DatabaseBackupCommand extends Command
     {
         $this->info('Starting database backup...');
         $bar = $this->output->createProgressBar(3);
-        
+
         $bar->start();
         $this->info('Creating backup record...');
         $bar->advance();
 
         try {
             // Use first user ID or create with ID 1 for CLI
-            $userId = \App\Models\User::value('id') ?? 1;
-            
+            $userId = User::value('id') ?? 1;
+
             $this->info('Dumping database...');
             $bar->advance();
-            
+
             $backup = $this->backupService->create($userId);
-            
+
             $bar->finish();
             $this->newLine();
-            
-            $this->info("✓ Backup completed successfully!");
+
+            $this->info('✓ Backup completed successfully!');
             $this->info("Filename: {$backup->filename}");
             $this->info("Size: {$backup->formatted_size}");
 
@@ -78,9 +80,9 @@ class DatabaseBackupCommand extends Command
         } catch (\Exception $e) {
             $bar->finish();
             $this->newLine();
-            
+
             $this->error("✗ Backup failed: {$e->getMessage()}");
-            
+
             return Command::FAILURE;
         }
     }
@@ -92,25 +94,27 @@ class DatabaseBackupCommand extends Command
     {
         $this->warn("Restoring from backup ID: {$backupId}");
         $this->warn('WARNING: This will replace the current database!');
-        
-        if (!$this->confirm('Are you sure you want to continue?')) {
+
+        if (! $this->confirm('Are you sure you want to continue?')) {
             $this->info('Restore cancelled.');
+
             return Command::FAILURE;
         }
 
         try {
-            $backup = \App\Models\Backup::findOrFail($backupId);
-            
+            $backup = Backup::findOrFail($backupId);
+
             $this->info('Starting restore...');
-            
+
             $this->backupService->restore($backup);
-            
+
             $this->info("✓ Database restored successfully from: {$backup->filename}");
             $this->warn('Please clear your application cache if needed.');
 
             return Command::SUCCESS;
         } catch (\Exception $e) {
             $this->error("✗ Restore failed: {$e->getMessage()}");
+
             return Command::FAILURE;
         }
     }

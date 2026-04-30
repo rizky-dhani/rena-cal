@@ -16,21 +16,21 @@ return [
     ],
     'buttons' => [
         'create' => [
-            'label' => 'Buat Provinsi'
+            'label' => 'Buat Provinsi',
         ],
         'import' => [
-            'label' => 'Impor dari API'
-        ]
+            'label' => 'Impor dari API',
+        ],
     ],
     'notifications' => [
         'success' => ':label berhasil dibuat',
         'import_success' => [
             'title' => 'Impor Berhasil',
-            'body' => '{1}Satu provinsi berhasil diimpor.|[2,*]:count provinsi berhasil diimpor.'
+            'body' => '{1}Satu provinsi berhasil diimpor.|[2,*]:count provinsi berhasil diimpor.',
         ],
         'import_error' => [
             'title' => 'Impor Gagal',
-            'body' => 'Terjadi kesalahan saat mengimpor provinsi dari API.'
-        ]
-    ]
+            'body' => 'Terjadi kesalahan saat mengimpor provinsi dari API.',
+        ],
+    ],
 ];

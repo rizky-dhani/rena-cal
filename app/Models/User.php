@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\CustomerAdminCreatedNotification;
+use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -15,7 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use CanResetPassword, HasFactory, HasRoles, Notifiable;
 
     public const DEFAULT_PASSWORD = 'Rena2025!';
@@ -104,6 +106,6 @@ class User extends Authenticatable implements FilamentUser
             ]
         );
 
-        $this->notify(new \App\Notifications\CustomerAdminCreatedNotification($signedUrl));
+        $this->notify(new CustomerAdminCreatedNotification($signedUrl));
     }
 }

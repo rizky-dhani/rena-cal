@@ -8,6 +8,10 @@ use App\Services\DatabaseBackupService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -53,9 +57,9 @@ class BackupsResource extends Resource
     {
         return $schema
             ->components([
-                \Filament\Infolists\Components\Section::make(__('backup.form.create_backup'))
+                Section::make(__('backup.form.create_backup'))
                     ->schema([
-                        \Filament\Infolists\Components\TextEntry::make('info')
+                        TextEntry::make('info')
                             ->label(__('backup.form.create_backup_info'))
                             ->state(__('backup.form.create_backup_info_text')),
                     ]),
@@ -127,7 +131,7 @@ class BackupsResource extends Resource
                     ->action(function (DatabaseBackupService $service, Backup $record) {
                         try {
                             $service->restore($record);
-                            
+
                             Notification::make()
                                 ->title(__('backup.restore.success_title'))
                                 ->body(__('backup.restore.success_body', ['filename' => $record->filename]))
@@ -142,13 +146,13 @@ class BackupsResource extends Resource
                         }
                     }),
 
-                \Filament\Actions\DeleteAction::make()
+                DeleteAction::make()
                     ->label(__('backup.actions.delete'))
                     ->visible(fn (Backup $record) => $record->fileExists()),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    \Filament\Actions\DeleteBulkAction::make(),
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->headerActions([
@@ -163,7 +167,7 @@ class BackupsResource extends Resource
                     ->action(function (DatabaseBackupService $service) {
                         try {
                             $service->create(Auth::id());
-                            
+
                             Notification::make()
                                 ->title(__('backup.create.success_title'))
                                 ->body(__('backup.create.success_body'))

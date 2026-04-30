@@ -22,7 +22,7 @@ it('can be instantiated with a collection of devices', function () {
 it('uses the mail channel', function () {
     $devices = collect([new Device(['device_number' => 'DEV-001'])]);
     $notification = new CalibrationRenewalNotification($devices);
-    $user = new User();
+    $user = new User;
 
     expect($notification->via($user))->toBe(['mail']);
 });
@@ -41,7 +41,7 @@ it('renders the email content correctly', function () {
 
     $user = new User(['name' => 'John Doe']);
     $notification = new CalibrationRenewalNotification($devices);
-    
+
     $mailData = $notification->toMail($user);
     $html = (string) $mailData->render();
 

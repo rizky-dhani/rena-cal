@@ -2,9 +2,9 @@
 
 namespace App\Filament\Dashboard\Resources\Permissions\Schemas;
 
-use Filament\Schemas\Schema;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Schema;
 
 class PermissionForm
 {
@@ -18,7 +18,7 @@ class PermissionForm
                 Select::make('guard_name')
                     ->label(__('permissions.form.guard_name.label'))
                     ->options([
-                        'web' => 'web'
+                        'web' => 'web',
                     ])
                     ->default('web')
                     ->required(),

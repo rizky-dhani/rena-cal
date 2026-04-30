@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-04-30T12:00:00Z",
+  "libraries": {
+    "spatie-laravel-permission": {
+      "files": [
+        {
+          "filename": "upgrade-v6-to-v7.md",
+          "topic": "Upgrade guide v6 to v7",
+          "tech_stack": "Laravel 12+",
+          "fetched": "2026-04-30T12:00:00Z",
+          "source": "Spatie Official Docs"
+        },
+        {
+          "filename": "breaking-changes.md",
+          "topic": "Breaking changes from v6 to v7",
+          "tech_stack": "Laravel 12+",
+          "fetched": "2026-04-30T12:00:00Z",
+          "source": "Spatie Official Docs"
+        },
+        {
+          "filename": "new-features.md",
+          "topic": "New features in v7",
+          "tech_stack": "Laravel 12+",
+          "fetched": "2026-04-30T12:00:00Z",
+          "source": "Spatie Official Docs"
+        },
+        {
+          "filename": "changelog.md",
+          "topic": "Changelog for v7",
+          "tech_stack": "Laravel 12+",
+          "fetched": "2026-04-30T12:00:00Z",
+          "source": "GitHub CHANGELOG"
+        }
+      ]
+    }
+  }
+}

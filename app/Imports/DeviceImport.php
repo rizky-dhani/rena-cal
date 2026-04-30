@@ -9,6 +9,8 @@ use App\Models\DeviceName;
 use App\Models\Type;
 use App\Models\User;
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -24,7 +26,7 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
     protected array $brandCache = [];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return Model|null
      */
     public function model(array $row)
     {
@@ -199,7 +201,7 @@ class DeviceImport implements ToModel, WithHeadingRow, WithValidation
             return null;
         }
 
-        if ($value instanceof \Carbon\CarbonInterface) {
+        if ($value instanceof CarbonInterface) {
             return $value->format('Y-m-d');
         }
 

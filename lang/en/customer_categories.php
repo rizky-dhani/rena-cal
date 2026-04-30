@@ -7,14 +7,14 @@ return [
 
     'form' => [
         'name' => [
-            'label' => 'Name'
-        ]
+            'label' => 'Name',
+        ],
     ],
 
     'columns' => [
         'name' => [
-            'label'=> 'Name'
-        ]
+            'label' => 'Name',
+        ],
     ],
 
     'actions' => [
@@ -31,10 +31,10 @@ return [
 
     'widgets' => [
         'by_categories' => [
-            'heading' => 'Healthcare by Categories'
+            'heading' => 'Healthcare by Categories',
         ],
         'by_types' => [
-            'heading' => 'By Segment'
-        ]
-    ]
+            'heading' => 'By Segment',
+        ],
+    ],
 ];

@@ -2,8 +2,8 @@
 
 namespace App\Filament\Dashboard\Widgets;
 
-use App\Models\Device;
 use App\Models\Customer;
+use App\Models\Device;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -43,11 +43,11 @@ class RecordCountWidget extends BaseWidget
     {
         $user = auth()->user();
 
-        if (!$user) {
+        if (! $user) {
             return false;
         }
 
         // Return true only if user does NOT have Admin or Super Admin role
-        return !$user->hasRole(['Super Admin', 'Admin']);
+        return ! $user->hasRole(['Super Admin', 'Admin']);
     }
 }

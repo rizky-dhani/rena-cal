@@ -1,4 +1,5 @@
 <?php
+
 return [
     'label' => 'Province',
     'columns' => [
@@ -15,11 +16,11 @@ return [
     ],
     'buttons' => [
         'create' => [
-            'label' => 'Create Province'
+            'label' => 'Create Province',
         ],
         'import' => [
-            'label' => 'Import from API'
-        ]
+            'label' => 'Import from API',
+        ],
     ],
     'notifications' => [
         'success' => ':label successfully created',
@@ -28,7 +29,7 @@ return [
         ],
         'import_error' => [
             'title' => 'Import Failed',
-            'body' => 'An error occurred while importing provinces from the API.'
-        ]
-    ]
+            'body' => 'An error occurred while importing provinces from the API.',
+        ],
+    ],
 ];

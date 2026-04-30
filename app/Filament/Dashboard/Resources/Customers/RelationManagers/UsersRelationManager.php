@@ -2,21 +2,14 @@
 
 namespace App\Filament\Dashboard\Resources\Customers\RelationManagers;
 
-use Filament\Tables\Table;
-use Filament\Actions\EditAction;
-use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
-use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Forms\Components\TextInput;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Dashboard\Resources\Customers\Actions\AssignAdminAction;
 use App\Filament\Dashboard\Resources\Customers\Actions\UnassignAdminAction;
 use App\Filament\Dashboard\Resources\Users\UserResource;
+use Filament\Actions\EditAction;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class UsersRelationManager extends RelationManager
 {

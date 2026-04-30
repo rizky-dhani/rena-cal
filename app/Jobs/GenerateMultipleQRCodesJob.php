@@ -46,7 +46,7 @@ class GenerateMultipleQRCodesJob implements ShouldQueue
             \Log::warning('Device sequence may be out of sync', [
                 'sequence_value' => $currentNumber,
                 'existing_max' => $existingMax,
-                'action' => 'Using existing_max + 1 as starting point'
+                'action' => 'Using existing_max + 1 as starting point',
             ]);
             $currentNumber = (int) $existingMax + 1;
         }

@@ -5,14 +5,15 @@ namespace App\Filament\Dashboard\Widgets;
 use App\Models\Customer;
 use App\Models\CustomerCategory;
 use Filament\Widgets\BarChartWidget;
-use Flowframe\Trend\Trend;
-use Flowframe\Trend\TrendValue;
 
 class CustomerByCategoryChartWidget extends BarChartWidget
 {
     protected static ?int $sort = 4;
+
     public ?string $filter = 'all';
+
     protected int|string|array $columnSpan = 2;
+
     protected ?string $maxHeight = '300px';
 
     public function getHeading(): string
@@ -56,11 +57,11 @@ class CustomerByCategoryChartWidget extends BarChartWidget
                 break;
             case 'month':
                 $query->whereMonth('created_at', now()->month)
-                      ->whereYear('created_at', now()->year);
+                    ->whereYear('created_at', now()->year);
                 break;
             case 'week':
                 $query->whereDate('created_at', '>=', now()->subWeek())
-                      ->whereDate('created_at', '<=', now());
+                    ->whereDate('created_at', '<=', now());
                 break;
         }
 
@@ -89,7 +90,7 @@ class CustomerByCategoryChartWidget extends BarChartWidget
                     'data' => $counts,
                     'backgroundColor' => [
                         '#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
-                        '#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+                        '#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
                     ],
                     'borderColor' => '#fff',
                     'borderWidth' => 1,

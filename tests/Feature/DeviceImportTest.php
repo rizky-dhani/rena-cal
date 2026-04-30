@@ -12,8 +12,10 @@ use App\Models\Province;
 use App\Models\Type;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Spatie\Permission\Models\Role;
@@ -21,7 +23,7 @@ use Spatie\Permission\Models\Role;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    \Illuminate\Support\Facades\Storage::fake('public');
+    Storage::fake('public');
 
     // Seed roles
     Role::create(['name' => 'Admin']);
@@ -83,7 +85,7 @@ test('it can import new devices from excel', function () {
     expect($device->type->name)->toBe('Test Type');
     expect($device->barcode)->toBe('qrcodes/'.$uuid.'.png');
 
-    \Illuminate\Support\Facades\Storage::disk('public')->assertExists($device->barcode);
+    Storage::disk('public')->assertExists($device->barcode);
 
     unlink($filePath);
 });
@@ -109,7 +111,7 @@ test('it updates existing devices based on device_number', function () {
     expect($device->order_number)->toBe('ORD-002');
     expect($device->barcode)->not->toBeNull();
 
-    \Illuminate\Support\Facades\Storage::disk('public')->assertExists($device->barcode);
+    Storage::disk('public')->assertExists($device->barcode);
 
     unlink($filePath);
 });
@@ -173,7 +175,7 @@ test('it validates data and reports errors', function () {
     try {
         Excel::import(new DeviceImport, $filePath);
         $this->fail('Validation exception should have been thrown');
-    } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+    } catch (ValidationException $e) {
         $failures = $e->failures();
         expect($failures)->toHaveCount(1);
         expect($failures[0]->attribute())->toBe('tanggal_kalibrasi');

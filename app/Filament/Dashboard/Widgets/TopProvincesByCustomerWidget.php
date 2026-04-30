@@ -2,19 +2,21 @@
 
 namespace App\Filament\Dashboard\Widgets;
 
-use App\Models\Customer;
 use App\Models\Province;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Illuminate\Database\Eloquent\Builder;
 
 class TopProvincesByCustomerWidget extends BaseWidget
 {
     protected static ?int $sort = 6;
+
     protected static ?string $heading = 'Top 10 Provinces by Customer Count';
+
     protected static ?string $pollingInterval = null;
+
     protected int|string|array $columnSpan = 2;
+
     protected ?string $maxHeight = '300px';
 
     public static function canView(): bool

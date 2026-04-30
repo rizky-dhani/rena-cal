@@ -2,7 +2,10 @@
 
 namespace App\Filament\Dashboard\Resources\Devices\Tables;
 
+use App\Exports\DeviceExport;
 use App\Models\Device;
+use App\Models\User;
+use App\Notifications\CalibrationRenewalNotification;
 use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
@@ -15,8 +18,13 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class DevicesTable
@@ -94,7 +102,7 @@ class DevicesTable
                     ->getStateUsing(fn ($record) => $record->result ?? 'N/A'),
             ])
             ->filters([
-                \Filament\Tables\Filters\Filter::make('filled')
+                Filter::make('filled')
                     ->label(__('devices.filters.filled.label'))
                     ->query(function ($query) {
                         return $query->whereNotNull('device_name_id')
@@ -109,7 +117,7 @@ class DevicesTable
                             ->whereNotNull('next_calibration_date')
                             ->whereNotNull('cert_number');
                     }),
-                \Filament\Tables\Filters\Filter::make('empty')
+                Filter::make('empty')
                     ->label(__('devices.filters.empty.label'))
                     ->query(function ($query) {
                         return $query->whereNull('order_number')
@@ -124,7 +132,7 @@ class DevicesTable
                             ->whereNull('device_name_id')
                             ->whereNull('room_name');
                     }),
-                \Filament\Tables\Filters\Filter::make('partially_filled')
+                Filter::make('partially_filled')
                     ->label(__('devices.filters.partially_filled.label'))
                     ->query(function ($query) {
                         // NOT empty AND NOT fully filled
@@ -154,18 +162,18 @@ class DevicesTable
                                     ->orWhereNull('cert_number');
                             });
                     }),
-                \Filament\Tables\Filters\Filter::make('more_than_60_days')
+                Filter::make('more_than_60_days')
                     ->label(__('widgets.device_calibration_status.more_than_60_days'))
                     ->query(function ($query) {
                         return $query->whereDate('next_calibration_date', '>', now()->addDays(60));
                     }),
-                \Filament\Tables\Filters\Filter::make('within_60_days')
+                Filter::make('within_60_days')
                     ->label(__('widgets.device_calibration_status.within_60_days'))
                     ->query(function ($query) {
                         return $query->whereDate('next_calibration_date', '<=', now()->addDays(60))
                             ->whereDate('next_calibration_date', '>', now());
                     }),
-                \Filament\Tables\Filters\Filter::make('overdue')
+                Filter::make('overdue')
                     ->label(__('widgets.device_calibration_status.overdue'))
                     ->query(function ($query) {
                         return $query->whereDate('next_calibration_date', '<=', now());
@@ -236,9 +244,9 @@ class DevicesTable
                         )
                     )
                     ->action(function () {
-                        \Illuminate\Support\Facades\Artisan::call('app:send-calibration-renewals');
+                        Artisan::call('app:send-calibration-renewals');
 
-                        \Filament\Notifications\Notification::make()
+                        Notification::make()
                             ->title(__('notifications.calibration_renewal.send_renewal_manual_success'))
                             ->success()
                             ->send();
@@ -249,7 +257,7 @@ class DevicesTable
                     ExportBulkAction::make()
                         ->label(__('devices.export.label'))
                         ->exports([
-                            \App\Exports\DeviceExport::make()
+                            DeviceExport::make()
                                 ->modifyQueryUsing(function ($query) {
                                     $user = auth()->user();
 
@@ -269,7 +277,7 @@ class DevicesTable
                             ! ($livewire->tableFilters['more_than_60_days']['isActive'] ?? false) &&
                             ! ($livewire->tableFilters['within_60_days']['isActive'] ?? false)
                         )
-                        ->action(function (\Illuminate\Support\Collection $records) {
+                        ->action(function (Collection $records) {
                             $groupedDevices = $records->groupBy('customer_id');
 
                             foreach ($groupedDevices as $customerId => $customerDevices) {
@@ -277,16 +285,16 @@ class DevicesTable
                                     continue;
                                 }
 
-                                $admins = \App\Models\User::role('Hospital Admin')
+                                $admins = User::role('Hospital Admin')
                                     ->where('customer_id', $customerId)
                                     ->get();
 
                                 if ($admins->isNotEmpty()) {
-                                    \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\CalibrationRenewalNotification($customerDevices));
+                                    \Illuminate\Support\Facades\Notification::send($admins, new CalibrationRenewalNotification($customerDevices));
                                 }
                             }
 
-                            \Filament\Notifications\Notification::make()
+                            Notification::make()
                                 ->title(__('notifications.calibration_renewal.send_renewal_manual_success'))
                                 ->success()
                                 ->send();
@@ -337,7 +345,7 @@ class DevicesTable
                             $ids = $records->where('result', 'Tidak Laik Pakai')->pluck('id')->toArray();
 
                             if (empty($ids)) {
-                                \Filament\Notifications\Notification::make()
+                                Notification::make()
                                     ->title('Tidak ada perangkat dengan hasil "Tidak Laik Pakai" yang dipilih.')
                                     ->danger()
                                     ->send();
@@ -360,20 +368,20 @@ class DevicesTable
                         ->successNotificationTitle(__('devices.actions.delete_multiple_success', ['label' => __('devices.plural_label')]))
                         ->after(function () {
                             // Sync device sequence after bulk delete
-                            $maxDeviceNum = \App\Models\Device::where('device_number', 'REGEXP', '^RENA-[0-9]+$')
+                            $maxDeviceNum = Device::where('device_number', 'REGEXP', '^RENA-[0-9]+$')
                                 ->selectRaw('MAX(CAST(SUBSTRING(device_number, 6) AS UNSIGNED)) as max_num')
                                 ->value('max_num');
 
                             $shouldBeNextValue = $maxDeviceNum ? (int) $maxDeviceNum + 1 : 1;
 
-                            \Illuminate\Support\Facades\DB::table('device_sequences')
+                            DB::table('device_sequences')
                                 ->where('sequence_name', 'device_number')
                                 ->update([
                                     'next_value' => $shouldBeNextValue,
                                     'updated_at' => now(),
                                 ]);
 
-                            \Illuminate\Support\Facades\Log::info('Device sequence synced after bulk delete', [
+                            Log::info('Device sequence synced after bulk delete', [
                                 'new_value' => $shouldBeNextValue,
                                 'max_device_num' => $maxDeviceNum,
                             ]);
