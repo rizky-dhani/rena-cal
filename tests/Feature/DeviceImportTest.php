@@ -209,6 +209,50 @@ test('it fills admin_id with logged in user if they are Admin', function () {
     unlink($filePath);
 });
 
+test('it imports devices with same type name across different brands', function () {
+    // This test verifies the fix for the slug uniqueness constraint on types.
+    // Previously, types.slug had a GLOBAL unique constraint, but the app logic
+    // treated it as unique PER BRAND. This caused a SQL constraint violation when
+    // importing devices where the same type name existed for different brands.
+
+    $uuid1 = (string) Str::orderedUuid();
+    $uuid2 = (string) Str::orderedUuid();
+
+    $rows = [
+        // Row 1: Brand A with Type "Pro"
+        ['1', $uuid1, 'ORD-010', 'Test Customer', 'Addr', 'Device One', 'Brand Alpha', 'Pro', 'SN-010', 'Hal', 'Room A', '2024-01-01', 'Test PIC', '2024-01-01', __('devices.form.result.options.fit_for_use'), '2025-01-01', '2024-01-01'],
+        // Row 2: Brand B with Type "Pro" (same type name, different brand)
+        ['2', $uuid2, 'ORD-011', 'Test Customer', 'Addr', 'Device Two', 'Brand Beta', 'Pro', 'SN-011', 'Hal', 'Room B', '2024-02-01', 'Test PIC', '2024-02-01', __('devices.form.result.options.fit_for_use'), '2025-02-01', '2024-02-01'],
+    ];
+    $filePath = createTestExcel($rows, 'test_cross_brand_type.xlsx');
+
+    Excel::import(new DeviceImport, $filePath);
+
+    // Both devices should be created
+    $device1 = Device::where('device_number', $uuid1)->first();
+    $device2 = Device::where('device_number', $uuid2)->first();
+
+    expect($device1)->not->toBeNull();
+    expect($device2)->not->toBeNull();
+
+    // Each device should have its own brand
+    expect($device1->brand->name)->toBe('Brand Alpha');
+    expect($device2->brand->name)->toBe('Brand Beta');
+
+    // Each device should have its own type, even though the type names are the same
+    expect($device1->type->name)->toBe('Pro');
+    expect($device2->type->name)->toBe('Pro');
+
+    // Each type should be associated with a different brand
+    expect($device1->type->brand_id)->toBe($device1->brand->id);
+    expect($device2->type->brand_id)->toBe($device2->brand->id);
+
+    // The two types should be different records (different IDs)
+    expect($device1->type_id)->not->toBe($device2->type_id);
+
+    unlink($filePath);
+});
+
 test('it fills pic_id with logged in user if they are Technician', function () {
     $technician = User::factory()->create();
     $technician->assignRole('Technician');

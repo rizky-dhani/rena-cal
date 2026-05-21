@@ -20,10 +20,22 @@ return new class extends Migration
         });
 
         // Smart seeding: check for existing max device number
-        $maxNumber = DB::table('devices')
-            ->where('device_number', 'REGEXP', '^RENA-[0-9]+$')
-            ->selectRaw('MAX(CAST(SUBSTRING(device_number, 6) AS UNSIGNED)) as max_num')
-            ->value('max_num');
+        // Note: REGEXP is not supported in SQLite (test environment), so we handle both drivers
+        $driver = DB::connection()->getDriverName();
+
+        if ($driver === 'sqlite') {
+            $maxNumber = DB::table('devices')
+                ->where('device_number', 'like', 'RENA-%')
+                ->pluck('device_number')
+                ->filter(fn ($v) => preg_match('/^RENA-\d+$/', $v))
+                ->map(fn ($v) => (int) substr($v, 5))
+                ->max();
+        } else {
+            $maxNumber = DB::table('devices')
+                ->where('device_number', 'REGEXP', '^RENA-[0-9]+$')
+                ->selectRaw('MAX(CAST(SUBSTRING(device_number, 6) AS UNSIGNED)) as max_num')
+                ->value('max_num');
+        }
 
         $nextValue = $maxNumber ? (int) $maxNumber + 1 : 1;
 
