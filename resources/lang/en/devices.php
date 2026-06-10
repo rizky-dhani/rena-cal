@@ -106,6 +106,13 @@ return [
             'v3' => 'V3 (100mm x 150mm)',
             'v4' => 'V4 (100mm x 200mm)',
         ],
+        'page_size' => [
+            'label' => 'Page Size',
+            'placeholder' => 'Select page size',
+            'A3' => 'A3',
+            'A4' => 'A4',
+            'A5' => 'A5',
+        ],
         'generate_empty_qr' => 'Generate Empty QR',
     ],
 
