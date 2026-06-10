@@ -63,12 +63,13 @@ Route::get('/certificate/download/{cert_number}', function (Request $request, $c
 Route::get('/qr-print', function () {
     $ids = session()->get('qr_ids', []);
     $size = session()->get('qr_size', 'v1');
+    $pageSize = session()->get('qr_page_size', 'A3');
 
     $assets = Device::whereIn('id', $ids)->get();
     $filename = 'Calibration-Labels-'.now()->format('Y-m-d').'.pdf';
 
     $pdf = Pdf::loadView('pdf.asset-calibration-labels', compact('assets', 'size'))
-        ->setPaper('A3');
+        ->setPaper($pageSize);
 
     return $pdf->stream($filename);
 })->name('devices.qr-print');

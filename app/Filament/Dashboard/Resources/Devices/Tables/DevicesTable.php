@@ -314,12 +314,23 @@ class DevicesTable
                                 ])
                                 ->default('v3')
                                 ->required(),
+                            Select::make('page_size')
+                                ->label(__('devices.actions.page_size.label'))
+                                ->placeholder(__('devices.actions.page_size.placeholder'))
+                                ->options([
+                                    'A3' => __('devices.actions.page_size.A3'),
+                                    'A4' => __('devices.actions.page_size.A4'),
+                                    'A5' => __('devices.actions.page_size.A5'),
+                                ])
+                                ->default('A3')
+                                ->required(),
                         ])
                         ->action(function ($records, array $data) {
                             $ids = $records->pluck('id')->toArray();
                             session([
                                 'qr_ids' => $ids,
                                 'qr_size' => $data['size'],
+                                'qr_page_size' => $data['page_size'],
                             ]);
 
                             return redirect()->route('devices.qr-print');
@@ -340,6 +351,16 @@ class DevicesTable
                                 ])
                                 ->default('v3')
                                 ->required(),
+                            Select::make('page_size')
+                                ->label(__('devices.actions.page_size.label'))
+                                ->placeholder(__('devices.actions.page_size.placeholder'))
+                                ->options([
+                                    'A3' => __('devices.actions.page_size.A3'),
+                                    'A4' => __('devices.actions.page_size.A4'),
+                                    'A5' => __('devices.actions.page_size.A5'),
+                                ])
+                                ->default('A3')
+                                ->required(),
                         ])
                         ->action(function ($records, array $data) {
                             $ids = $records->where('result', 'Tidak Laik Pakai')->pluck('id')->toArray();
@@ -356,6 +377,7 @@ class DevicesTable
                             session([
                                 'qr_ids' => $ids,
                                 'qr_size' => $data['size'],
+                                'qr_page_size' => $data['page_size'],
                             ]);
 
                             return redirect()->route('devices.qr-print');

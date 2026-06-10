@@ -52,6 +52,13 @@ return [
             'v3' => 'Normal (5x3 cm)',
             'v4' => 'Small (3x1.5 cm)',
         ],
+        'page_size' => [
+            'label' => 'Page Size',
+            'placeholder' => 'Select page size',
+            'A3' => 'A3',
+            'A4' => 'A4',
+            'A5' => 'A5',
+        ],
     ],
 
     'generate' => [
